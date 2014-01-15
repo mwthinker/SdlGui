@@ -1,7 +1,6 @@
 SdlGui
 ======
 Is a simple graphic user interface api. Strongly inspired from java.
-A simple C++ wrapper around SDL2 (Simple Direct Media Layer). 
 
 External libraries SDL2 (http://www.libsdl.org/), SDL2_image, 
 SDL2_ttf, SDL2_mixer and OpenGL.
