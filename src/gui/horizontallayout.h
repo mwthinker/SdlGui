@@ -15,7 +15,7 @@ namespace gui {
 			RIGHT
 		};
 
-		HorizontalLayout(Alignment alignment = LEFT) : hGap_(5), vGap_(5), hFirstGap_(0) {
+		HorizontalLayout(Alignment alignment = LEFT) : hGap_(5), vGap_(5), hFirstGap_(5) {
 		}
 
 		HorizontalLayout(float hGap, float vGap, float hFirstGap, Alignment alignment = LEFT)

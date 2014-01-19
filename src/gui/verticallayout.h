@@ -15,7 +15,7 @@ namespace gui {
 			DOWN
 		};
 
-		VerticalLayout(Alignment alignment = UP) : alignment_(alignment), hGap_(5), vGap_(5), vFirstGap_(0) {
+		VerticalLayout(Alignment alignment = UP) : alignment_(alignment), hGap_(5), vGap_(5), vFirstGap_(5) {
 		}
 
 		VerticalLayout(float hGap, float vGap, float vFirstGap, Alignment alignment = UP) 
