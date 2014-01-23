@@ -73,22 +73,15 @@ namespace gui {
 		// Returns if the default closing is active or not.
 		bool isDefaultClosing() const;
 
-		int getNbrOfPanels() const {
+		inline int getNbrOfPanels() const {
 			return panels_.size();
 		}
 
-		int getCurrentPanelIndex() const {
+		inline int getCurrentPanelIndex() const {
 			return currentPanel_;
 		}
 
-		void setCurrentPanel(int index) {
-			if (currentPanel_ != index) {
-				getCurrentPanel()->panelChanged(false);
-				currentPanel_ = index;
-				resize();
-				getCurrentPanel()->panelChanged(true);
-			}
-		}
+		void setCurrentPanel(int index);
 
 		inline Panel* getCurrentPanel() const {
 			return panels_[currentPanel_];
@@ -120,10 +113,10 @@ namespace gui {
 
 	private:
 		// Override mw::Window.
-		void update(Uint32 deltaTime) override;
+		virtual void update(Uint32 deltaTime) override final;
 
 		// Override mw::Window.
-		void eventUpdate(const SDL_Event& windowEvent) override;
+		virtual void eventUpdate(const SDL_Event& windowEvent) override final;
 
 		void resize();
 

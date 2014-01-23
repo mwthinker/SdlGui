@@ -22,12 +22,11 @@ void testBorderLayout(gui::Frame& frame) {
 	frame.add(new gui::Button, gui::BorderLayout::WEST);
 	frame.add(new gui::Button, gui::BorderLayout::EAST);
 	frame.add(new gui::Button, gui::BorderLayout::SOUTH);
-	
+
 	panel->addToGroup(new gui::Button);
 	panel->addToGroup(new gui::Button);
 	panel->addToGroup(new gui::Button);
 	panel->addToGroup(new gui::Button);
-	
 }
 
 void testFlowLayout(gui::Frame& frame) {
@@ -68,7 +67,7 @@ int main(int argc, char** argv) {
 	gui::Frame frameFlow;
 	frameFlow.setDefaultClosing(true);
 	testFlowLayout(frameFlow);
-	
+
 	SDL_StartTextInput();
 	gui::Frame::startLoop();
 

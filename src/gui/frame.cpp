@@ -60,12 +60,13 @@ namespace gui {
 		return panels_.end();
 	}
 
-	std::vector<Panel*>::const_iterator Frame::cbegin() const {
-		return panels_.begin();
-	}
-
-	std::vector<Panel*>::const_iterator Frame::cend() const {
-		return panels_.end();
+	void Frame::setCurrentPanel(int index) {
+		if (currentPanel_ != index) {
+			getCurrentPanel()->panelChanged(false);
+			currentPanel_ = index;
+			resize();
+			getCurrentPanel()->panelChanged(true);
+		}
 	}
 
 	mw::signals::Connection Frame::addWindowListener(const WindowListener::Callback& callback) {
