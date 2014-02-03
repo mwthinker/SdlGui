@@ -14,7 +14,7 @@ namespace gui {
 
 		// Sets the size of childs based on the current
 		// size of the parent.
-		virtual void layoutContainer(Panel* parent) = 0;
+		virtual void layoutContainer(Panel& parent) = 0;
 	};
 
 } // Namespace gui.

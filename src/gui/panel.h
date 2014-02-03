@@ -5,6 +5,7 @@
 #include "traversalgroup.h"
 
 #include <vector>
+#include <cassert>
 
 namespace gui {
 
@@ -17,44 +18,42 @@ namespace gui {
 		// Creates a empty panel. The default LayoutManager is FlowLayout.
 		Panel();
 
-		// Deallocate all contained components.
-		~Panel();
+		virtual ~Panel() {
+		}
 
 		// Adds the component to the container. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
-		void add(Component* component);
+		void add(const std::shared_ptr<Component>& component);
 
 		// Adds the component to the container using the layout spcified 
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
-		void add(Component* component, int layoutIndex);
+		void add(const std::shared_ptr<Component>& component, int layoutIndex);
 
 		// Same as add(Component* component) but added to 
 		// a traversal group too.
-		void addToGroup(Component* component);
+		void addToGroup(const std::shared_ptr<Component>& component);
 
 		// Same as add(Component* component, int layoutIndex) but added to 
 		// a traversal group too.
-		void addToGroup(Component* component, int layoutIndex);
+		void addToGroup(const std::shared_ptr<Component>& component, int layoutIndex);
 
 		// Sets the layouyt manager. Takes ower the ownership of the layoutManager.
 		// The old layoutManager are dealloted.
-		void setLayout(LayoutManager* layoutManager);
+		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 		
 		// Gets the current layout manager. Do not deallocate the layout manager
 		// the panel takes care of that!
-		LayoutManager* getLayout() const;
+		std::shared_ptr<LayoutManager> getLayout() const;
 
-		std::vector<Component*>::iterator begin();
-		std::vector<Component*>::iterator end();
-		std::vector<Component*>::const_iterator cbegin() const;
-		std::vector<Component*>::const_iterator cend() const;
+		std::vector<std::shared_ptr<Component>>::iterator begin();
+		std::vector<std::shared_ptr<Component>>::iterator end();
 
 		// Returns the number of components contained.
 		int nbrOfComponents() const;
 
 		// Gets the list holding all contained components.
-		const std::vector<Component*>& getComponents() const;
+		const std::vector<std::shared_ptr<Component>>& getComponents() const;
 
 		void draw(Uint32 deltaTime) override;
 
@@ -71,6 +70,8 @@ namespace gui {
 		void validate() override;
 
 		void setFocus(bool focus) override;
+
+		void setChildsParent(const std::shared_ptr<Component>& thisPanel) override;
 
 	private:
 		typedef std::pair<Point, Dimension> Square;
@@ -91,12 +92,12 @@ namespace gui {
 		// The stack of the recent glscissor squares.
 		static std::stack<Square> squares_;
 
-		std::vector<Component*> components_;
-		LayoutManager* layoutManager_;
+		std::vector<std::shared_ptr<Component>> components_;
+		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;
 
-		Component* mouseMotionInsideComponent_;
-		Component* mouseDownInsideComponent_;
+		std::shared_ptr<Component> mouseMotionInsideComponent_;
+		std::shared_ptr<Component> mouseDownInsideComponent_;
 	};
 
 } // Namespace gui.

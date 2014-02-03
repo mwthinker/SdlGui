@@ -8,7 +8,7 @@ namespace gui {
 		lastFocusIndex_ = 0;
 	}
 
-	void TraversalGroup::add(Component* component) {
+	void TraversalGroup::add(const std::shared_ptr<Component>& component) {
 		components_.push_back(component);
 	}
 
@@ -35,7 +35,7 @@ namespace gui {
 					case SDLK_RETURN:
 						// Fall through!
 					case SDLK_KP_ENTER:
-						for (Component* c : components_) {
+						for (auto& c : components_) {
 							if (c->hasFocus() && c->isVisible()) {
 								c->doAction();
 								break;
@@ -52,7 +52,7 @@ namespace gui {
 	}
 
 	void TraversalGroup::sort() {
-		std::sort(components_.rbegin(), components_.rend(), [](Component* c1, Component* c2) {
+		std::sort(components_.rbegin(), components_.rend(), [](const std::shared_ptr<Component>& c1, const std::shared_ptr<Component>& c2) {
 			Point p1 = c1->getLocation();
 			Point p2 = c2->getLocation();
 
@@ -66,7 +66,7 @@ namespace gui {
 
 	void TraversalGroup::changeToNext(bool nextItem) {
 		bool oneAtLeastVisible = false;
-		for (Component* c : components_) {
+		for (auto& c : components_) {
 			if (c->isVisible()) {
 				oneAtLeastVisible = true;
 				break;
@@ -91,7 +91,7 @@ namespace gui {
 			// At least one unit has focus?
 			if (findFocusedItem) {
 				// Take focus from all items.
-				for (Component* c : components_) {
+				for (auto& c : components_) {
 					c->setFocus(false);
 				}
 				// Give focus to next item.
@@ -101,7 +101,7 @@ namespace gui {
 				}
 			} else {
 				// Find first visible item and give focus.
-				for (Component* c : components_) {
+				for (auto& c : components_) {
 					if (c->isVisible()) {
 						c->setFocus(true);
 						break;

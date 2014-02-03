@@ -19,12 +19,12 @@ namespace gui {
 		BorderLayout() {
 		}
 
-		void layoutContainer(Panel* parent) override {
+		void layoutContainer(Panel& parent) override {
 			float n, s, w, e;
 			calculateSizes(parent, n, s, w, e);
 
-			Dimension dimP = parent->getSize();
-			for (Component* c : *parent) {
+			Dimension dimP = parent.getSize();
+			for (auto& c : parent) {
 				if (!c->isVisible()) {
 					continue;
 				}
@@ -59,12 +59,12 @@ namespace gui {
 		}
 
 	private:
-		inline void calculateSizes(Panel* parent, float& north, float& south, float& west, float& east) const {
+		inline void calculateSizes(Panel& parent, float& north, float& south, float& west, float& east) const {
 			north = 0;
 			south = 0;
 			west = 0;
 			east = 0;
-			for (Component* c : *parent) {
+			for (auto& c : parent) {
 				if (!c->isVisible()) {
 					continue;
 				}

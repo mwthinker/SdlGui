@@ -15,41 +15,41 @@
 #include <iostream>
 
 void testBorderLayout(gui::Frame& frame) {
-	frame.add(new gui::Button, gui::BorderLayout::NORTH);
-	gui::Panel* panel = new gui::Panel;
-	panel->setLayout(new gui::VerticalLayout);
+	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::NORTH);
+	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
+	panel->setLayout(std::make_shared<gui::VerticalLayout>());
 	frame.add(panel, gui::BorderLayout::CENTER);
-	frame.add(new gui::Button, gui::BorderLayout::WEST);
-	frame.add(new gui::Button, gui::BorderLayout::EAST);
-	frame.add(new gui::Button, gui::BorderLayout::SOUTH);
+	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::WEST);
+	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::EAST);
+	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::SOUTH);
 
-	panel->addToGroup(new gui::Button);
-	panel->addToGroup(new gui::Button);
-	panel->addToGroup(new gui::Button);
-	panel->addToGroup(new gui::Button);
+	panel->addToGroup(std::make_shared<gui::Button>());
+	panel->addToGroup(std::make_shared<gui::Button>());
+	panel->addToGroup(std::make_shared<gui::Button>());
+	panel->addToGroup(std::make_shared<gui::Button>());
 }
 
 void testFlowLayout(gui::Frame& frame) {
 	mw::FontPtr font(new mw::Font("Ubuntu-B.ttf", 16));
-	frame.setLayout(new gui::FlowLayout(gui::FlowLayout::LEFT));
-	frame.add(new gui::Button("Button 1", font));
-	frame.add(new gui::Button("Button 2", font));
-	gui::Button* button = new gui::Button("Button 3", font);
+	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));
+	frame.add(std::make_shared<gui::Button>("Button 1", font));
+	frame.add(std::make_shared<gui::Button>("Button 2", font));
+	std::shared_ptr<gui::Button> button = std::make_shared<gui::Button>("Button 3", font);
 	button->setVerticalAlignment(gui::Button::TOP);
 	frame.add(button);
-	frame.add(new gui::Button("Button 4", font));
-	frame.add(new gui::CheckBox("CheckBox 5", font));
-	gui::TextField* field = new gui::TextField("Text:", font);
+	frame.add(std::make_shared<gui::Button>("Button 4", font));
+	frame.add(std::make_shared<gui::CheckBox>("CheckBox 5", font));
+	std::shared_ptr<gui::TextField> field = std::make_shared<gui::TextField>("Text:", font);
 	field->setGrabFocus(true);
 	frame.add(field);
-	frame.add(new gui::TextField("", font));
-	frame.add(new gui::Label("JAjajaj", font));
+	frame.add(std::make_shared<gui::TextField>("", font));
+	frame.add(std::make_shared<gui::Label>("JAjajaj", font));
 
-	gui::Panel* panel = new gui::Panel();
+	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
 	panel->setBackgroundColor(mw::Color(0, 1, 0));
 	frame.add(panel);
 
-	frame.addMouseListener([](gui::Component* c, const SDL_Event& sdlEvent) {
+	frame.addMouseListener([](gui::Component& c, const SDL_Event& sdlEvent) {
 		switch (sdlEvent.type) {
 			case SDL_MOUSEBUTTONDOWN:
 				std::cout << "\n" << sdlEvent.button.x << " " << sdlEvent.button.y;

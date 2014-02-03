@@ -18,45 +18,51 @@ namespace gui {
 	}
 
 	int Frame::addPanelBack() {
-		Panel* p = new Panel;
-		p->setLayout(new BorderLayout);
+		std::shared_ptr<Panel> p = std::make_shared<Panel>();
+		p->setLayout(std::make_shared<BorderLayout>());
+		p->setChildsParent(p);
 		return push_back(p);
 	}
 
-	int Frame::push_back(Panel* panel) {
+	int Frame::push_back(const std::shared_ptr<Panel>& panel) {
 		panels_.push_back(panel);
+		panel->setChildsParent(panel);
 		return panels_.size() - 1;
 	}
 
-	void Frame::add(Component* component) {
+	void Frame::add(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(component);
+		component->setChildsParent(component);
 	}
 
-	void Frame::add(Component* component, int layoutIndex) {
+	void Frame::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->add(component, layoutIndex);
+		component->setChildsParent(component);
 	}
 
-	void Frame::addToGroup(Component* component) {
+	void Frame::addToGroup(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(component);
+		component->setChildsParent(component);
 	}
 
-	void Frame::addToGroup(Component* component, int layoutIndex) {
+	void Frame::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->addToGroup(component, layoutIndex);
+		component->setChildsParent(component);
 	}
 
-	void Frame::setLayout(LayoutManager* layoutManager) {
+	void Frame::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
 		getCurrentPanel()->setLayout(layoutManager);
 	}
 
-	LayoutManager* Frame::getLayout() const {
+	std::shared_ptr<LayoutManager> Frame::getLayout() const {
 		return getCurrentPanel()->getLayout();
 	}
 
-	std::vector<Panel*>::iterator Frame::begin() {
+	std::vector<std::shared_ptr<Panel>>::iterator Frame::begin() {
 		return panels_.begin();
 	}
 
-	std::vector<Panel*>::iterator Frame::end() {
+	std::vector<std::shared_ptr<Panel>>::iterator Frame::end() {
 		return panels_.end();
 	}
 
@@ -100,18 +106,18 @@ namespace gui {
 	}
 	
 	void Frame::update(Uint32 deltaTime) {
-		updateListener_(this, deltaTime);
+		updateListener_(*this, deltaTime);
 
 		// Perform non critical event updates.
 		while (!eventQueue_.empty()) {
 			SDL_Event sdlEvent = eventQueue_.front();
 			eventQueue_.pop();
 
-			sdlEventListener_(this, sdlEvent);
+			sdlEventListener_(*this, sdlEvent);
 			switch (sdlEvent.type) {
 				case SDL_WINDOWEVENT:
 					if (sdlEvent.window.windowID == SDL_GetWindowID(getSdlWindow())) {
-						windowListener_(this, sdlEvent);
+						windowListener_(*this, sdlEvent);
 						switch (sdlEvent.window.event) {
 							case SDL_WINDOWEVENT_RESIZED:
 								resize();
@@ -178,9 +184,9 @@ namespace gui {
 	void Frame::init() {
 		currentPanel_ = 0;
 		// Default layout for Frame.
-		push_back(new Panel);
+		push_back(std::make_shared<Panel>());
 
-		getCurrentPanel()->setLayout(new BorderLayout());
+		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
 
 		// Init the opengl settings.
 		resize();

@@ -15,9 +15,9 @@
 namespace gui {
 
 	class Frame;
-	using WindowListener = mw::Signal<Frame*, const SDL_Event&>;
-	using SdlEventListener = mw::Signal<Frame*, const SDL_Event&>;
-	using UpdateListener = mw::Signal<Frame*, Uint32>;
+	using WindowListener = mw::Signal<Frame&, const SDL_Event&>;
+	using SdlEventListener = mw::Signal<Frame&, const SDL_Event&>;
+	using UpdateListener = mw::Signal<Frame&, Uint32>;
 
 	class Frame : public mw::Window {
 	public:
@@ -30,36 +30,32 @@ namespace gui {
 		
 		// Adds the provided panel in the back in the internal vector.
 		// The panel index is returned.
-		int push_back(Panel* panel);
+		int push_back(const std::shared_ptr<Panel>& panel);
 
 		// Adds component, with layoutIndex set to default.
 		// Will assert if the component already added.
-		void add(Component* component);
+		void add(const std::shared_ptr<Component>& component);
 
 		// Adds component, with the provided layoutIndex.
 		// Will assert if the component already added.
-		void add(Component* component, int layoutIndex);
+		void add(const std::shared_ptr<Component>& component, int layoutIndex);
 
 		// Same as add(Component* component) but added to 
 		// a traversal group too.
-		void addToGroup(Component* component);
+		void addToGroup(const std::shared_ptr<Component>& component);
 
 		// Same as add(Component* component, int layoutIndex) but added to 
 		// a traversal group too.
-		void addToGroup(Component* component, int layoutIndex);
+		void addToGroup(const std::shared_ptr<Component>& component, int layoutIndex);
 
-		// Sets the layouyt manager. Takes ower the ownership of the layoutManager.
-		// The old layoutManager are dealloted.
-		void setLayout(LayoutManager* layoutManager);
+		// Set the layout manager.
+		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
-		// Gets the current layout manager. Do not deallocate the layout manager
-		// the panel takes care of that!
-		LayoutManager* getLayout() const;
+		// Get the current layout manager.
+		std::shared_ptr<LayoutManager> getLayout() const;
 
-		std::vector<Panel*>::iterator begin();
-		std::vector<Panel*>::iterator end();
-		std::vector<Panel*>::const_iterator cbegin() const;
-		std::vector<Panel*>::const_iterator cend() const;
+		std::vector<std::shared_ptr<Panel>>::iterator begin();
+		std::vector<std::shared_ptr<Panel>>::iterator end();
 
 		mw::signals::Connection addWindowListener(const WindowListener::Callback& callback);
 		mw::signals::Connection addSdlEventListener(const SdlEventListener::Callback& callback);
@@ -83,7 +79,7 @@ namespace gui {
 
 		void setCurrentPanel(int index);
 
-		inline Panel* getCurrentPanel() const {
+		inline std::shared_ptr<Panel> getCurrentPanel() const {
 			return panels_[currentPanel_];
 		}
 
@@ -128,7 +124,7 @@ namespace gui {
 		UpdateListener updateListener_;
 
 		bool defaultClosing_;
-		std::vector<Panel*> panels_;
+		std::vector<std::shared_ptr<Panel>> panels_;
 		int currentPanel_;
 	};
 

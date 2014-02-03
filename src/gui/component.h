@@ -15,14 +15,15 @@ namespace gui {
 
 	class Component;
 
-	using FocusListener = mw::Signal<Component*>;
-	using KeyListener = mw::Signal<Component*, const SDL_Event&>;
+	using FocusListener = mw::Signal<Component&>;
+	using KeyListener = mw::Signal<Component&, const SDL_Event&>;
 	using MouseListener = KeyListener;
-	using ActionListener = mw::Signal<Component*>;
-	using PanelChangeListener = mw::Signal<Component*, bool>;
+	using ActionListener = mw::Signal<Component&>;
+	using PanelChangeListener = mw::Signal<Component&, bool>;
 
 	class Component {
 	public:
+		friend class Frame;
 		friend class Panel;
 
 		virtual ~Component() {
@@ -89,9 +90,7 @@ namespace gui {
 		// Return the focus for the component.
 		bool hasFocus() const;
 
-		inline Component* getParent() const {
-			return parent_;
-		}
+		std::shared_ptr<Panel> getParent() const;
 
 		inline void setBackground(const mw::Sprite& background) {
 			background_ = background;
@@ -147,6 +146,9 @@ namespace gui {
 	protected:
 		Component();
 
+		virtual void setChildsParent(const std::shared_ptr<Component>& component) {
+		}
+
 		// Takes care of all mouse events. And send it through to
 		// all mouse listener callbacks.
 		// Mouse events: SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN and SDL_MOUSEBUTTONUP.
@@ -172,7 +174,7 @@ namespace gui {
 		mw::Sprite background_;
 		mw::Color backgroundColor_;
 		mw::Color borderColor_;
-		Component* parent_;
+		std::shared_ptr<Panel> parent_;
 		Point location_;
 		Dimension dimension_;
 		Dimension preferedDimension_;

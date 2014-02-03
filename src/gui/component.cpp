@@ -1,4 +1,5 @@
 #include "component.h"
+#include "panel.h"
 
 namespace gui {
 
@@ -72,13 +73,17 @@ namespace gui {
 		if (focus_ != focus) {
 			if (focus || grabFocus_ || (!focus && nbrChildGrabFocus_ < 1)) {
 				focus_ = focus;
-				focusListener_(this);
+				focusListener_(*this);
 			}
 		}
 	}
 
 	bool Component::hasFocus() const {
 		return focus_;
+	}
+
+	std::shared_ptr<Panel> Component::getParent() const {
+		return parent_;
 	}
 
 	void Component::draw(Uint32 deltaTime) {
@@ -105,11 +110,11 @@ namespace gui {
 	}
 
 	void Component::doAction() {
-		actionListener_(this);
+		actionListener_(*this);
 	}
 
 	void Component::panelChanged(bool active) {
-		panelChangeListener_(this, active);
+		panelChangeListener_(*this, active);
 	}
 
 	int Component::getLayoutIndex() const {
@@ -127,11 +132,11 @@ namespace gui {
 	}
 
 	void Component::handleMouse(const SDL_Event& mouseEvent) {
-		mouseListener_(this, mouseEvent);
+		mouseListener_(*this, mouseEvent);
 	}
 
 	void Component::handleKeyboard(const SDL_Event& keyEvent) {
-		keyListener_(this, keyEvent);
+		keyListener_(*this, keyEvent);
 	}
 
 	void Component::validateParent() {

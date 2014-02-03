@@ -7,25 +7,16 @@
 
 namespace gui {
 
-	Panel::Panel() : mouseMotionInsideComponent_(false), mouseDownInsideComponent_(false), layoutManager_(nullptr) {
-		setLayout(new FlowLayout);
+	Panel::Panel() : mouseMotionInsideComponent_(false), mouseDownInsideComponent_(false), layoutManager_(std::make_shared<FlowLayout>()) {
 		setPreferredSize(50, 50);
 		setBorderColor(mw::Color(1, 1, 1, 0));
 	}
 
-	Panel::~Panel() {
-		for (Component* c : *this) {
-			delete c;
-		}
-
-		delete layoutManager_;
-	}
-
-	void Panel::add(Component* component) {
+	void Panel::add(const std::shared_ptr<Component>& component) {
 		// Is already added?
 		assert(!component->isAdded_);
+		component->setChildsParent(component);
 		component->isAdded_ = true;
-		component->parent_ = this;
 		component->setLayoutIndex(0);
 		components_.push_back(component);
 		if (component->isGrabFocus()) {
@@ -35,11 +26,11 @@ namespace gui {
 		validate();
 	}
 
-	void Panel::add(Component* component, int layoutIndex) {
+	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		// Is already added?
 		assert(!component->isAdded_);
+		component->setChildsParent(component);
 		component->isAdded_ = true;
-		component->parent_ = this;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
 		if (component->isGrabFocus()) {
@@ -49,50 +40,47 @@ namespace gui {
 		validate();
 	}
 
-	void Panel::addToGroup(Component* component) {
+	void Panel::setChildsParent(const std::shared_ptr<Component>& thisComponent) {
+		std::shared_ptr<Panel> thisPanel = std::static_pointer_cast<Panel>(thisComponent);
+		assert(thisComponent.get() == this); // Must be point to this object.
+		for (auto& c : components_) {
+			c->parent_ = thisPanel;
+			c->setChildsParent(c);
+		}
+	}
+
+	void Panel::addToGroup(const std::shared_ptr<Component>& component) {
 		add(component);
 		group_.add(component);
 	}
 
-	void Panel::addToGroup(Component* component, int layoutIndex) {
+	void Panel::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
 		add(component, layoutIndex);
 		group_.add(component);
 	}
 
-	void Panel::setLayout(LayoutManager* layoutManager) {
-		if (layoutManager != nullptr) {
-			delete layoutManager_;
-			layoutManager_ = layoutManager;
-			validate();
-		}
+	void Panel::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
+		layoutManager_ = layoutManager;
 	}
 
 	void Panel::setFocus(bool focus) {
 		Component::setFocus(focus);
 		if (!focus) {
-			for (Component* component : *this) {
+			for (auto& component : *this) {
 				component->setFocus(false);
 			}
 		}
 	}
 
-	LayoutManager* Panel::getLayout() const {
+	std::shared_ptr<LayoutManager> Panel::getLayout() const {
 		return layoutManager_;
 	}
 
-	std::vector<Component*>::iterator Panel::begin() {
+	std::vector<std::shared_ptr<Component>>::iterator Panel::begin() {
 		return components_.begin();
 	}
 
-	std::vector<Component*>::iterator Panel::end() {
-		return components_.end();
-	}
-
-	std::vector<Component*>::const_iterator Panel::cbegin() const {
-		return components_.begin();
-	}
-
-	std::vector<Component*>::const_iterator Panel::cend() const {
+	std::vector<std::shared_ptr<Component>>::iterator Panel::end() {
 		return components_.end();
 	}
 
@@ -100,7 +88,7 @@ namespace gui {
 		return components_.size();
 	}
 
-	const std::vector<Component*>& Panel::getComponents() const {
+	const std::vector<std::shared_ptr<Component>>& Panel::getComponents() const {
 		return components_;
 	}
 
@@ -109,7 +97,7 @@ namespace gui {
 		Component::draw(deltaTime);
 
 		// Draw components.
-		for (Component* component : *this) {
+		for (auto& component : *this) {
 			if (component->isVisible()) {
 				glPushMatrix();
 				Point p = component->getLocation();
@@ -124,10 +112,10 @@ namespace gui {
 
 	// Todo! Reverse y-axis!
 	void Panel::handleMouse(const SDL_Event& mouseEvent) {
-		Component* currentComponent = nullptr;
+		std::shared_ptr<Component> currentComponent;
 		switch (mouseEvent.type) {
 			case SDL_MOUSEMOTION:
-				for (Component* component : *this) {
+				for (auto& component : *this) {
 					if (!component->isVisible()) {
 						continue;
 					}
@@ -155,7 +143,7 @@ namespace gui {
 				// Fall through!
 			case SDL_MOUSEBUTTONUP:
 				// Send the mouseEvent through to the correct component.
-				for (Component* component : *this) {
+				for (auto& component : *this) {
 					if (!component->isVisible()) {
 						continue;
 					}
@@ -177,7 +165,7 @@ namespace gui {
 				if (mouseEvent.type == SDL_MOUSEBUTTONDOWN) {
 					// Set all components focus to false except
 					// the component used.
-					for (Component* component : *this) {
+					for (auto& component : *this) {
 						if (!component->isVisible()) {
 							continue;
 						}
@@ -208,7 +196,7 @@ namespace gui {
 	}
 
 	void Panel::handleKeyboard(const SDL_Event& keyEvent) {
-		for (Component* component : *this) {
+		for (auto& component : *this) {
 			if (component->hasFocus()) {
 				component->handleKeyboard(keyEvent);
 			}
@@ -218,13 +206,13 @@ namespace gui {
 	}
 
 	void Panel::mouseMotionLeave() {
-		for (Component* component : *this) {
+		for (auto& component : *this) {
 			component->mouseMotionLeave();
 		}
 	}
 
 	void Panel::mouseOutsideUp() {
-		for (Component* component : *this) {
+		for (auto& component : *this) {
 			component->mouseOutsideUp();
 		}
 	}
@@ -234,7 +222,7 @@ namespace gui {
 			validate();
 		}
 
-		for (Component* component : *this) {
+		for (auto& component : *this) {
 			component->panelChanged(active);
 		}
 		Component::panelChanged(active);
@@ -242,8 +230,8 @@ namespace gui {
 
 	void Panel::validate() {
 		// Validate!
-		layoutManager_->layoutContainer(this);
-		for (Component* child : *this) {
+		layoutManager_->layoutContainer(*this);
+		for (auto& child : *this) {
 			child->validate();
 		}
 

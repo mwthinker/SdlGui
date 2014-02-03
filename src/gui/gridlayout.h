@@ -16,15 +16,15 @@ namespace gui {
 		GridLayout(int rows, int columns, float hGap, float vGap) : columns_(columns), rows_(rows), hGap_(hGap), vGap_(vGap) {
 		}
 
-		void layoutContainer(Panel* parent) override {
-			Dimension dimP = parent->getSize();
+		void layoutContainer(Panel& parent) override {
+			Dimension dimP = parent.getSize();
 
 			float w = dimP.width_ / columns_;
 			float h = dimP.height_ / rows_;
 
 			int row = 0;
 			int column = 0;
-			for (Component* c : *parent) {
+			for (auto& c : parent) {
 				c->setLocation(column * (w + hGap_), row * (h + vGap_));
 				c->setSize(w, h);
 

@@ -11,7 +11,7 @@ namespace gui {
 	public:
 		TraversalGroup();
 
-		void add(Component* component);
+		void add(const std::shared_ptr<Component>& component);
 
 		void handleKeyboard(const SDL_Event& keyEvent);
 
@@ -22,7 +22,7 @@ namespace gui {
 		void changeToNext(bool nextItem);
 
 		int lastFocusIndex_;
-		std::vector<Component*> components_;
+		std::vector<std::shared_ptr<Component>> components_;
 	};
 
 } // Namespace gui.

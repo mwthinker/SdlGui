@@ -22,10 +22,10 @@ namespace gui {
 			: alignment_(alignment), hGap_(hGap), vGap_(vGap), vFirstGap_(vFirstGap) {
 		}
 
-		void layoutContainer(Panel* parent) override {
-			Dimension dimP = parent->getSize();
+		void layoutContainer(Panel& parent) override {
+			Dimension dimP = parent.getSize();
 			float y = vFirstGap_;
-			for (Component* c : *parent) {
+			for (auto& c : parent) {
 				if (!c->isVisible()) {
 					continue;
 				}

@@ -35,13 +35,13 @@ namespace gui {
 			vGap_ = vGap;
 		}
 
-		void layoutContainer(Panel* parent) override {
-			Dimension dimP = parent->getSize();
+		void layoutContainer(Panel& parent) override {
+			Dimension dimP = parent.getSize();
 
 			float w = hGap_;
 			float h = vGap_;
 			float maxH = 0;
-			for (Component* c : *parent) {
+			for (auto& c : parent) {
 				Dimension dimC = c->getPreferredSize();
 				c->setSize(dimC);
 				if (!c->isVisible()) {
