@@ -1,13 +1,12 @@
-CMAKE_MINIMUM_REQUIRED(VERSION 2.8)
-PROJECT(SdlGui)
-SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
-if (MSVC)
-else (MSVC)
-	SET(CMAKE_CXX_FLAGS "-std=c++11")
-endif (MSVC)
+cmake_minimum_required(VERSION 2.8)
+project(SdlGui)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+if (NOT MSVC)
+	set(CMAKE_CXX_FLAGS "-std=c++11")
+endif ()
 
 # Source files.
-SET(SOURCES
+set(SOURCES
 	src/gui/borderlayout.h
 	src/gui/button.cpp
 	src/gui/button.h
@@ -34,21 +33,21 @@ SET(SOURCES
 	src/gui/textfield.h
 )
 
-SET(SOURCES_TEST
+set(SOURCES_TEST
 	srcTest/main.cpp
 )
 # End of source files.
 
-FIND_PACKAGE(OpenGL REQUIRED)
-FIND_PACKAGE(SDL2 REQUIRED)
-FIND_PACKAGE(SDL2_image REQUIRED)
-FIND_PACKAGE(SDL2_mixer REQUIRED)
-FIND_PACKAGE(SDL2_ttf REQUIRED)
+find_package(OpenGL REQUIRED)
+find_package(SDL2 REQUIRED)
+find_package(SDL2_image REQUIRED)
+find_package(SDL2_mixer REQUIRED)
+find_package(SDL2_ttf REQUIRED)
 
-ADD_SUBDIRECTORY(MwLibrary2)
-ADD_SUBDIRECTORY(Signal)
+add_subdirectory(MwLibrary2)
+add_subdirectory(Signal)
 
-INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR}
+include_directories(${OPENGL_INCLUDE_DIR}
 	${SDL2_INCLUDE_DIR}
 	${SDL2_IMAGE_INCLUDE_DIR}
 	${SDL2_TTF_INCLUDE_DIR}
@@ -57,19 +56,23 @@ INCLUDE_DIRECTORIES(${OPENGL_INCLUDE_DIR}
 	Signal/src/
 )
 
-ADD_LIBRARY(SdlGui ${SOURCES})
+add_library(SdlGui ${SOURCES})
 
-SET(ALL_SDL_LIBRARIES
+set(ALL_SDL_LIBRARIES
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
 	${SDL2_IMAGE_LIBRARIES}
 )
 
-INCLUDE_DIRECTORIES(src)
-ADD_EXECUTABLE(SdlGuiTest ${SOURCES_TEST})
+include_directories(src)
+add_executable(SdlGuiTest ${SOURCES_TEST})
 
-TARGET_LINK_LIBRARIES(SdlGuiTest 
+if (MSVC)	
+	set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
+endif ()
+
+target_link_libraries(SdlGuiTest 
 	SdlGui
 	MwLibrary2
 	Signal
@@ -77,4 +80,4 @@ TARGET_LINK_LIBRARIES(SdlGuiTest
 	${OPENGL_LIBRARIES}
 )
 
-FILE(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
+file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.

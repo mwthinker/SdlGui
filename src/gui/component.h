@@ -7,13 +7,14 @@
 #include <mw/color.h>
 #include <mw/sprite.h>
 
-#include <sdl.h>
+#include <SDL.h>
 
 #include <stack>
 
 namespace gui {
 
 	class Component;
+	class Panel;
 
 	using FocusListener = mw::Signal<Component&>;
 	using KeyListener = mw::Signal<Component&, const SDL_Event&>;
@@ -146,7 +147,7 @@ namespace gui {
 	protected:
 		Component();
 
-		virtual void setChildsParent(const std::shared_ptr<Component>& component) {
+		inline virtual void setChildsParent(const std::shared_ptr<Component>& component) {
 		}
 
 		// Takes care of all mouse events. And send it through to
