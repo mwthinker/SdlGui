@@ -8,7 +8,7 @@ namespace gui {
 	class CheckBox : public Button {
 	public:
 		CheckBox(int characterSize);
-		CheckBox(std::string text, const mw::FontPtr& font);
+		CheckBox(std::string text, const mw::Font& font);
 		CheckBox(mw::Text text);
 
 		virtual void draw(Uint32 deltaTime) override;

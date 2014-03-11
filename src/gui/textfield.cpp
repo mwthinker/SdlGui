@@ -2,15 +2,15 @@
 
 namespace gui {
 
-	TextField::TextField(const mw::FontPtr& font) {
+	TextField::TextField(const mw::Font& font) {
 		init("", font);
 	}
 
-	TextField::TextField(std::string initialText, const mw::FontPtr& font) {
+	TextField::TextField(std::string initialText, const mw::Font& font) {
 		init(initialText, font);
 	}
 
-	void TextField::init(std::string initialText, const mw::FontPtr& font) {
+	void TextField::init(std::string initialText, const mw::Font& font) {
 		font_ = font;
 		inputFormatter_.update(initialText.c_str());
 		editable_ = true;
@@ -87,7 +87,7 @@ namespace gui {
 				case SDL_TEXTINPUT:
 				{
 					// Update only if the glyph is avaiable.
-					if (0 == TTF_SizeUTF8(font_->getTtfFont(), keyEvent.text.text, 0, 0)) {
+					if (font_.getTtfFont() != 0 &&0 == TTF_SizeUTF8(font_.getTtfFont(), keyEvent.text.text, 0, 0)) {
 						// A Utf8 string as input.
 						inputFormatter_.update(keyEvent.text.text);
 						text_.setText(inputFormatter_.getText());
@@ -165,8 +165,10 @@ namespace gui {
 				int index = inputFormatter_.getMarkerPosition();
 				std::string leftText = getText().substr(0, index);
 				int w, h;
-				TTF_SizeUTF8(font_->getTtfFont(), leftText.c_str(), &w, &h);
-				// One pixel to the right of the last character.
+				if (font_.getTtfFont()) {
+					TTF_SizeUTF8(font_.getTtfFont(), leftText.c_str(), &w, &h);
+					// One pixel to the right of the last character.
+				}
 				markerWidth_ = (float) w + 1;
 			}
 		}

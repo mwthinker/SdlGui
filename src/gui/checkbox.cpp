@@ -22,9 +22,9 @@ namespace gui {
 		setBackgroundColor(mw::Color(1, 1, 1, 0));
 	}
 
-	CheckBox::CheckBox(std::string text, const mw::FontPtr& font) : Button(text, font) {
+	CheckBox::CheckBox(std::string text, const mw::Font& font) : Button(text, font) {
 		addActionListener(std::bind(doActionSelect, this));
-		boxSize_ = (float) font->getCharacterSize();
+		boxSize_ = (float) font.getCharacterSize();
 		selected_ = false;
 		setPreferredSize(boxSize_ + (float) text_.getWidth() + 3, (float) text_.getHeight() + 2);
 		setBorderColor(mw::Color(1, 1, 1, 0));

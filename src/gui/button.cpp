@@ -9,7 +9,7 @@ namespace gui {
 		init();
 	}
 
-	Button::Button(std::string text, const mw::FontPtr& font) : text_(text , font) {
+	Button::Button(std::string text, const mw::Font& font) : text_(text , font) {
 		init();
 	}
 
@@ -48,7 +48,7 @@ namespace gui {
 		}
 	}
 
-	void Button::setFont(const mw::FontPtr& font) {
+	void Button::setFont(const mw::Font& font) {
 		text_ = mw::Text(text_.getText(), font);
 		toWide_ = mw::Text(toWide_.getText(), font);
 		if (autoFit_) {

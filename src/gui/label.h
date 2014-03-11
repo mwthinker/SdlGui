@@ -21,7 +21,7 @@ namespace gui {
 			BOTTOM
 		};
 
-		Label(std::string text, const mw::FontPtr& font);
+		Label(std::string text, const mw::Font& font);
 		Label(mw::Text text);
 
 		virtual ~Label() {
@@ -30,7 +30,7 @@ namespace gui {
 		virtual void draw(Uint32 deltaTime) override;
 
 		// Sets the font used by the label.
-		void setFont(const mw::FontPtr& font);
+		void setFont(const mw::Font& font);
 
 		std::string getText() const;
 		void setText(std::string text);

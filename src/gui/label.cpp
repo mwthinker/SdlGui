@@ -5,7 +5,7 @@
 
 namespace gui {
 
-	Label::Label(std::string text, const mw::FontPtr& font) {
+	Label::Label(std::string text, const mw::Font& font) {
 		text_ = mw::Text(text, font);
 		if (text_.getWidth() > 1 && text_.getWidth() > 1) {
 			setPreferredSize((float) text_.getWidth() + 2, (float) text_.getHeight() + 2);
@@ -56,7 +56,7 @@ namespace gui {
 		glPopMatrix();
 	}
 
-	void Label::setFont(const mw::FontPtr& font) {
+	void Label::setFont(const mw::Font& font) {
 		text_ = mw::Text(text_.getText(), font);
 	}
 

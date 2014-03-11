@@ -30,7 +30,7 @@ void testBorderLayout(gui::Frame& frame) {
 }
 
 void testFlowLayout(gui::Frame& frame) {
-	mw::FontPtr font(new mw::Font("Ubuntu-B.ttf", 16));
+	mw::Font font("Ubuntu-B.ttf", 16);
 	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));
 	frame.add(std::make_shared<gui::Button>("Button 1", font));
 	frame.add(std::make_shared<gui::Button>("Button 2", font));

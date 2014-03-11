@@ -26,7 +26,7 @@ namespace gui {
 		};
 
 		Button();
-		Button(std::string text, const mw::FontPtr& font);
+		Button(std::string text, const mw::Font& font);
 		Button(mw::Text text);
 
 		virtual ~Button() {
@@ -41,7 +41,7 @@ namespace gui {
 		void setLabel(std::string buttonLabel);
 
 		// Sets the font used by the label.
-		void setFont(const mw::FontPtr& font);
+		void setFont(const mw::Font& font);
 
 		// Returns true when the mouse is inside the button. Else 
 		// it returns false.

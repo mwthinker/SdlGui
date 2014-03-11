@@ -19,9 +19,9 @@ namespace gui {
 			RIGHT
 		};
 
-		TextField(const mw::FontPtr& font);
+		TextField(const mw::Font& font);
 
-		TextField(std::string initialText , const mw::FontPtr& font);
+		TextField(std::string initialText , const mw::Font& font);
 
 		// Get the current text.
 		std::string getText() const;
@@ -46,14 +46,14 @@ namespace gui {
 		void setTextColor(const mw::Color& textColor);
 
 	private:
-		void init(std::string initialText, const mw::FontPtr& font);
+		void init(std::string initialText, const mw::Font& font);
 		void handleKeyboard(const SDL_Event& keyEvent) override;
 
 		bool editable_;
 		mw::Text text_;
 		float markerWidth_;
 		bool markerChanged_;
-		mw::FontPtr font_;
+		mw::Font font_;
 
 		mw::Color textColor_;
 		Alignment alignment_;
