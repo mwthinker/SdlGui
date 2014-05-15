@@ -149,11 +149,32 @@ namespace gui {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		borderColor_.glColor4d();
-		glBegin(GL_LINE_LOOP);
+		glBegin(GL_QUADS);
+		
+		// South.
 		glVertex2d(0, 0);
 		glVertex2d(dimension_.width_, 0);
+		glVertex2d(dimension_.width_, 2);
+		glVertex2d(0, 2);
+
+		// East.
+		glVertex2d(dimension_.width_ - 2, 0);
+		glVertex2d(dimension_.width_, 0);
 		glVertex2d(dimension_.width_, dimension_.height_);
+		glVertex2d(dimension_.width_ - 2, dimension_.height_);
+
+		// North.
+		glVertex2d(0, dimension_.height_ - 2);
+		glVertex2d(dimension_.width_ - 2, dimension_.height_ -2);
+		glVertex2d(dimension_.width_ - 2, dimension_.height_);
 		glVertex2d(0, dimension_.height_);
+		
+		// West.
+		glVertex2d(0, 0);
+		glVertex2d(2, 0);
+		glVertex2d(2, dimension_.height_);
+		glVertex2d(0, dimension_.height_);
+
 		glEnd();
 		glDisable(GL_BLEND);
 	}
