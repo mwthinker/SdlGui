@@ -154,25 +154,25 @@ namespace gui {
 		// South.
 		glVertex2d(0, 0);
 		glVertex2d(dimension_.width_, 0);
-		glVertex2d(dimension_.width_, 2);
-		glVertex2d(0, 2);
+		glVertex2d(dimension_.width_, 1);
+		glVertex2d(0, 1);
 
 		// East.
-		glVertex2d(dimension_.width_ - 2, 0);
+		glVertex2d(dimension_.width_ - 1, 0);
 		glVertex2d(dimension_.width_, 0);
 		glVertex2d(dimension_.width_, dimension_.height_);
-		glVertex2d(dimension_.width_ - 2, dimension_.height_);
+		glVertex2d(dimension_.width_ - 1, dimension_.height_);
 
 		// North.
-		glVertex2d(0, dimension_.height_ - 2);
-		glVertex2d(dimension_.width_ - 2, dimension_.height_ -2);
-		glVertex2d(dimension_.width_ - 2, dimension_.height_);
+		glVertex2d(0, dimension_.height_ - 1);
+		glVertex2d(dimension_.width_ - 1, dimension_.height_ -1);
+		glVertex2d(dimension_.width_ - 1, dimension_.height_);
 		glVertex2d(0, dimension_.height_);
 		
 		// West.
 		glVertex2d(0, 0);
-		glVertex2d(2, 0);
-		glVertex2d(2, dimension_.height_);
+		glVertex2d(1, 0);
+		glVertex2d(1, dimension_.height_);
 		glVertex2d(0, dimension_.height_);
 
 		glEnd();
