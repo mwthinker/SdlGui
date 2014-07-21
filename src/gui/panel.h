@@ -74,24 +74,6 @@ namespace gui {
 		void setChildsParent(const std::shared_ptr<Component>& thisPanel) override;
 
 	private:
-		typedef std::pair<Point, Dimension> Square;
-
-		// Calls glScissor with the apropriated parameters based on the component
-		// provided and the calls to glScissor earlier in in the panel hierarchi.
-		static void pushScissor(Component* component);
-
-		// Undo the last call to pushScissor.
-		static void pullScissor();
-
-		// Returns true if the squares intersect else it returns false.
-		static bool isIntersecting(const Square& sq1, const Square& sq2);
-
-		// Return the intersect of two squares. If there is no intersected square sq2 is returned.
-		static Square calculateIntersectSquare(const Square& sq1, const Square& sq2);
-
-		// The stack of the recent glscissor squares.
-		static std::stack<Square> squares_;
-
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;
