@@ -39,11 +39,14 @@ namespace gui {
 		Alignment getAlignment() const;
 		void setAlignment(Alignment alignment);
 
-	protected:
-		virtual void drawText(Uint32 deltaTime);
-		
 		// Sets the color for the text.
 		void setTextColor(const mw::Color& textColor);
+
+		// Sets the color for the text.
+		void setTextColor(float red, float green, float blue, float alpha = 1);
+
+	protected:
+		virtual void drawText(Uint32 deltaTime);
 
 	private:
 		void init(std::string initialText, const mw::Font& font);

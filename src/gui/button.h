@@ -72,6 +72,8 @@ namespace gui {
 		// Sets the color for the text label.
 		void setTextColor(const mw::Color& textColor);
 
+		void setTextColor(float red, float green, float blue, float alpha = 1);
+
 		virtual void sizeToFitText();
 
 		void setAutoSizeToFitText(bool autoFit);
@@ -86,8 +88,16 @@ namespace gui {
 			hoverColor_ = color;
 		}
 
+		void setHoverColor(float red, float green, float blue, float alpha = 1) {
+			hoverColor_ = mw::Color(red, green, blue, alpha);
+		}
+
 		inline const mw::Color& getFocusColor() const {
 			return focusColor_;
+		}
+
+		void setFocusColor(float red, float green, float blue, float alpha = 1) {
+			focusColor_ = mw::Color(red, green, blue, alpha);
 		}
 
 		void setFocusColor(const mw::Color& color) {
@@ -96,6 +106,10 @@ namespace gui {
 
 		inline const mw::Color& getPushColor() const {
 			return pushColor_;
+		}
+
+		void setPushColor(float red, float green, float blue, float alpha = 1) {
+			pushColor_ = mw::Color(red, green, blue, alpha);
 		}
 
 		void setPushColor(const mw::Color& color) {

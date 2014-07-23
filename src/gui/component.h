@@ -105,12 +105,20 @@ namespace gui {
 			backgroundColor_ = color;
 		}
 
+		inline void setBackgroundColor(float red, float green, float blue, float alpha = 1) {
+			backgroundColor_ = mw::Color(red, green, blue, alpha);
+		}
+
 		inline const mw::Color& getBackgroundColor() const {
 			return backgroundColor_;
 		}
 
 		inline void setBorderColor(const mw::Color& color) {
 			borderColor_ = color;
+		}
+
+		inline void setBorderColor(float red, float green, float blue, float alpha = 1) {
+			borderColor_ = mw::Color(red, green, blue, alpha);
 		}
 
 		inline const mw::Color& getBorderColor() const {

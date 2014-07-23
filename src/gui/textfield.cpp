@@ -49,6 +49,10 @@ namespace gui {
 		textColor_ = color;
 	}
 
+	void TextField::setTextColor(float red, float green, float blue, float alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
+	}
+
 	void TextField::draw(Uint32 deltaTime) {
 		Component::draw(deltaTime);
 

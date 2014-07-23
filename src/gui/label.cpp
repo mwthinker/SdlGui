@@ -49,7 +49,7 @@ namespace gui {
 				y = dim.height_ - (float) text_.getHeight() - 1;
 				break;
 		}
-		color_.glColor4d();
+		textColor_.glColor4d();
 		glPushMatrix();
 		glTranslatef(x, y, 0);
 		text_.draw();
@@ -88,11 +88,15 @@ namespace gui {
 	}
 		
 	void Label::setTextColor(const mw::Color& color) {
-		color_ = color;
+		textColor_ = color;
+	}
+
+	void Label::setTextColor(float red, float green, float blue, float alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 	void Label::init() {
-		color_ = mw::Color(0, 0, 0);
+		textColor_ = mw::Color(0, 0, 0);
 		hTextAlignment_ = HCENTER;
 		vTextAlignment_ = VCENTER;
 		setBorderColor(mw::Color(1, 1, 1, 0));

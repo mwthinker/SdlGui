@@ -136,6 +136,10 @@ namespace gui {
 		textColor_ = textColor;
 	}
 
+	void Button::setTextColor(float red, float green, float blue, float alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
+	}
+
 	void Button::sizeToFitText() {
 		if (text_.getWidth() > 1 && text_.getHeight() > 1) {
 			setPreferredSize(2 + (float) text_.getWidth(), 2 + (float) text_.getHeight());
