@@ -96,11 +96,11 @@ namespace gui {
 	}
 
 	void Label::init() {
-		textColor_ = mw::Color(0, 0, 0);
+		setTextColor(0, 0, 0);
 		hTextAlignment_ = HCENTER;
 		vTextAlignment_ = VCENTER;
-		setBorderColor(mw::Color(1, 1, 1, 0));
-		setBackgroundColor(mw::Color(1, 1, 1, 0));
+		setBorderColor(1, 1, 1, 0);
+		setBackgroundColor(1, 1, 1, 0);
 	}
 
 } // Namespace gui.

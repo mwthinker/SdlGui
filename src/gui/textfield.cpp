@@ -89,21 +89,19 @@ namespace gui {
 		if (editable_) {
 			switch (keyEvent.type) {
 				case SDL_TEXTINPUT:
-				{
 					// Update only if the glyph is avaiable.
-					if (font_.getTtfFont() != 0 &&0 == TTF_SizeUTF8(font_.getTtfFont(), keyEvent.text.text, 0, 0)) {
+					if (font_.getTtfFont() != 0 && 0 == TTF_SizeUTF8(font_.getTtfFont(), keyEvent.text.text, 0, 0)) {
 						// A Utf8 string as input.
 						inputFormatter_.update(keyEvent.text.text);
 						text_.setText(inputFormatter_.getText());
 						markerChanged_ = true;
 					}
 					break;
-				}
 				case SDL_KEYDOWN:
 					// Reset marker animation.
 					markerDeltaTime_ = 0;
 					switch (keyEvent.key.keysym.sym) {
-						case SDLK_v:// Paste from clipboard!
+						case SDLK_v: // Paste from clipboard!
 							if ((keyEvent.key.keysym.mod & KMOD_CTRL) && SDL_HasClipboardText()) {
 								char* text = SDL_GetClipboardText();
 								inputFormatter_.update(SDL_GetClipboardText());
@@ -156,12 +154,7 @@ namespace gui {
 						case SDLK_KP_ENTER:
 							doAction();
 							break;
-						default:
-							break;
 					}
-					break;
-				default:
-					// Uninteresting events.
 					break;
 			}
 			if (markerChanged_) {

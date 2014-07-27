@@ -42,12 +42,7 @@ namespace gui {
 							}
 						}
 						break;
-					default:
-						break;
-
 				}
-			default:
-				break;
 		}
 	}
 

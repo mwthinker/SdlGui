@@ -187,8 +187,6 @@ namespace gui {
 
 				Component::handleMouse(mouseEvent);
 				break;
-			default:
-				break;
 		}
 	}
 

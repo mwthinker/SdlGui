@@ -65,8 +65,6 @@ namespace gui {
 					doAction();
 				}
 				break;
-			default:
-				break;
 		}
 	}
 
@@ -81,8 +79,6 @@ namespace gui {
 						pushed_ = true;
 						mouseDown_ = true;
 						break;
-					default:
-						break;
 				}
 				break;
 			case SDL_MOUSEBUTTONUP:
@@ -94,11 +90,7 @@ namespace gui {
 							pushed_ = false;
 						}
 						break;
-					default:
-						break;
 				}
-				break;
-			default:
 				break;
 		}
 	}
@@ -246,11 +238,11 @@ namespace gui {
 		mouseInside_ = false;
 		vTextAlignment_ = VerticalAlignment::VCENTER;
 		hTextAlignment_ = HorizontalAlignment::HCENTER;
-		setBackgroundColor(mw::Color(0.9, 0.9, 0.9));
+		setBackgroundColor(0.9f, 0.9f, 0.9f);
 		textColor_ = mw::Color(0, 0, 0);
-		focusColor_ = mw::Color(0, 0, 0, 0.05);
-		hoverColor_ = mw::Color(0, 0, 0, 0.1);
-		pushColor_ = mw::Color(0, 0, 0, 0.15);
+		focusColor_ = mw::Color(0, 0, 0, 0.05f);
+		hoverColor_ = mw::Color(0, 0, 0, 0.1f);
+		pushColor_ = mw::Color(0, 0, 0, 0.15f);
 
 		autoFit_ = false;
 		toWide_ = text_;

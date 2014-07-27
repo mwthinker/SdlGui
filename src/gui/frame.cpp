@@ -129,8 +129,6 @@ namespace gui {
 								if (defaultClosing_) {
 									quit();
 								}
-							default:
-								break;
 						}
 					}
 					break;
@@ -170,8 +168,6 @@ namespace gui {
 						}
 					}
 					break;
-				default:
-					break;
 			}
 		}
 		getCurrentPanel()->draw(deltaTime);
@@ -191,7 +187,7 @@ namespace gui {
 		// Init the opengl settings.
 		resize();
 
-		getCurrentPanel()->setBackgroundColor(mw::Color(1, 1, 1));
+		getCurrentPanel()->setBackgroundColor(1, 1, 1);
 		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
 		getCurrentPanel()->setPreferredSize((float) getWidth(), (float) getHeight());
 		defaultClosing_ = false;

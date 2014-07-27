@@ -18,8 +18,8 @@ namespace gui {
 		boxSize_ = (float) characterSize;
 		selected_ = false;
 		setPreferredSize(boxSize_ + 2, boxSize_ + 3);
-		setBorderColor(mw::Color(1, 1, 1, 0));
-		setBackgroundColor(mw::Color(1, 1, 1, 0));
+		setBorderColor(1, 1, 1, 0);
+		setBackgroundColor(1, 1, 1, 0);
 	}
 
 	CheckBox::CheckBox(std::string text, const mw::Font& font) : Button(text, font) {
@@ -27,8 +27,8 @@ namespace gui {
 		boxSize_ = (float) font.getCharacterSize();
 		selected_ = false;
 		setPreferredSize(boxSize_ + (float) text_.getWidth() + 3, (float) text_.getHeight() + 2);
-		setBorderColor(mw::Color(1, 1, 1, 0));
-		setBackgroundColor(mw::Color(1, 1, 1, 0));
+		setBorderColor(1, 1, 1, 0);
+		setBackgroundColor(1, 1, 1, 0);
 	}
 
 	CheckBox::CheckBox(mw::Text text) : Button(text) {
@@ -36,8 +36,8 @@ namespace gui {
 		boxSize_ = (float) text.getCharacterSize();
 		selected_ = false;
 		setPreferredSize(boxSize_ + (float) text_.getWidth() + 3, (float) text_.getHeight() + 2);
-		setBorderColor(mw::Color(1, 1, 1, 0));
-		setBackgroundColor(mw::Color(1, 1, 1, 0));
+		setBorderColor(1, 1, 1, 0);
+		setBackgroundColor(1, 1, 1, 0);
 	}
 
 	void CheckBox::draw(Uint32 deltaTime) {
