@@ -9,8 +9,6 @@
 
 #include <SDL.h>
 
-#include <stack>
-
 namespace gui {
 
 	class Component;
