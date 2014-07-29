@@ -15,11 +15,11 @@ namespace gui {
 		inputFormatter_.update(initialText.c_str());
 		editable_ = true;
 		setPreferredSize(150, 20);
-		setBackgroundColor(mw::Color(0.8, 0.8, 0.8));
+		setBackgroundColor(0.8f, 0.8f, 0.8f);
 		textColor_ = mw::Color(0, 0, 0);
 		text_ = mw::Text(inputFormatter_.getText(), font);
 		// One pixel to the right of the last character.
-		markerWidth_ = (float) text_.getWidth() + 1;
+		markerWidth_ = text_.getWidth() + 1;
 		alignment_ = LEFT;
 		markerDeltaTime_ = 0;
 		markerChanged_ = false;
@@ -33,7 +33,7 @@ namespace gui {
 	// Set the current text.
 	void TextField::setText(std::string text) {
 		text_.setText(text);
-		markerWidth_ = (float) text_.getWidth() - 1;
+		markerWidth_ = text_.getWidth() - 1;
 	}
 
 	// Set the textfield to be editable or not.
@@ -64,10 +64,10 @@ namespace gui {
 				x = 2;
 				break;
 			case Alignment::CENTER:
-				x = dim.width_ * 0.5f - ((float) text_.getWidth() - 2) * 0.5f;
+				x = dim.width_ * 0.5f - (text_.getWidth() - 2) * 0.5f;
 				break;
 			case Alignment::RIGHT:
-				x = dim.width_ - (float) text_.getWidth() - 2;
+				x = dim.width_ - text_.getWidth() - 2;
 				break;
 		}
 
@@ -172,7 +172,7 @@ namespace gui {
 	}
 
 	void TextField::drawText(Uint32 deltaTime) {
-		textColor_.glColor4d();
+		textColor_.glColor4f();
 		text_.draw();
 
 		if (editable_) {

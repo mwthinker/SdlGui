@@ -134,7 +134,7 @@ namespace gui {
 
 	void Button::sizeToFitText() {
 		if (text_.getWidth() > 1 && text_.getHeight() > 1) {
-			setPreferredSize(2 + (float) text_.getWidth(), 2 + (float) text_.getHeight());
+			setPreferredSize(2 + text_.getWidth(), 2 + text_.getHeight());
 		}
 	}
 
@@ -158,10 +158,10 @@ namespace gui {
 				x = 0;
 				break;
 			case HorizontalAlignment::HCENTER:
-				x = dim.width_ * 0.5f - (float) text_.getWidth() * 0.5f;
+				x = dim.width_ * 0.5f - text_.getWidth() * 0.5f;
 				break;
 			case HorizontalAlignment::RIGHT:
-				x = dim.width_ - (float) text_.getWidth();
+				x = dim.width_ - text_.getWidth();
 				break;
 		}
 		float y = 0.0;
@@ -170,13 +170,13 @@ namespace gui {
 				y = 0;
 				break;
 			case VerticalAlignment::VCENTER:
-				y = dim.height_ * 0.5f - (float) text_.getHeight() * 0.5f;
+				y = dim.height_ * 0.5f - text_.getHeight() * 0.5f;
 				break;
 			case VerticalAlignment::TOP:
-				y = dim.height_ - (float) text_.getHeight();
+				y = dim.height_ - text_.getHeight();
 				break;
 		}
-		textColor_.glColor4d();
+		textColor_.glColor4f();
 		glPushMatrix();
 		glTranslatef(x, y, 0);
 
@@ -193,7 +193,7 @@ namespace gui {
 		Dimension dim = getSize();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		hoverColor_.glColor4d();
+		hoverColor_.glColor4f();
 		glBegin(GL_QUADS);
 		glVertex2d(0, 0);
 		glVertex2d(dim.width_, 0);
@@ -207,7 +207,7 @@ namespace gui {
 		Dimension dim = getSize();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		focusColor_.glColor4d();
+		focusColor_.glColor4f();
 		glBegin(GL_QUADS);
 		glVertex2d(0, 0);
 		glVertex2d(dim.width_, 0);
@@ -221,7 +221,7 @@ namespace gui {
 		Dimension dim = getSize();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		pushColor_.glColor4d();
+		pushColor_.glColor4f();
 		glBegin(GL_QUADS);
 		glVertex2d(0, 0);
 		glVertex2d(dim.width_, 0);

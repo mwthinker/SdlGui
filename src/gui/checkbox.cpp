@@ -26,23 +26,23 @@ namespace gui {
 		addActionListener(std::bind(doActionSelect, this));
 		boxSize_ = (float) font.getCharacterSize();
 		selected_ = false;
-		setPreferredSize(boxSize_ + (float) text_.getWidth() + 3, (float) text_.getHeight() + 2);
+		setPreferredSize(boxSize_ + text_.getWidth() + 3, text_.getHeight() + 2);
 		setBorderColor(1, 1, 1, 0);
 		setBackgroundColor(1, 1, 1, 0);
 	}
 
 	CheckBox::CheckBox(mw::Text text) : Button(text) {
 		addActionListener(std::bind(doActionSelect, this));
-		boxSize_ = (float) text.getCharacterSize();
+		boxSize_ = text.getCharacterSize();
 		selected_ = false;
-		setPreferredSize(boxSize_ + (float) text_.getWidth() + 3, (float) text_.getHeight() + 2);
+		setPreferredSize(boxSize_ + text_.getWidth() + 3, text_.getHeight() + 2);
 		setBorderColor(1, 1, 1, 0);
 		setBackgroundColor(1, 1, 1, 0);
 	}
 
 	void CheckBox::draw(Uint32 deltaTime) {
 		Component::draw(deltaTime);
-		textColor_.glColor4d();
+		textColor_.glColor4f();
 
 		glPushMatrix();
 		glTranslatef(1, 1, 0);

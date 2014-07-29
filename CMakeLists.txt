@@ -47,6 +47,8 @@ find_package(SDL2_ttf REQUIRED)
 add_subdirectory(MwLibrary2)
 add_subdirectory(Signal)
 
+option(SdlGuiTest "SdlGuiTest project is added" OFF)
+
 include_directories(${OPENGL_INCLUDE_DIR}
 	${SDL2_INCLUDE_DIR}
 	${SDL2_IMAGE_INCLUDE_DIR}
@@ -65,19 +67,21 @@ set(ALL_SDL_LIBRARIES
 	${SDL2_IMAGE_LIBRARIES}
 )
 
-include_directories(src)
-add_executable(SdlGuiTest ${SOURCES_TEST})
+if (SdlGuiTest)
+	include_directories(src)
+	add_executable(SdlGuiTest ${SOURCES_TEST})
 
-if (MSVC)	
-	set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
-endif ()
+	if (MSVC)	
+		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
+	endif (MSVC)
 
-target_link_libraries(SdlGuiTest 
-	SdlGui
-	MwLibrary2
-	Signal
-	${ALL_SDL_LIBRARIES}
-	${OPENGL_LIBRARIES}
-)
+	target_link_libraries(SdlGuiTest 
+		SdlGui
+		MwLibrary2
+		Signal
+		${ALL_SDL_LIBRARIES}
+		${OPENGL_LIBRARIES}
+	)
 
-file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
+	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
+endif (SdlGuiTest)

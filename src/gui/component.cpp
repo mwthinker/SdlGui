@@ -88,7 +88,7 @@ namespace gui {
 
 	void Component::draw(Uint32 deltaTime) {
 		// Draw panel background.
-		backgroundColor_.glColor4d();
+		backgroundColor_.glColor4f();
 		glPushMatrix();
 		Dimension dim = getSize();
 		glScaled(dim.width_, dim.height_, 1);
@@ -148,7 +148,7 @@ namespace gui {
 	void Component::drawBorder() {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		borderColor_.glColor4d();
+		borderColor_.glColor4f();
 		glBegin(GL_QUADS);
 		
 		// South.
