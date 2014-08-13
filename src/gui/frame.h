@@ -22,7 +22,7 @@ namespace gui {
 	class Frame : public mw::Window {
 	public:
 		Frame();
-		Frame(int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "");
+		Frame(int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "", bool borderless = false);
 
 		// Adds default panel in the back in the internal vector.
 		// The panel index is returned.

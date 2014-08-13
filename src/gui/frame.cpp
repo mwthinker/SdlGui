@@ -13,7 +13,7 @@ namespace gui {
 		init();
 	}
 
-	Frame::Frame(int width, int height, bool resizeable, std::string title, std::string icon) : mw::Window(width, height, resizeable, title, icon) {
+	Frame::Frame(int width, int height, bool resizeable, std::string title, std::string icon, bool borderless) : mw::Window(width, height, resizeable, title, icon, borderless) {
 		init();
 	}
 
