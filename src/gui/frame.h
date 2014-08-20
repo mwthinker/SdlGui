@@ -57,7 +57,12 @@ namespace gui {
 		std::vector<std::shared_ptr<Panel>>::iterator begin();
 		std::vector<std::shared_ptr<Panel>>::iterator end();
 
+		// Add a window listener. A callback be be made when a SDL_WINDOWEVENT is called
+		// for this window.
 		mw::signals::Connection addWindowListener(const WindowListener::Callback& callback);
+
+		// Add a sdl event listener. A callback be be made when any sdl event is called
+		// for any window.
 		mw::signals::Connection addSdlEventListener(const SdlEventListener::Callback& callback);
 
 		// Set the default closing true or false.
@@ -83,26 +88,32 @@ namespace gui {
 			return panels_[currentPanel_];
 		}
 
+		// Add a key listener to the current panel.
 		inline mw::signals::Connection addKeyListener(const KeyListener::Callback& callback) {
 			return getCurrentPanel()->addKeyListener(callback);
 		}
 
+		// Add a mouse listener to the current panel.
 		inline mw::signals::Connection addMouseListener(const MouseListener::Callback& callback) {
 			return getCurrentPanel()->addMouseListener(callback);
 		}
 
+		// Add a focus listener to the current panel.
 		inline mw::signals::Connection addFocusListener(const FocusListener::Callback& callback) {
 			return getCurrentPanel()->addFocusListener(callback);
 		}
 
+		// Add a action listener to the current panel.
 		inline mw::signals::Connection addActionListener(const ActionListener::Callback& callback) {
 			return getCurrentPanel()->addActionListener(callback);
 		}
 
+		// Add a panel change listener to the current panel.
 		inline mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback) {
 			return getCurrentPanel()->addPanelChangeListener(callback);
 		}
 
+		// Add a uppdate listener to the current panel.
 		inline mw::signals::Connection addUpdateListener(const UpdateListener::Callback& callback) {
 			return updateListener_.connect(callback);
 		}

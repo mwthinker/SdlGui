@@ -163,8 +163,6 @@ namespace gui {
 									quit();
 								}
 								break;
-							default:
-								break;
 						}
 					}
 					break;
