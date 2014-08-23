@@ -9,11 +9,11 @@
 
 namespace gui {
 	
-	Frame::Frame() : mw::Window(512, 512, true, "Frame", "") {
+	Frame::Frame() : mw::Window(-1, -1, 512, 512, true, "Frame", "") {
 		init();
 	}
 
-	Frame::Frame(int width, int height, bool resizeable, std::string title, std::string icon, bool borderless) : mw::Window(width, height, resizeable, title, icon, borderless) {
+	Frame::Frame(int x, int y, int width, int height, bool resizeable, std::string title, std::string icon, bool borderless) : mw::Window(x, y, width, height, resizeable, title, icon, borderless) {
 		init();
 	}
 
