@@ -5,6 +5,37 @@
 
 namespace gui {
 
+	namespace {
+
+		void drawButton(Button& button) {
+			Dimension dim = button.getSize();
+#if MW_OPENGLES2
+			mw::glEnable(GL_BLEND);
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			auto wM = button.getWindowMatrixPtr();
+			GLfloat aVertices[] = {
+				0, 0,
+				dim.width_, 0,
+				0, dim.height_,
+				dim.width_, dim.height_};
+			wM->setVertexPosition(2, aVertices);
+			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			mw::glDisable(GL_BLEND);
+#else // MW_OPENGLES2
+			glEnable(GL_BLEND);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glBegin(GL_QUADS);
+			glVertex2d(0, 0);
+			glVertex2d(dim.width_, 0);
+			glVertex2d(dim.width_, dim.height_);
+			glVertex2d(0, dim.height_);
+			glEnd();
+			glDisable(GL_BLEND);
+#endif // MW_OPENGLES2
+		}
+
+	}
+
 	Button::Button() {
 		init();
 	}
@@ -177,6 +208,19 @@ namespace gui {
 				break;
 		}
 		textColor_.glColor4f();
+
+#if MW_OPENGLES2
+		auto wM = getWindowMatrixPtr();
+		mw::Matrix44 oldModel = wM->getModel();
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, y);
+		wM->setModel(newModel);
+		if (text_.getWidth() < dim.width_) {
+			text_.draw();
+		} else {
+			toWide_.draw();
+		}
+		wM->setModel(oldModel);
+#else // MW_OPENGLES2
 		glPushMatrix();
 		glTranslatef(x, y, 0);
 
@@ -185,50 +229,26 @@ namespace gui {
 		} else {
 			toWide_.draw();
 		}
-
 		glPopMatrix();
+#endif // MW_OPENGLES2
 	}
 
 	void Button::drawOnMouseHover() {
 		Dimension dim = getSize();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		hoverColor_.glColor4f();
-		glBegin(GL_QUADS);
-		glVertex2d(0, 0);
-		glVertex2d(dim.width_, 0);
-		glVertex2d(dim.width_, dim.height_);
-		glVertex2d(0, dim.height_);
-		glEnd();
-		glDisable(GL_BLEND);
+		drawButton(*this);
 	}
 
 	void Button::drawOnFocus() {
 		Dimension dim = getSize();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		focusColor_.glColor4f();
-		glBegin(GL_QUADS);
-		glVertex2d(0, 0);
-		glVertex2d(dim.width_, 0);
-		glVertex2d(dim.width_, dim.height_);
-		glVertex2d(0, dim.height_);
-		glEnd();
-		glDisable(GL_BLEND);
+		drawButton(*this);
 	}
 
 	void Button::drawOnPush() {
 		Dimension dim = getSize();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		pushColor_.glColor4f();
-		glBegin(GL_QUADS);
-		glVertex2d(0, 0);
-		glVertex2d(dim.width_, 0);
-		glVertex2d(dim.width_, dim.height_);
-		glVertex2d(0, dim.height_);
-		glEnd();
-		glDisable(GL_BLEND);
+		drawButton(*this);
 	}
 
 	void Button::init() {

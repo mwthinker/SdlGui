@@ -70,11 +70,19 @@ namespace gui {
 				x = dim.width_ - text_.getWidth() - 2;
 				break;
 		}
-
+#if MW_OPENGLES2
+		auto wM = getWindowMatrixPtr();
+		mw::Matrix44 oldModel = wM->getModel();
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, 0);
+		wM->setModel(newModel);
+		drawText(deltaTime);
+		wM->setModel(oldModel);
+#else // MW_OPENGLES2
 		glPushMatrix();
 		glTranslatef(x, 0, 0);
 		drawText(deltaTime);
 		glPopMatrix();
+#endif // MW_OPENGLES2
 	}
 
 	TextField::Alignment TextField::getAlignment() const {
@@ -177,8 +185,20 @@ namespace gui {
 
 		if (editable_) {
 			if (hasFocus()) {
-				glBegin(GL_LINES);
 				markerDeltaTime_ += deltaTime;
+#if MW_OPENGLES2
+				if (markerDeltaTime_ < 500) {
+					float vertices[] = {markerWidth_, text_.getCharacterSize(),
+						markerWidth_, 1};
+					auto wM = getWindowMatrixPtr();
+					wM->setVertexPosition(2, vertices);
+					mw::glDrawArrays(GL_LINE_STRIP, 0, 2); /////////////// Problematic!!
+				} else if (markerDeltaTime_ > 1000) {
+					markerDeltaTime_ = 0;
+				}
+
+#else // MW_OPENGLES2
+				glBegin(GL_LINES);				
 				if (markerDeltaTime_ < 500) {
 					glVertex2d(markerWidth_, text_.getCharacterSize());
 					glVertex2d(markerWidth_, 1);
@@ -187,6 +207,7 @@ namespace gui {
 				}
 
 				glEnd();
+#endif // MW_OPENGLES2
 			} else {
 				markerDeltaTime_ = 0;
 			}

@@ -9,7 +9,7 @@ namespace gui {
 
 	Panel::Panel() : mouseMotionInsideComponent_(false), mouseDownInsideComponent_(false), layoutManager_(std::make_shared<FlowLayout>()) {
 		setPreferredSize(50, 50);
-		setBorderColor(mw::Color(1, 1, 1, 0));
+		setBorderColor(1, 1, 1, 0);
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component) {
@@ -24,6 +24,7 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
@@ -38,6 +39,7 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Panel::setChildsParent(const std::shared_ptr<Component>& thisComponent) {
@@ -98,11 +100,21 @@ namespace gui {
 		// Draw components.
 		for (auto& component : *this) {
 			if (component->isVisible()) {
+#if MW_OPENGLES2
+				auto wM = getWindowMatrixPtr();
+				mw::Matrix44 oldModel = wM->getModel();
+				Point p = component->getLocation();
+				mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(p.x_, p.y_);
+				wM->setModel(newModel);
+				component->draw(deltaTime);
+				wM->setModel(oldModel);
+#else // MW_OPENGLES2
 				glPushMatrix();
 				Point p = component->getLocation();
 				glTranslated(p.x_, p.y_, 0.f);
 				component->draw(deltaTime);
 				glPopMatrix();
+#endif // MW_OPENGLES2
 			}
 		}
 	}

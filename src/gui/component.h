@@ -2,6 +2,7 @@
 #define GUI_COMPONENT_H
 
 #include "dimension.h"
+#include "windowmatrix.h"
 
 #include <mw/signal.h>
 #include <mw/color.h>
@@ -19,11 +20,15 @@ namespace gui {
 	using MouseListener = KeyListener;
 	using ActionListener = mw::Signal<Component&>;
 	using PanelChangeListener = mw::Signal<Component&, bool>;
-
+	
 	class Component {
 	public:
 		friend class Frame;
 		friend class Panel;
+
+#if MW_OPENGLES2
+		static const mw::Texture WHITE_TEXTURE;
+#endif // MW_OPENGLES2
 
 		virtual ~Component() {
 		}
@@ -150,6 +155,14 @@ namespace gui {
 		// Must correspond to the active LayoutManager.
 		void setLayoutIndex(int layoutIndex);
 
+		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
+			windowMatrix_ = windowMatrix;
+		}
+
+		WindowMatrixPtr getWindowMatrixPtr() const {
+			return windowMatrix_;
+		}
+
 	protected:
 		Component();
 
@@ -178,6 +191,8 @@ namespace gui {
 		virtual void drawBorder();
 
 	private:
+		WindowMatrixPtr windowMatrix_;
+
 		mw::Sprite background_;
 		mw::Color backgroundColor_;
 		mw::Color borderColor_;

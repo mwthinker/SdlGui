@@ -19,12 +19,14 @@ namespace gui {
 
 	int Frame::addPanelBack() {
 		std::shared_ptr<Panel> p = std::make_shared<Panel>();
+		p->setWindowMatrixPtr(windowMatrix_);
 		p->setLayout(std::make_shared<BorderLayout>());
 		p->setChildsParent(p);
 		return push_back(p);
 	}
 
 	int Frame::push_back(const std::shared_ptr<Panel>& panel) {
+		panel->setWindowMatrixPtr(windowMatrix_);
 		panels_.push_back(panel);
 		panel->setChildsParent(panel);
 		return panels_.size() - 1;
@@ -33,21 +35,25 @@ namespace gui {
 	void Frame::add(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(component);
 		component->setChildsParent(component);
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Frame::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->add(component, layoutIndex);
 		component->setChildsParent(component);
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(component);
 		component->setChildsParent(component);
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->addToGroup(component, layoutIndex);
 		component->setChildsParent(component);
+		component->setWindowMatrixPtr(windowMatrix_);
 	}
 
 	void Frame::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
@@ -96,13 +102,18 @@ namespace gui {
 		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
-
+#if MW_OPENGLES2
+		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix(0, (float) getWidth(), 0, (float) getHeight());
+		windowMatrix_->setProjection(ortho);
+		windowMatrix_->setModel(mw::I_44);
+#else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
 		glViewport(0, 0, getWidth(), getHeight());
 		glOrtho(0, getWidth(), 0, getHeight(), -1, 1);
 		glMatrixMode(GL_MODELVIEW);
 		glLoadIdentity();
+#endif // MW_OPENGLES2
 	}
 	
 	void Frame::update(Uint32 deltaTime) {
@@ -176,6 +187,7 @@ namespace gui {
 	}
 
 	void Frame::init() {
+		windowMatrix_ = std::make_shared<WindowMatrix>();
 		currentPanel_ = 0;
 		// Default layout for Frame.
 		push_back(std::make_shared<Panel>());

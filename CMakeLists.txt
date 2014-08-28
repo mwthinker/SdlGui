@@ -31,6 +31,7 @@ set(SOURCES
 	src/gui/horizontallayout.h
 	src/gui/textfield.cpp
 	src/gui/textfield.h
+	src/gui/windowmatrix.h
 )
 
 set(SOURCES_TEST
@@ -38,11 +39,20 @@ set(SOURCES_TEST
 )
 # End of source files.
 
-find_package(OpenGL REQUIRED)
 find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
+
+option(OpenGLES2 "OpenGLES2 is activated" OFF)
+
+if (OpenGLES2)
+	add_definitions(-DMW_OPENGLES2)
+endif ()
+
+if (NOT OpenGLES2)
+	find_package(OpenGL REQUIRED)
+endif ()
 
 add_subdirectory(MwLibrary2)
 add_subdirectory(Signal)
@@ -74,14 +84,12 @@ if (SdlGuiTest)
 	if (MSVC)	
 		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 	endif (MSVC)
-
-	target_link_libraries(SdlGuiTest 
-		SdlGui
-		MwLibrary2
-		Signal
-		${ALL_SDL_LIBRARIES}
-		${OPENGL_LIBRARIES}
-	)
+	
+	if (OpenGLES2)
+		target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_SDL_LIBRARIES})
+	else ()
+		target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_SDL_LIBRARIES} ${OPENGL_LIBRARIES})
+	endif ()
 
 	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 endif (SdlGuiTest)
