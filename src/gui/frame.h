@@ -2,6 +2,7 @@
 #define GUI_FRAME_H
 
 #include "panel.h"
+#include "windowmatrix.h"
 
 #include <mw/window.h>
 #include <mw/color.h>
@@ -137,6 +138,7 @@ namespace gui {
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;
 		int currentPanel_;
+		std::shared_ptr<WindowMatrix> windowMatrix_;
 	};
 
 } // Namespace gui.
