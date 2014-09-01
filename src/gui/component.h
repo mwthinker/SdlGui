@@ -26,10 +26,6 @@ namespace gui {
 		friend class Frame;
 		friend class Panel;
 
-#if MW_OPENGLES2
-		static const mw::Texture WHITE_TEXTURE;
-#endif // MW_OPENGLES2
-
 		virtual ~Component() {
 		}
 
@@ -155,6 +151,7 @@ namespace gui {
 		// Must correspond to the active LayoutManager.
 		void setLayoutIndex(int layoutIndex);
 
+#if MW_OPENGLES2
 		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
 			windowMatrix_ = windowMatrix;
 		}
@@ -162,6 +159,7 @@ namespace gui {
 		WindowMatrixPtr getWindowMatrixPtr() const {
 			return windowMatrix_;
 		}
+#endif // MW_OPENGLES2
 
 	protected:
 		Component();
@@ -191,7 +189,9 @@ namespace gui {
 		virtual void drawBorder();
 
 	private:
+#if MW_OPENGLES2
 		WindowMatrixPtr windowMatrix_;
+#endif // MW_OPENGLES2
 
 		mw::Sprite background_;
 		mw::Color backgroundColor_;

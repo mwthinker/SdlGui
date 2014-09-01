@@ -24,7 +24,9 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
@@ -39,7 +41,9 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Panel::setChildsParent(const std::shared_ptr<Component>& thisComponent) {

@@ -7,35 +7,6 @@
 
 namespace gui {
 
-#if MW_OPENGLES2
-
-	namespace {
-
-		mw::Texture createWhiteTexture() {
-#if SDL_BYTEORDER == SDL_BIG_ENDIAN
-			Uint32 rmask = 0xff000000;
-			Uint32 gmask = 0x00ff0000;
-			Uint32 bmask = 0x0000ff00;
-			Uint32 amask = 0x000000ff;
-#else
-			Uint32 rmask = 0x000000ff;
-			Uint32 gmask = 0x0000ff00;
-			Uint32 bmask = 0x00ff0000;
-			Uint32 amask = 0xff000000;
-#endif
-			SDL_Surface* surface = SDL_CreateRGBSurface(0, 2, 2, 32, rmask, gmask, bmask, amask);
-			// Fill with white color.
-			SDL_FillRect(surface, 0, SDL_MapRGB(surface->format, 255, 255, 255));
-			// Texture takes ownership of surface.
-			return mw::Texture(surface);
-		}
-		
-	} // Anonymous namespace.
-
-	const mw::Texture Component::WHITE_TEXTURE = createWhiteTexture();
-
-#endif // MW_OPENGLES2
-
 	void Component::setPreferredSize(float width, float height) {
 		preferedDimension_ = Dimension(width, height);
 		validateParent();
@@ -121,50 +92,32 @@ namespace gui {
 
 	void Component::draw(Uint32 deltaTime) {
 		// Draw panel background.
-		backgroundColor_.glColor4f();
 		Dimension dim = getSize();
 #if MW_OPENGLES2
-		auto& sprite = background_;
-		const auto& texture = background_.getTexture();
+		auto wM = getWindowMatrixPtr();
+		mw::Matrix44 oldModel = wM->getModel();
+		mw::Matrix44 newModel = oldModel * mw::getScaleMatrix(dim.width_, dim.height_) * mw::getTranslateMatrix(0.5f, 0.5f);
+		wM->setModel(newModel);
+		static GLfloat aVertices[] = {
+			-0.5f, -0.5f,
+			0.5f, -0.5f,
+			-0.5f,  0.5f,
+			0.5f,  0.5f};
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mw::glEnable(GL_TEXTURE_2D);
-		mw::Matrix44 m;
-		background_.bind();
-		// Centered square in ORIGO.
-		GLfloat aVertices[] = {
-			0, 0,
-			dim.width_, 0,
-			0, dim.height_,
-			dim.width_, dim.height_};
-
-		// Map the sprite out from the texture.
-		GLfloat aTexCoord[] = {
-			sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
-			(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight(),
-			sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
-			(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
-
-		// Use the program object
-		auto& shader = sprite.getShaderPtr();
-		shader->glUseProgram();
-
-		// Load the vertex data
-		mw::glVertexAttribPointer(shader->getAttributeLocation(mw::SHADER_ATTRIBUTE_VEC4_POSITION), 2, GL_FLOAT, GL_FALSE, 0, aVertices);
-		mw::glVertexAttribPointer(shader->getAttributeLocation(mw::SHADER_ATTRIBUTE_VEC2_TEXCOORD), 2, GL_FLOAT, GL_FALSE, 0, aTexCoord);
-		mw::glEnableVertexAttribArray(shader->getAttributeLocation(mw::SHADER_ATTRIBUTE_VEC4_POSITION));
-		mw::glEnableVertexAttribArray(shader->getAttributeLocation(mw::SHADER_ATTRIBUTE_VEC2_TEXCOORD));
-
-		// Upload the attributes and draw the sprite.
-		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-
-		mw::glDisable(GL_TEXTURE_2D);
+		wM->setColor(backgroundColor_);
+		wM->setVertexPosition(2, aVertices);
+		wM->setTexture(false);
+		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		mw::glDisable(GL_BLEND);
+		background_.draw();
+		wM->setModel(oldModel);
 		drawBorder();
 #else // MW_OPENGLES2
 		glPushMatrix();
-		glScaled(dim.width_, dim.height_, 1);
-		glTranslated(0.5, 0.5, 0);
+		backgroundColor_.glColor4f();
+		glScalef(dim.width_, dim.height_, 1);
+		glTranslatef(0.5f, 0.5f, 0);
 
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -202,9 +155,6 @@ namespace gui {
 		focus_(false), grabFocus_(false), isAdded_(false) {
 		borderColor_ = mw::Color(0, 0, 0);
 		nbrChildGrabFocus_ = 0;
-#if MW_OPENGLES2
-		background_ = mw::Sprite(WHITE_TEXTURE);
-#endif // MW_OPENGLES2
 	}
 
 	void Component::handleMouse(const SDL_Event& mouseEvent) {
@@ -223,6 +173,40 @@ namespace gui {
 
 	void Component::drawBorder() {
 #if MW_OPENGLES2
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		auto wM = getWindowMatrixPtr();
+		wM->setColor(borderColor_);
+		wM->setTexture(false);
+		GLfloat north[] = {
+			0, dimension_.height_ - 1,
+			dimension_.width_, dimension_.height_ - 1,
+			0, dimension_.height_,
+			dimension_.width_, dimension_.height_};
+		wM->setVertexPosition(2, north);
+		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		GLfloat west[] = {
+			0, 0,
+			1, 0,
+			0, dimension_.height_ - 1,
+			1, dimension_.height_ - 1};
+		wM->setVertexPosition(2, west);
+		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		GLfloat east[] = {
+			dimension_.width_ - 1, 1,
+			dimension_.width_, 1,
+			dimension_.width_ - 1, dimension_.height_ - 1,
+			dimension_.width_, dimension_.height_ - 1};
+		wM->setVertexPosition(2, east);
+		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		GLfloat south[] = {
+			0, 0,
+			dimension_.width_, 0,
+			0, 1,
+			dimension_.width_, 1};
+		wM->setVertexPosition(2, south);
+		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);

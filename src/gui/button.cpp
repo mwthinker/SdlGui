@@ -7,7 +7,7 @@ namespace gui {
 
 	namespace {
 
-		void drawButton(Button& button) {
+		void drawButton(Button& button, const mw::Color& color) {
 			Dimension dim = button.getSize();
 #if MW_OPENGLES2
 			mw::glEnable(GL_BLEND);
@@ -19,9 +19,11 @@ namespace gui {
 				0, dim.height_,
 				dim.width_, dim.height_};
 			wM->setVertexPosition(2, aVertices);
-			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			wM->setColor(color);
+			wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 			mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2
+			color.glColor4f();
 			glEnable(GL_BLEND);
 			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glBegin(GL_QUADS);
@@ -207,7 +209,7 @@ namespace gui {
 				y = dim.height_ - text_.getHeight();
 				break;
 		}
-		textColor_.glColor4f();
+		
 
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
@@ -221,6 +223,7 @@ namespace gui {
 		}
 		wM->setModel(oldModel);
 #else // MW_OPENGLES2
+		textColor_.glColor4f();
 		glPushMatrix();
 		glTranslatef(x, y, 0);
 
@@ -235,20 +238,17 @@ namespace gui {
 
 	void Button::drawOnMouseHover() {
 		Dimension dim = getSize();
-		hoverColor_.glColor4f();
-		drawButton(*this);
+		drawButton(*this, hoverColor_);
 	}
 
 	void Button::drawOnFocus() {
 		Dimension dim = getSize();
-		focusColor_.glColor4f();
-		drawButton(*this);
+		drawButton(*this, focusColor_);
 	}
 
 	void Button::drawOnPush() {
 		Dimension dim = getSize();
-		pushColor_.glColor4f();
-		drawButton(*this);
+		drawButton(*this, pushColor_);
 	}
 
 	void Button::init() {

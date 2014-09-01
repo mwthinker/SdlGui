@@ -8,7 +8,7 @@
 #include <string>
 
 namespace gui {
-	
+
 	Frame::Frame() : mw::Window(-1, -1, 512, 512, true, "Frame", "") {
 		init();
 	}
@@ -19,14 +19,18 @@ namespace gui {
 
 	int Frame::addPanelBack() {
 		std::shared_ptr<Panel> p = std::make_shared<Panel>();
+#if MW_OPENGLES2
 		p->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 		p->setLayout(std::make_shared<BorderLayout>());
 		p->setChildsParent(p);
 		return push_back(p);
 	}
 
 	int Frame::push_back(const std::shared_ptr<Panel>& panel) {
+#if MW_OPENGLES2
 		panel->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 		panels_.push_back(panel);
 		panel->setChildsParent(panel);
 		return panels_.size() - 1;
@@ -35,25 +39,33 @@ namespace gui {
 	void Frame::add(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(component);
 		component->setChildsParent(component);
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Frame::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->add(component, layoutIndex);
 		component->setChildsParent(component);
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(component);
 		component->setChildsParent(component);
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->addToGroup(component, layoutIndex);
 		component->setChildsParent(component);
+#if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
+#endif // MW_OPENGLES2
 	}
 
 	void Frame::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
@@ -103,9 +115,11 @@ namespace gui {
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
 #if MW_OPENGLES2
+		mw::glViewport(0, 0, getWidth(), getHeight());
 		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix(0, (float) getWidth(), 0, (float) getHeight());
 		windowMatrix_->setProjection(ortho);
 		windowMatrix_->setModel(mw::I_44);
+		windowMatrix_->setColor(1,1,1);
 #else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -115,7 +129,7 @@ namespace gui {
 		glLoadIdentity();
 #endif // MW_OPENGLES2
 	}
-	
+
 	void Frame::update(Uint32 deltaTime) {
 		updateListener_(*this, deltaTime);
 
@@ -181,14 +195,17 @@ namespace gui {
 		}
 		getCurrentPanel()->draw(deltaTime);
 	}
-	
+
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {
 		eventQueue_.push(windowEvent);
 	}
 
 	void Frame::init() {
+#if MW_OPENGLES2
 		windowMatrix_ = std::make_shared<WindowMatrix>();
+#endif // MW_OPENGLES2
 		currentPanel_ = 0;
+		
 		// Default layout for Frame.
 		push_back(std::make_shared<Panel>());
 

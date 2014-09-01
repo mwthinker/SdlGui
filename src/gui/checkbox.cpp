@@ -42,9 +42,10 @@ namespace gui {
 
 	void CheckBox::draw(Uint32 deltaTime) {
 		Component::draw(deltaTime);
-		textColor_.glColor4f();
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
+		wM->setColor(textColor_);
+		wM->setTexture(false);
 		mw::Matrix44 oldModel = wM->getModel();
 		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(1, 1);
 		wM->setModel(newModel);
@@ -53,9 +54,10 @@ namespace gui {
 			boxSize_, 0,
 			boxSize_, boxSize_,
 			0, boxSize_,
+			0, 0,
 		};
 		wM->setVertexPosition(2, vertices); // vec2, i.e. dimension = 2.
-		mw::glDrawArrays(GL_LINE_STRIP, 0, 4); // 4 vertices.
+		wM->glDrawArrays(GL_LINE_STRIP, 0, 5); // 5 vertices.
 		if (selected_) {
 			float vertices[] = {
 				boxSize_ * 0.1f, boxSize_* 0.9f,
@@ -63,11 +65,14 @@ namespace gui {
 				boxSize_ * 0.9f, boxSize_ * 0.9f
 			};
 			wM->setVertexPosition(2, vertices); // vec2, i.e. dimension = 2.
-			mw::glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
+			wM->glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
 		}
-
+		newModel = oldModel * mw::getTranslateMatrix(boxSize_ + 2, 1);
+		wM->setModel(newModel);
+		text_.draw();
 		wM->setModel(oldModel);
 #else // MW_OPENGLES2
+		textColor_.glColor4f();
 		glPushMatrix();
 		glTranslatef(1, 1, 0);
 

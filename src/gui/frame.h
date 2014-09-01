@@ -138,7 +138,9 @@ namespace gui {
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;
 		int currentPanel_;
+#if MW_OPENGLES2
 		std::shared_ptr<WindowMatrix> windowMatrix_;
+#endif // MW_OPENGLES2
 	};
 
 } // Namespace gui.
