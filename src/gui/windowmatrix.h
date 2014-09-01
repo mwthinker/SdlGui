@@ -34,12 +34,12 @@ namespace gui {
 
 		void setProjection(const mw::Matrix44& proj) {
 			proj_ = proj;
-			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_PROJ), 1, false, proj_.transpose().data());
+			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_PROJ), 1, false, proj_.data());
 		}
 
 		void setModel(const mw::Matrix44& model) {
 			model_ = model;
-			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_MODEL), 1, false, model_.transpose().data());
+			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_MODEL), 1, false, model_.data());
 		}
 
 		void setVertexPosition(GLint dimension, float* data) {			
