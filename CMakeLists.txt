@@ -44,7 +44,9 @@ find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
 
-option(OpenGLES2 "OpenGLES2 is activated" OFF)
+if (NOT OpenGLES2_REMOVE_OPTION)
+	option(OpenGLES2 "OpenGLES2 is activated" OFF)
+endif ()
 
 if (OpenGLES2)
 	add_definitions(-DMW_OPENGLES2)
