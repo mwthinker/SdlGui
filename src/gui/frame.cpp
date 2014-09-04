@@ -88,7 +88,7 @@ namespace gui {
 		if (currentPanel_ != index) {
 			getCurrentPanel()->panelChanged(false);
 			currentPanel_ = index;
-			resize();
+			resize(getWidth(), getHeight());
 			getCurrentPanel()->panelChanged(true);
 		}
 	}
@@ -109,14 +109,15 @@ namespace gui {
 		return defaultClosing_;
 	}
 
-	void Frame::resize() {
-		getCurrentPanel()->setPreferredSize((float) getWidth(), (float) getHeight());
-		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
+	void Frame::resize(int width, int height) {
+		getCurrentPanel()->setPreferredSize((float) width, (float) height);
+		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
 #if MW_OPENGLES2
-		mw::glViewport(0, 0, getWidth(), getHeight());
-		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix(0, (float) getWidth(), 0, (float) getHeight());
+		windowMatrix_->useShader();
+		mw::glViewport(0, 0, width, height);
+		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix(0, (float) width, 0, (float) height);
 		windowMatrix_->setProjection(ortho);
 		windowMatrix_->setModel(mw::I_44);
 		windowMatrix_->setColor(1,1,1);
@@ -145,7 +146,7 @@ namespace gui {
 						windowListener_(*this, sdlEvent);
 						switch (sdlEvent.window.event) {
 							case SDL_WINDOWEVENT_RESIZED:
-								resize();
+								resize(sdlEvent.window.data1, sdlEvent.window.data2);
 								break;
 							case SDL_WINDOWEVENT_LEAVE:
 								getCurrentPanel()->mouseMotionLeave();
@@ -212,7 +213,7 @@ namespace gui {
 		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
 
 		// Init the opengl settings.
-		resize();
+		resize(getWidth(), getHeight());
 
 		getCurrentPanel()->setBackgroundColor(1, 1, 1);
 		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());

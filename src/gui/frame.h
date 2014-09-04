@@ -126,7 +126,7 @@ namespace gui {
 		// Override mw::Window.
 		virtual void eventUpdate(const SDL_Event& windowEvent) override final;
 
-		void resize();
+		void resize(int width, int height);
 
 		void init();
 
