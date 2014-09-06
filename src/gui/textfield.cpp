@@ -72,6 +72,7 @@ namespace gui {
 		}
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
+		wM->useShader();
 		mw::Matrix44 oldModel = wM->getModel();
 		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, 0);
 		wM->setModel(newModel);

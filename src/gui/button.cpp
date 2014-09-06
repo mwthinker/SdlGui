@@ -13,6 +13,7 @@ namespace gui {
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			auto wM = button.getWindowMatrixPtr();
+			wM->useShader();
 			GLfloat aVertices[] = {
 				0, 0,
 				dim.width_, 0,

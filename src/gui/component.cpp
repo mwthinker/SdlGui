@@ -95,6 +95,7 @@ namespace gui {
 		Dimension dim = getSize();
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
+		wM->useShader();
 		mw::Matrix44 oldModel = wM->getModel();
 		mw::Matrix44 newModel = oldModel * mw::getScaleMatrix(dim.width_, dim.height_) * mw::getTranslateMatrix(0.5f, 0.5f);
 		wM->setModel(newModel);

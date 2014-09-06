@@ -106,6 +106,7 @@ namespace gui {
 			if (component->isVisible()) {
 #if MW_OPENGLES2
 				auto wM = getWindowMatrixPtr();
+				wM->useShader();
 				mw::Matrix44 oldModel = wM->getModel();
 				Point p = component->getLocation();
 				mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(p.x_, p.y_);

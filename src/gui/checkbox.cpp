@@ -44,6 +44,7 @@ namespace gui {
 		Component::draw(deltaTime);
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
+		wM->useShader();
 		wM->setColor(textColor_);
 		wM->setTexture(false);
 		mw::Matrix44 oldModel = wM->getModel();

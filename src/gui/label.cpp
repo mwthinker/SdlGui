@@ -52,6 +52,7 @@ namespace gui {
 		
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
+		wM->useShader();
 		wM->setColor(textColor_);
 		mw::Matrix44 oldModel = wM->getModel();
 		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, y);
