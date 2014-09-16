@@ -73,6 +73,8 @@ namespace gui {
 
 		void setChildsParent(const std::shared_ptr<Component>& thisPanel) override;
 
+		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) override;
+
 	private:
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;

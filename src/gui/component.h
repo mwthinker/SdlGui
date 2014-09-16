@@ -152,7 +152,7 @@ namespace gui {
 		void setLayoutIndex(int layoutIndex);
 
 #if MW_OPENGLES2
-		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
+		virtual void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
 			windowMatrix_ = windowMatrix;
 		}
 

@@ -250,4 +250,11 @@ namespace gui {
 		group_.sort();
 	}
 
+	void Panel::setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
+		Component::setWindowMatrixPtr(windowMatrix);
+		for (auto& c : components_) {
+			c->setWindowMatrixPtr(windowMatrix);
+		}
+	}
+
 } // Namespace gui.
