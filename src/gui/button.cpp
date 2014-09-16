@@ -217,6 +217,7 @@ namespace gui {
 		mw::Matrix44 oldModel = wM->getModel();
 		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, y);
 		wM->setModel(newModel);
+		wM->setColor(textColor_);
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
 		} else {
