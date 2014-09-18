@@ -55,7 +55,7 @@ namespace gui {
 		wM->useShader();
 		wM->setColor(textColor_);
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, y);
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(x, y);
 		wM->setModel(newModel);
 		text_.draw();
 		wM->setModel(oldModel);

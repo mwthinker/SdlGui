@@ -74,7 +74,7 @@ namespace gui {
 		auto wM = getWindowMatrixPtr();
 		wM->useShader();
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, 0);
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(x, 0);
 		wM->setModel(newModel);
 		drawText(deltaTime);
 		wM->setModel(oldModel);

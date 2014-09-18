@@ -48,7 +48,7 @@ namespace gui {
 		wM->setColor(textColor_);
 		wM->setTexture(false);
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(1, 1);
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(1, 1);
 		wM->setModel(newModel);
 		float vertices[] = {
 			0, 0,
@@ -68,7 +68,7 @@ namespace gui {
 			wM->setVertexPosition(2, vertices); // vec2, i.e. dimension = 2.
 			wM->glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
 		}
-		newModel = oldModel * mw::getTranslateMatrix(boxSize_ + 2, 1);
+		newModel = oldModel * mw::getTranslateMatrix44(boxSize_ + 2, 1);
 		wM->setModel(newModel);
 		text_.draw();
 		wM->setModel(oldModel);

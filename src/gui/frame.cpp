@@ -117,7 +117,7 @@ namespace gui {
 #if MW_OPENGLES2
 		windowMatrix_->useShader();
 		mw::glViewport(0, 0, width, height);
-		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix(0, (float) width, 0, (float) height);
+		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height);
 		windowMatrix_->setProjection(ortho);
 		windowMatrix_->setModel(mw::I_44);
 		windowMatrix_->setColor(1,1,1);

@@ -209,13 +209,12 @@ namespace gui {
 			case VerticalAlignment::TOP:
 				y = dim.height_ - text_.getHeight();
 				break;
-		}
-		
+		}		
 
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(x, y);
+		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(x, y);
 		wM->setModel(newModel);
 		wM->setColor(textColor_);
 		if (text_.getWidth() < dim.width_) {

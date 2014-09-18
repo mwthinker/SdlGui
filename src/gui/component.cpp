@@ -97,7 +97,7 @@ namespace gui {
 		auto wM = getWindowMatrixPtr();
 		wM->useShader();
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getScaleMatrix(dim.width_, dim.height_) * mw::getTranslateMatrix(0.5f, 0.5f);
+		mw::Matrix44 newModel = oldModel * mw::getScaleMatrix44(dim.width_, dim.height_) * mw::getTranslateMatrix44(0.5f, 0.5f);
 		wM->setModel(newModel);
 		static GLfloat aVertices[] = {
 			-0.5f, -0.5f,

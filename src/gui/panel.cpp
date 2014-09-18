@@ -109,7 +109,7 @@ namespace gui {
 				wM->useShader();
 				mw::Matrix44 oldModel = wM->getModel();
 				Point p = component->getLocation();
-				mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix(p.x_, p.y_);
+				mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(p.x_, p.y_);
 				wM->setModel(newModel);
 				component->draw(deltaTime);
 				wM->setModel(oldModel);
