@@ -249,12 +249,12 @@ namespace gui {
 
 		group_.sort();
 	}
-
+#if MW_OPENGLES2
 	void Panel::setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
 		Component::setWindowMatrixPtr(windowMatrix);
 		for (auto& c : components_) {
 			c->setWindowMatrixPtr(windowMatrix);
 		}
 	}
-
+#endif // MW_OPENGLES2
 } // Namespace gui.

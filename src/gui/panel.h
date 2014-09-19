@@ -72,9 +72,9 @@ namespace gui {
 		void setFocus(bool focus) override;
 
 		void setChildsParent(const std::shared_ptr<Component>& thisPanel) override;
-
+#if MW_OPENGLES2
 		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) override;
-
+#endif // MW_OPENGLES2
 	private:
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;
