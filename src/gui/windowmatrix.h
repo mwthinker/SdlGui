@@ -42,12 +42,12 @@ namespace gui {
 			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_MODEL), 1, false, model_.data());
 		}
 
-		void setVertexPosition(GLint dimension, float* data) {			
+		void setVertexPosition(GLint dimension, const GLvoid* data) {
 			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION), dimension, GL_FLOAT, GL_FALSE, 0, data);
 			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION));
 		}
 
-		void setTexturePosition(GLint dimension, float* data) {
+		void setTexturePosition(GLint dimension, const GLvoid* data) {
 			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD), dimension, GL_FLOAT, GL_FALSE, 0, data);
 			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD));
 		}
