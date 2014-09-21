@@ -97,18 +97,20 @@ namespace gui {
 		auto wM = getWindowMatrixPtr();
 		wM->useShader();
 		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getScaleMatrix44(dim.width_, dim.height_) * mw::getTranslateMatrix44(0.5f, 0.5f);
-		wM->setModel(newModel);
+		wM->setModel(oldModel * mw::getScaleMatrix44(dim.width_, dim.height_) * mw::getTranslateMatrix44(0.5f, 0.5f));
 		static GLfloat aVertices[] = {
 			-0.5f, -0.5f,
 			0.5f, -0.5f,
 			-0.5f,  0.5f,
-			0.5f,  0.5f};
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			0.5f,  0.5f
+		};
+
 		wM->setColor(backgroundColor_);
 		wM->setVertexPosition(2, aVertices);
 		wM->setTexture(false);
+		
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		mw::glDisable(GL_BLEND);
 		background_.draw();

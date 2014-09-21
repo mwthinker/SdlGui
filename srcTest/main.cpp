@@ -14,22 +14,29 @@
 #include <cassert>
 #include <iostream>
 
-void testBorderLayout(gui::Frame& frame) {
+void testBorderLayout() {
+	gui::Frame frame;
+	frame.setDefaultClosing(true);
 	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::NORTH);
+	
 	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
 	panel->setLayout(std::make_shared<gui::VerticalLayout>());
 	frame.add(panel, gui::BorderLayout::CENTER);
 	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::WEST);
 	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::EAST);
 	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::SOUTH);
-
+	
 	panel->addToGroup(std::make_shared<gui::Button>());
 	panel->addToGroup(std::make_shared<gui::Button>());
 	panel->addToGroup(std::make_shared<gui::Button>());
 	panel->addToGroup(std::make_shared<gui::Button>());
+	SDL_StartTextInput();
+	frame.startLoop();
 }
 
-void testFlowLayout(gui::Frame& frame) {
+void testFlowLayout() {
+	gui::Frame frame;
+	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));
 	frame.add(std::make_shared<gui::Button>("Button 1", font));
@@ -56,20 +63,14 @@ void testFlowLayout(gui::Frame& frame) {
 				break;
 		}
 	});
+	SDL_StartTextInput();
+	frame.startLoop();
 }
 
 // Objects can be drawn outside the panel. Fix todo!
 
 int main(int argc, char** argv) {
-	gui::Frame frameBorder;
-	frameBorder.setDefaultClosing(true);
-	testBorderLayout(frameBorder);
-	gui::Frame frameFlow;
-	frameFlow.setDefaultClosing(true);
-	testFlowLayout(frameFlow);
-
-	SDL_StartTextInput();
-	gui::Frame::startLoop();
-
+	testBorderLayout();
+	testFlowLayout();
 	return 0;
 }

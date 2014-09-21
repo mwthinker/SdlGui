@@ -117,10 +117,8 @@ namespace gui {
 #if MW_OPENGLES2
 		windowMatrix_->useShader();
 		mw::glViewport(0, 0, width, height);
-		mw::Matrix44 ortho = mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height);
-		windowMatrix_->setProjection(ortho);
+		windowMatrix_->setProjection(mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height));
 		windowMatrix_->setModel(mw::I_44);
-		windowMatrix_->setColor(1,1,1);
 #else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -142,37 +140,31 @@ namespace gui {
 			sdlEventListener_(*this, sdlEvent);
 			switch (sdlEvent.type) {
 				case SDL_WINDOWEVENT:
-					if (sdlEvent.window.windowID == SDL_GetWindowID(getSdlWindow())) {
-						windowListener_(*this, sdlEvent);
-						switch (sdlEvent.window.event) {
-							case SDL_WINDOWEVENT_RESIZED:
-								resize(sdlEvent.window.data1, sdlEvent.window.data2);
-								break;
-							case SDL_WINDOWEVENT_LEAVE:
-								getCurrentPanel()->mouseMotionLeave();
-								break;
-							case SDL_WINDOWEVENT_CLOSE:
-								if (defaultClosing_) {
-									quit();
-								}
-						}
+					windowListener_(*this, sdlEvent);
+					switch (sdlEvent.window.event) {
+						case SDL_WINDOWEVENT_RESIZED:
+							resize(sdlEvent.window.data1, sdlEvent.window.data2);
+							break;
+						case SDL_WINDOWEVENT_LEAVE:
+							getCurrentPanel()->mouseMotionLeave();
+							break;
+						case SDL_WINDOWEVENT_CLOSE:
+							if (defaultClosing_) {
+								quit();
+							}
 					}
 					break;
 				case SDL_MOUSEMOTION:
-					if (sdlEvent.motion.windowID == SDL_GetWindowID(getSdlWindow())) {
-						// Reverse y-axis.
-						sdlEvent.motion.yrel *= -1;
-						sdlEvent.motion.y = getHeight() - sdlEvent.motion.y;
-						getCurrentPanel()->handleMouse(sdlEvent);
-					}
+					// Reverse y-axis.
+					sdlEvent.motion.yrel *= -1;
+					sdlEvent.motion.y = getHeight() - sdlEvent.motion.y;
+					getCurrentPanel()->handleMouse(sdlEvent);
 					break;
 				case SDL_MOUSEBUTTONDOWN:
 					// Fall through!
 				case SDL_MOUSEBUTTONUP:
-					if (sdlEvent.button.windowID == SDL_GetWindowID(getSdlWindow())) {
-						sdlEvent.button.y = getHeight() - sdlEvent.motion.y;
-						getCurrentPanel()->handleMouse(sdlEvent);
-					}
+					sdlEvent.button.y = getHeight() - sdlEvent.motion.y;
+					getCurrentPanel()->handleMouse(sdlEvent);
 					break;
 				case SDL_TEXTINPUT:
 					// Fall through.
@@ -181,15 +173,13 @@ namespace gui {
 				case SDL_KEYDOWN:
 					// Fall through.
 				case SDL_KEYUP:
-					if (sdlEvent.key.windowID == SDL_GetWindowID(getSdlWindow())) {
-						getCurrentPanel()->handleKeyboard(sdlEvent);
-						switch (sdlEvent.key.keysym.sym) {
-							case SDLK_ESCAPE:
-								if (defaultClosing_) {
-									quit();
-								}
-								break;
-						}
+					getCurrentPanel()->handleKeyboard(sdlEvent);
+					switch (sdlEvent.key.keysym.sym) {
+						case SDLK_ESCAPE:
+							if (defaultClosing_) {
+								quit();
+							}
+							break;
 					}
 					break;
 			}
