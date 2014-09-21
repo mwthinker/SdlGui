@@ -16,32 +16,32 @@ namespace gui {
 
 	class WindowMatrix {
 	public:
-		WindowMatrix() : proj_(mw::I_44), model_(mw::I_44) {
+		WindowMatrix() : proj44_(mw::I_44), model44_(mw::I_44) {
 			shader_ = mw::Shader::getDefaultShader();
 		}
 
 		mw::Matrix44 getProjection() const {
-			return proj_;
+			return proj44_;
 		}
 
 		mw::Matrix44 getModel() const {
-			return model_;
+			return model44_;
 		}
 
 		void useShader() {
 			shader_->glUseProgram();
-		}		
+		}
 
 		void setProjection(const mw::Matrix44& proj) {
-			proj_ = proj;
-			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_PROJ), 1, false, proj_.data());
+			proj44_ = proj;
+			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_PROJ), 1, false, proj44_.data());
 		}
 
 		void setModel(const mw::Matrix44& model) {
-			model_ = model;
-			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_MODEL), 1, false, model_.data());
+			model44_ = model;
+			mw::glUniformMatrix4fv(shader_->getUniformLocation(mw::SHADER_U_MAT4_MODEL), 1, false, model44_.data());
 		}
-
+		
 		void setVertexPosition(GLint dimension, const GLvoid* data) {
 			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION), dimension, GL_FLOAT, GL_FALSE, 0, data);
 			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION));
@@ -49,6 +49,16 @@ namespace gui {
 
 		void setTexturePosition(GLint dimension, const GLvoid* data) {
 			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD), dimension, GL_FLOAT, GL_FALSE, 0, data);
+			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD));
+		}
+
+		void setVertexPosition(GLint dimension, GLsizei stride, const GLvoid* data) {
+			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION), dimension, GL_FLOAT, GL_FALSE, stride, data);
+			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC4_POSITION));
+		}
+
+		void setTexturePosition(GLint dimension, GLsizei stride, const GLvoid* data) {
+			mw::glVertexAttribPointer(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD), dimension, GL_FLOAT, GL_FALSE, stride, data);
 			mw::glEnableVertexAttribArray(shader_->getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD));
 		}
 
@@ -71,9 +81,13 @@ namespace gui {
 		void glDrawArrays(GLenum mode, GLint first, GLsizei count) {
 			mw::glDrawArrays(mode, first, count);
 		}
+
+		void glDrawElements(GLenum mode, GLsizei count, GLenum type, const GLvoid* indices) {
+			mw::glDrawElements(mode, count, type, indices);
+		}
 		
 	private:
-		mw::Matrix44 model_, proj_;
+		mw::Matrix44 model44_, proj44_;
 		mw::ShaderPtr shader_;
 	};
 
