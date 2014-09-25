@@ -67,8 +67,6 @@ void testFlowLayout() {
 	frame.startLoop();
 }
 
-// Objects can be drawn outside the panel. Fix todo!
-
 int main(int argc, char** argv) {
 	testBorderLayout();
 	testFlowLayout();

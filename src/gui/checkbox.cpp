@@ -108,6 +108,7 @@ namespace gui {
 		text_.draw();
 		glPopMatrix();
 #endif // MW_OPENGLES2
+		mw::checkGlError();
 	}
 
 } // Namespace gui.

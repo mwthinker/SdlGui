@@ -35,6 +35,7 @@ namespace gui {
 			glEnd();
 			glDisable(GL_BLEND);
 #endif // MW_OPENGLES2
+			mw::checkGlError();
 		}
 
 	}
@@ -235,6 +236,7 @@ namespace gui {
 		}
 		glPopMatrix();
 #endif // MW_OPENGLES2
+		mw::checkGlError();
 	}
 
 	void Button::drawOnMouseHover() {

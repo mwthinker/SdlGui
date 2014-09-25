@@ -136,6 +136,7 @@ namespace gui {
 		glPopMatrix();
 		drawBorder();
 #endif // MW_OPENGLES2
+		mw::checkGlError();
 	}
 
 	void Component::doAction() {
@@ -244,6 +245,7 @@ namespace gui {
 		glEnd();
 		glDisable(GL_BLEND);
 #endif // MW_OPENGLES2
+		mw::checkGlError();
 	}
 
 } // Namespace gui.
