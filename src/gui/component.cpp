@@ -182,34 +182,39 @@ namespace gui {
 		auto wM = getWindowMatrixPtr();
 		wM->setColor(borderColor_);
 		wM->setTexture(false);
-		GLfloat north[] = {
+		GLfloat border[] = {
+			// North.
 			0, dimension_.height_ - 1,
 			dimension_.width_, dimension_.height_ - 1,
 			0, dimension_.height_,
-			dimension_.width_, dimension_.height_};
-		wM->setVertexPosition(2, north);
-		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		GLfloat west[] = {
+			0, dimension_.height_,
+			dimension_.width_, dimension_.height_ - 1,
+			dimension_.width_, dimension_.height_,
+			// West.
 			0, 0,
 			1, 0,
 			0, dimension_.height_ - 1,
-			1, dimension_.height_ - 1};
-		wM->setVertexPosition(2, west);
-		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		GLfloat east[] = {
+			0, dimension_.height_ - 1,
+			1, 0,
+			1, dimension_.height_ - 1,
+			// East.
 			dimension_.width_ - 1, 1,
 			dimension_.width_, 1,
 			dimension_.width_ - 1, dimension_.height_ - 1,
-			dimension_.width_, dimension_.height_ - 1};
-		wM->setVertexPosition(2, east);
-		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		GLfloat south[] = {
+			dimension_.width_ - 1, dimension_.height_ - 1,
+			dimension_.width_, 1,
+			dimension_.width_, dimension_.height_ - 1,
+			// South.
 			0, 0,
 			dimension_.width_, 0,
 			0, 1,
-			dimension_.width_, 1};
-		wM->setVertexPosition(2, south);
-		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			0, 1,
+			dimension_.width_, 0,
+			dimension_.width_, 1
+		};
+
+		wM->setVertexPosition(2, border);
+		wM->glDrawArrays(GL_TRIANGLES, 0, 6*4);
 		mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2
 		glEnable(GL_BLEND);
