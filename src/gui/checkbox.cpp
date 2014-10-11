@@ -44,12 +44,8 @@ namespace gui {
 		Component::draw(deltaTime);
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
-		wM->useShader();
 		wM->setColor(textColor_);
 		wM->setTexture(false);
-		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(1, 1);
-		wM->setModel(newModel);
 		float vertices[] = {
 			0, 0,
 			boxSize_, 0,
@@ -61,17 +57,14 @@ namespace gui {
 		wM->glDrawArrays(GL_LINE_STRIP, 0, 5); // 5 vertices.
 		if (selected_) {
 			float vertices[] = {
-				boxSize_ * 0.1f, boxSize_* 0.9f,
-				boxSize_ * 0.2f, boxSize_* 0.1f,
-				boxSize_ * 0.9f, boxSize_ * 0.9f
+				boxSize_ * 0.1f + 2, boxSize_* 0.9f + 1,
+				boxSize_ * 0.2f + 2, boxSize_* 0.1f + 1,
+				boxSize_ * 0.9f + 2, boxSize_ * 0.9f + 1
 			};
 			wM->setVertexPosition(2, vertices); // vec2, i.e. dimension = 2.
 			wM->glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
 		}
-		newModel = oldModel * mw::getTranslateMatrix44(boxSize_ + 2, 1);
-		wM->setModel(newModel);
-		text_.draw();
-		wM->setModel(oldModel);
+		text_.draw(boxSize_ + 2, 1);
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
 		glPushMatrix();

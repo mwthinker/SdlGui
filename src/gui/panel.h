@@ -15,6 +15,8 @@ namespace gui {
 	// the layout of the components based on the layout manager.
 	class Panel : public Component {
 	public:
+		friend class Frame;
+
 		// Creates a empty panel. The default LayoutManager is FlowLayout.
 		Panel();
 
@@ -70,12 +72,16 @@ namespace gui {
 		void validate() override;
 
 		void setFocus(bool focus) override;
-
-		void setChildsParent(const std::shared_ptr<Component>& thisPanel) override;
+		
 #if MW_OPENGLES2
 		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) override;
 #endif // MW_OPENGLES2
+	
+	protected:
+		void setChildsParent() override;
+
 	private:
+
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;

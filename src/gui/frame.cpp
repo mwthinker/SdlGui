@@ -26,7 +26,8 @@ namespace gui {
 		p->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2
 		p->setLayout(std::make_shared<BorderLayout>());
-		p->setChildsParent(p);
+		p->thisComponent_ = p;
+		p->setChildsParent();
 		return push_back(p);
 	}
 
@@ -35,13 +36,14 @@ namespace gui {
 		panel->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2
 		panels_.push_back(panel);
-		panel->setChildsParent(panel);
+		panel->thisComponent_ = panel;
+		panel->setChildsParent();
 		return panels_.size() - 1;
 	}
 
 	void Frame::add(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(component);
-		component->setChildsParent(component);
+		component->setChildsParent();
 #if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2
@@ -49,7 +51,7 @@ namespace gui {
 
 	void Frame::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->add(component, layoutIndex);
-		component->setChildsParent(component);
+		component->setChildsParent();
 #if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2
@@ -57,7 +59,7 @@ namespace gui {
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(component);
-		component->setChildsParent(component);
+		component->setChildsParent();
 #if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2
@@ -65,7 +67,7 @@ namespace gui {
 
 	void Frame::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
 		getCurrentPanel()->addToGroup(component, layoutIndex);
-		component->setChildsParent(component);
+		component->setChildsParent();
 #if MW_OPENGLES2
 		component->setWindowMatrixPtr(windowMatrix_);
 #endif // MW_OPENGLES2

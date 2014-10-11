@@ -13,12 +13,13 @@ namespace gui {
 			mw::glEnable(GL_BLEND);
 			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			auto wM = button.getWindowMatrixPtr();
-			wM->useShader();
+
 			GLfloat aVertices[] = {
 				0, 0,
 				dim.width_, 0,
 				0, dim.height_,
 				dim.width_, dim.height_};
+			
 			wM->setVertexPosition(2, aVertices);
 			wM->setColor(color);
 			wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
@@ -210,20 +211,18 @@ namespace gui {
 			case VerticalAlignment::TOP:
 				y = dim.height_ - text_.getHeight();
 				break;
-		}		
+		}
 
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
-		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(x, y);
-		wM->setModel(newModel);
 		wM->setColor(textColor_);
+
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
 		} else {
 			toWide_.draw();
 		}
-		wM->setModel(oldModel);
+		//wM->setModel(oldModel);
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
 		glPushMatrix();

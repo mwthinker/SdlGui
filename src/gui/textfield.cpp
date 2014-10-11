@@ -72,17 +72,9 @@ namespace gui {
 		}
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
-		wM->useShader();
-		mw::Matrix44 oldModel = wM->getModel();
-		mw::Matrix44 newModel = oldModel * mw::getTranslateMatrix44(x, 0);
-		wM->setModel(newModel);
-		drawText(deltaTime);
-		wM->setModel(oldModel);
+		drawText(deltaTime, x, 0);
 #else // MW_OPENGLES2
-		glPushMatrix();
-		glTranslatef(x, 0, 0);
-		drawText(deltaTime);
-		glPopMatrix();
+		drawText(deltaTime, x, 0);
 #endif // MW_OPENGLES2
 	}
 
@@ -180,21 +172,22 @@ namespace gui {
 		}
 	}
 
-	void TextField::drawText(Uint32 deltaTime) {
+	void TextField::drawText(Uint32 deltaTime, float x, float y) {
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
 		wM->setColor(textColor_);
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
 #endif // MW_OPENGLES2
-		text_.draw();
+		text_.draw(x, y);
 		if (editable_) {
 			if (hasFocus()) {
 				markerDeltaTime_ += deltaTime;
 #if MW_OPENGLES2
 				if (markerDeltaTime_ < 500) {
-					float vertices[] = {markerWidth_, text_.getCharacterSize(),
-						markerWidth_, 1};
+					float vertices[] = {
+						markerWidth_ + x, text_.getCharacterSize() + y,
+						markerWidth_ + x, 1 + y};
 					wM->setVertexPosition(2, vertices);
 					wM->setTexture(false);
 					wM->glDrawArrays(GL_LINE_STRIP, 0, 2);
@@ -204,8 +197,8 @@ namespace gui {
 #else // MW_OPENGLES2
 				glBegin(GL_LINES);
 				if (markerDeltaTime_ < 500) {
-					glVertex2d(markerWidth_, text_.getCharacterSize());
-					glVertex2d(markerWidth_, 1);
+					glVertex2d(markerWidth_ + x, text_.getCharacterSize() + y);
+					glVertex2d(markerWidth_ + x, 1 + y);
 				} else if (markerDeltaTime_ > 1000) {
 					markerDeltaTime_ = 0;
 				}

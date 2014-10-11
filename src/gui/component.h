@@ -34,13 +34,9 @@ namespace gui {
 			return location_;
 		}
 
-		inline void setLocation(const Point& point) {
-			location_ = point;
-		}
+		void setLocation(float x, float y);
 
-		inline void setLocation(float x, float y) {
-			location_ = Point(x, y);
-		}
+		void setLocation(const Point& point);
 
 		void setPreferredSize(float width, float height);
 
@@ -161,10 +157,19 @@ namespace gui {
 		}
 #endif // MW_OPENGLES2
 
+		// Draw the sprite in the component model.
+		// The current marix model ( getModelMatrix() ) is assumed to be used
+		// in the shader.
+		void drawSprite(const mw::Sprite& sprite) const;
+
+		inline const mw::Matrix44& getModelMatrix() {
+			return model_;
+		}
+
 	protected:
 		Component();
 
-		inline virtual void setChildsParent(const std::shared_ptr<Component>& component) {
+		inline virtual void setChildsParent() {
 		}
 
 		// Takes care of all mouse events. And send it through to
@@ -192,11 +197,13 @@ namespace gui {
 #if MW_OPENGLES2
 		WindowMatrixPtr windowMatrix_;
 #endif // MW_OPENGLES2
+				
+		std::shared_ptr<Panel> parent_;
+		std::shared_ptr<Component> thisComponent_;
 
 		mw::Sprite background_;
 		mw::Color backgroundColor_;
 		mw::Color borderColor_;
-		std::shared_ptr<Panel> parent_;
 		Point location_;
 		Dimension dimension_;
 		Dimension preferedDimension_;
@@ -214,6 +221,7 @@ namespace gui {
 		int nbrChildGrabFocus_;
 
 		bool isAdded_;
+		mw::Matrix44 model_;
 	};
 
 } // Namespace gui.

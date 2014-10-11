@@ -15,10 +15,11 @@ namespace gui {
 	void Panel::add(const std::shared_ptr<Component>& component) {
 		// Is already added?
 		assert(!component->isAdded_);
-		component->setChildsParent(component);
+		component->thisComponent_ = component;
 		component->isAdded_ = true;
 		component->setLayoutIndex(0);
 		components_.push_back(component);
+		setChildsParent();
 		if (component->isGrabFocus()) {
 			setFocus(true);
 			++nbrChildGrabFocus_;
@@ -32,10 +33,11 @@ namespace gui {
 	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
 		// Is already added?
 		assert(!component->isAdded_);
-		component->setChildsParent(component);
+		component->thisComponent_ = component;
 		component->isAdded_ = true;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
+		setChildsParent();
 		if (component->isGrabFocus()) {
 			setFocus(true);
 			++nbrChildGrabFocus_;
@@ -46,12 +48,13 @@ namespace gui {
 #endif // MW_OPENGLES2
 	}
 
-	void Panel::setChildsParent(const std::shared_ptr<Component>& thisComponent) {
-		std::shared_ptr<Panel> thisPanel = std::static_pointer_cast<Panel>(thisComponent);
-		assert(thisComponent.get() == this); // Must be point to this object.
-		for (auto& c : components_) {
-			c->parent_ = thisPanel;
-			c->setChildsParent(c);
+	void Panel::setChildsParent() {
+		if (thisComponent_ != nullptr) {
+			// Is only called by this panel object.
+			for (auto& c : components_) {
+				c->parent_ = std::static_pointer_cast<Panel>(thisComponent_);
+				c->setChildsParent();
+			}
 		}
 	}
 
@@ -106,12 +109,7 @@ namespace gui {
 			if (component->isVisible()) {
 #if MW_OPENGLES2
 				auto wM = getWindowMatrixPtr();
-				wM->useShader();
-				mw::Matrix44 oldModel = wM->getModel();
-				Point p = component->getLocation();
-				wM->setModel(oldModel * mw::getTranslateMatrix44(p.x_, p.y_));
 				component->draw(deltaTime);
-				wM->setModel(oldModel);
 #else // MW_OPENGLES2
 				glPushMatrix();
 				Point p = component->getLocation();

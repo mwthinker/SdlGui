@@ -7,6 +7,20 @@
 
 namespace gui {
 
+	void Component::setLocation(float x, float y) {
+		setLocation(Point(x, y));
+	}
+
+	void Component::setLocation(const Point& point) {
+		location_ = point;
+		if (parent_ != nullptr) {
+			model_ = parent_->model_;
+		} else {
+			model_ = mw::I_44;
+		}
+		mw::translate2D(model_, point.x_, point.y_);
+	}
+
 	void Component::setPreferredSize(float width, float height) {
 		preferedDimension_ = Dimension(width, height);
 		validateParent();
@@ -96,13 +110,13 @@ namespace gui {
 #if MW_OPENGLES2
 		auto wM = getWindowMatrixPtr();
 		wM->useShader();
-		mw::Matrix44 oldModel = wM->getModel();
-		wM->setModel(oldModel * mw::getScaleMatrix44(dim.width_, dim.height_) * mw::getTranslateMatrix44(0.5f, 0.5f));
-		static GLfloat aVertices[] = {
-			-0.5f, -0.5f,
-			0.5f, -0.5f,
-			-0.5f,  0.5f,
-			0.5f,  0.5f
+		wM->setModel(model_);
+		
+		GLfloat aVertices[] = {
+			0, 0,
+			dim.width_, 0,
+			0, dim.height_,
+			dim.width_, dim.height_
 		};
 
 		wM->setColor(backgroundColor_);
@@ -111,10 +125,12 @@ namespace gui {
 		
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		
 		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		
 		mw::glDisable(GL_BLEND);
-		background_.draw();
-		wM->setModel(oldModel);
+		
+		drawSprite(background_);
 		drawBorder();
 #else // MW_OPENGLES2
 		glPushMatrix();
@@ -155,10 +171,10 @@ namespace gui {
 		layoutIndex_ = layoutIndex;
 	}
 
-	Component::Component() : parent_(nullptr), layoutIndex_(0), visible_(true),
-		focus_(false), grabFocus_(false), isAdded_(false) {
-		borderColor_ = mw::Color(0, 0, 0);
-		nbrChildGrabFocus_ = 0;
+	Component::Component() : parent_(nullptr), borderColor_(0,0,0), layoutIndex_(0), visible_(true),
+		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),
+		model_(mw::I_44) {
+
 	}
 
 	void Component::handleMouse(const SDL_Event& mouseEvent) {
@@ -251,6 +267,64 @@ namespace gui {
 		glDisable(GL_BLEND);
 #endif // MW_OPENGLES2
 		mw::checkGlError();
+	}
+
+	void Component::drawSprite(const mw::Sprite& sprite) const {
+		const mw::Texture& texture = sprite.getTexture();
+		texture.bindTexture();
+		if (texture.isValid()) {
+#if MW_OPENGLES2
+			mw::glEnable(GL_BLEND);
+			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+			// Centered square in ORIGO.
+			GLfloat aVertices[] = {
+				0, 0,
+				dimension_.width_, 0,
+				0, dimension_.height_,
+				dimension_.width_, dimension_.height_};
+
+			// Map the sprite out from the texture.
+			GLfloat aTexCoord[] = {
+				sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
+				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight(),
+				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
+				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
+
+			// Use the program object.
+			auto wp = getWindowMatrixPtr();
+			wp->useShader();
+			wp->setTexture(true);
+
+			// Load the vertex data.
+			wp->setVertexPosition(2, aVertices);
+			wp->setTexturePosition(2, aTexCoord);
+
+			// Upload the attributes and draw the sprite.
+			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+			mw::glDisable(GL_BLEND);
+#else // MW_OPENGLES2
+			glEnable(GL_BLEND);
+			glEnable(GL_TEXTURE_2D);
+			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+			glBegin(GL_QUADS);
+			glTexCoord2f(sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight());
+			glVertex2f(0, 0);
+
+			glTexCoord2f((sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight());
+			glVertex2f(dimension_.width_, 0);
+
+			glTexCoord2f((sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight());
+			glVertex2f(dimension_.width_, dimension_.height_);
+
+			glTexCoord2f(sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight());
+			glVertex2f(0, dimension_.height_);
+			glEnd();
+			glDisable(GL_TEXTURE_2D);
+			glDisable(GL_BLEND);
+#endif // MW_OPENGLES2
+			mw::checkGlError();
+		}
 	}
 
 } // Namespace gui.
