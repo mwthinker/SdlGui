@@ -108,9 +108,8 @@ namespace gui {
 		// Draw panel background.
 		Dimension dim = getSize();
 #if MW_OPENGLES2
-		auto wM = getWindowMatrixPtr();
-		wM->useShader();
-		wM->setModel(model_);
+		useGlShader();
+		setGlModelMatrix(model_);
 		
 		GLfloat aVertices[] = {
 			0, 0,
@@ -119,19 +118,19 @@ namespace gui {
 			dim.width_, dim.height_
 		};
 
-		wM->setColor(backgroundColor_);
-		wM->setVertexPosition(2, aVertices);
-		wM->setTexture(false);
+		setGlColor(backgroundColor_);
+		setGlVer2dCoords(aVertices);
+		setGlTexture(false);
 		
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		
-		wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		
-		mw::glDisable(GL_BLEND);
+		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		
 		drawSprite(background_);
 		drawBorder();
+
+		mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2
 		glPushMatrix();
 		backgroundColor_.glColor4f();
@@ -171,6 +170,64 @@ namespace gui {
 		layoutIndex_ = layoutIndex;
 	}
 
+	void Component::setGlColor(float red, float green, float blue, float alpha) const {
+#if MW_OPENGLES2
+		windowMatrix_.setColor(red, green, blue, alpha);
+#else // MW_OPENGLES2
+		glColor4f(red, green, blue, alpha);
+#endif // MW_OPENGLES2
+	}
+	
+	void Component::setGlColor(const mw::Color& color) const {
+#if MW_OPENGLES2
+		windowMatrix_.setColor(color);
+#else // MW_OPENGLES2
+		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
+#endif // MW_OPENGLES2
+	}
+	
+	void Component::setGlModelMatrix(const mw::Matrix44& matrix) const {
+#if MW_OPENGLES2
+		windowMatrix_.setModel(matrix);
+#else // MW_OPENGLES2
+		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
+#endif // MW_OPENGLES2
+	}
+
+	void Component::setGlProjectionMatrix(const mw::Matrix44& matrix) const {
+#if MW_OPENGLES2
+		windowMatrix_.setProjection(matrix);
+#else // MW_OPENGLES2
+		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
+#endif // MW_OPENGLES2
+	}
+
+#if MW_OPENGLES2
+	void Component::setGlVer2dCoords(const GLvoid* data) const {
+		windowMatrix_.setVertexPosition(2, data);
+	}
+
+	void Component::setGlVer2dCoords(GLsizei stride, const GLvoid* data) const {
+		windowMatrix_.setVertexPosition(2, stride, data);
+	}
+
+	void Component::setGlTexCoords(const GLvoid* data) const {
+		windowMatrix_.setTexturePosition(2, data);
+	}
+
+	void Component::setGlTexCoords(GLsizei stride, const GLvoid* data) const {
+		windowMatrix_.setTexturePosition(2, stride, data);
+	}
+
+	void Component::setGlTexture(bool texture) const {
+		windowMatrix_.setTexture(texture);
+	}
+
+	void Component::useGlShader() const {
+		windowMatrix_.useShader();
+	}
+#endif // MW_OPENGLES2
+
 	Component::Component() : parent_(nullptr), borderColor_(0,0,0), layoutIndex_(0), visible_(true),
 		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),
 		model_(mw::I_44) {
@@ -193,11 +250,10 @@ namespace gui {
 
 	void Component::drawBorder() {
 #if MW_OPENGLES2
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		auto wM = getWindowMatrixPtr();
-		wM->setColor(borderColor_);
-		wM->setTexture(false);
+		useGlShader();
+		setGlColor(borderColor_);
+		setGlTexture(false);
+
 		GLfloat border[] = {
 			// North.
 			0, dimension_.height_ - 1,
@@ -229,9 +285,8 @@ namespace gui {
 			dimension_.width_, 1
 		};
 
-		wM->setVertexPosition(2, border);
-		wM->glDrawArrays(GL_TRIANGLES, 0, 6*4);
-		mw::glDisable(GL_BLEND);
+		setGlVer2dCoords(border);
+		mw::glDrawArrays(GL_TRIANGLES, 0, 6*4);
 #else // MW_OPENGLES2
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -274,9 +329,6 @@ namespace gui {
 		texture.bindTexture();
 		if (texture.isValid()) {
 #if MW_OPENGLES2
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
 			// Centered square in ORIGO.
 			GLfloat aVertices[] = {
 				0, 0,
@@ -291,18 +343,14 @@ namespace gui {
 				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
 
-			// Use the program object.
-			auto wp = getWindowMatrixPtr();
-			wp->useShader();
-			wp->setTexture(true);
+			setGlTexture(true);
 
 			// Load the vertex data.
-			wp->setVertexPosition(2, aVertices);
-			wp->setTexturePosition(2, aTexCoord);
+			setGlVer2dCoords(aVertices);
+			setGlTexCoords(aTexCoord);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2
 			glEnable(GL_BLEND);
 			glEnable(GL_TEXTURE_2D);

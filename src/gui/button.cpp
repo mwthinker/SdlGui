@@ -5,42 +5,6 @@
 
 namespace gui {
 
-	namespace {
-
-		void drawButton(Button& button, const mw::Color& color) {
-			Dimension dim = button.getSize();
-#if MW_OPENGLES2
-			mw::glEnable(GL_BLEND);
-			mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			auto wM = button.getWindowMatrixPtr();
-
-			GLfloat aVertices[] = {
-				0, 0,
-				dim.width_, 0,
-				0, dim.height_,
-				dim.width_, dim.height_};
-			
-			wM->setVertexPosition(2, aVertices);
-			wM->setColor(color);
-			wM->glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-			mw::glDisable(GL_BLEND);
-#else // MW_OPENGLES2
-			color.glColor4f();
-			glEnable(GL_BLEND);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-			glBegin(GL_QUADS);
-			glVertex2d(0, 0);
-			glVertex2d(dim.width_, 0);
-			glVertex2d(dim.width_, dim.height_);
-			glVertex2d(0, dim.height_);
-			glEnd();
-			glDisable(GL_BLEND);
-#endif // MW_OPENGLES2
-			mw::checkGlError();
-		}
-
-	}
-
 	Button::Button() {
 		init();
 	}
@@ -53,7 +17,7 @@ namespace gui {
 		init();
 	}
 
-	// Draws the button. The button is drawn by calls
+	// Draw the button. The button is drawed by calls
 	// to different functions.
 	// By default the background is drawn first and then the border. 
 	// Then one of the following functions is called: 
@@ -213,16 +177,14 @@ namespace gui {
 				break;
 		}
 
-#if MW_OPENGLES2
-		auto wM = getWindowMatrixPtr();
-		wM->setColor(textColor_);
+#if MW_OPENGLES2		
+		setGlColor(textColor_);
 
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
 		} else {
 			toWide_.draw();
 		}
-		//wM->setModel(oldModel);
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
 		glPushMatrix();
@@ -240,17 +202,17 @@ namespace gui {
 
 	void Button::drawOnMouseHover() {
 		Dimension dim = getSize();
-		drawButton(*this, hoverColor_);
+		drawButton(hoverColor_);
 	}
 
 	void Button::drawOnFocus() {
 		Dimension dim = getSize();
-		drawButton(*this, focusColor_);
+		drawButton(focusColor_);
 	}
 
 	void Button::drawOnPush() {
 		Dimension dim = getSize();
-		drawButton(*this, pushColor_);
+		drawButton(pushColor_);
 	}
 
 	void Button::init() {
@@ -269,6 +231,37 @@ namespace gui {
 		autoFit_ = false;
 		toWide_ = text_;
 		toWide_.setText(". . .");
+	}
+
+	void Button::drawButton(const mw::Color& color) const {
+		Dimension dim = getSize();
+#if MW_OPENGLES2
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+		GLfloat aVertices[] = {
+			0, 0,
+			dim.width_, 0,
+			0, dim.height_,
+			dim.width_, dim.height_};
+
+		setGlVer2dCoords(aVertices);
+		setGlColor(color);
+		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
+		mw::glDisable(GL_BLEND);
+#else // MW_OPENGLES2
+		color.glColor4f();
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		glBegin(GL_QUADS);
+		glVertex2d(0, 0);
+		glVertex2d(dim.width_, 0);
+		glVertex2d(dim.width_, dim.height_);
+		glVertex2d(0, dim.height_);
+		glEnd();
+		glDisable(GL_BLEND);
+#endif // MW_OPENGLES2
+		mw::checkGlError();
 	}
 	
 } // Namespace gui.

@@ -25,9 +25,6 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
-#if MW_OPENGLES2
-		component->setWindowMatrixPtr(windowMatrix_);
-#endif // MW_OPENGLES2
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
@@ -43,9 +40,6 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
-#if MW_OPENGLES2
-		component->setWindowMatrixPtr(windowMatrix_);
-#endif // MW_OPENGLES2
 	}
 
 	void Panel::setChildsParent() {
@@ -108,7 +102,6 @@ namespace gui {
 		for (auto& component : *this) {
 			if (component->isVisible()) {
 #if MW_OPENGLES2
-				auto wM = getWindowMatrixPtr();
 				component->draw(deltaTime);
 #else // MW_OPENGLES2
 				glPushMatrix();
@@ -246,12 +239,5 @@ namespace gui {
 
 		group_.sort();
 	}
-#if MW_OPENGLES2
-	void Panel::setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
-		Component::setWindowMatrixPtr(windowMatrix);
-		for (auto& c : components_) {
-			c->setWindowMatrixPtr(windowMatrix);
-		}
-	}
-#endif // MW_OPENGLES2
+
 } // Namespace gui.

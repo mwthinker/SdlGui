@@ -51,8 +51,7 @@ namespace gui {
 		}
 		
 #if MW_OPENGLES2
-		auto wM = getWindowMatrixPtr();
-		wM->setColor(textColor_);
+		setGlColor(textColor_);
 		text_.draw();
 #else // MW_OPENGLES2
 		textColor_.glColor4f();

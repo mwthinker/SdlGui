@@ -128,6 +128,8 @@ namespace gui {
 		// Draws the label.
 		virtual void drawLabel();
 
+		void drawButton(const mw::Color& color) const;
+
 		mw::Text text_;
 		mw::Text toWide_;
 

@@ -71,7 +71,6 @@ namespace gui {
 				break;
 		}
 #if MW_OPENGLES2
-		auto wM = getWindowMatrixPtr();
 		drawText(deltaTime, x, 0);
 #else // MW_OPENGLES2
 		drawText(deltaTime, x, 0);
@@ -174,8 +173,7 @@ namespace gui {
 
 	void TextField::drawText(Uint32 deltaTime, float x, float y) {
 #if MW_OPENGLES2
-		auto wM = getWindowMatrixPtr();
-		wM->setColor(textColor_);
+		setGlColor(textColor_);
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
 #endif // MW_OPENGLES2
@@ -188,9 +186,9 @@ namespace gui {
 					float vertices[] = {
 						markerWidth_ + x, text_.getCharacterSize() + y,
 						markerWidth_ + x, 1 + y};
-					wM->setVertexPosition(2, vertices);
-					wM->setTexture(false);
-					wM->glDrawArrays(GL_LINE_STRIP, 0, 2);
+					setGlVer2dCoords(vertices);
+					setGlTexture(false);
+					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
 				} else if (markerDeltaTime_ > 1000) {
 					markerDeltaTime_ = 0;
 				}

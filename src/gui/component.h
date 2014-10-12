@@ -147,16 +147,6 @@ namespace gui {
 		// Must correspond to the active LayoutManager.
 		void setLayoutIndex(int layoutIndex);
 
-#if MW_OPENGLES2
-		virtual void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) {
-			windowMatrix_ = windowMatrix;
-		}
-
-		WindowMatrixPtr getWindowMatrixPtr() const {
-			return windowMatrix_;
-		}
-#endif // MW_OPENGLES2
-
 		// Draw the sprite in the component model.
 		// The current marix model ( getModelMatrix() ) is assumed to be used
 		// in the shader.
@@ -165,6 +155,19 @@ namespace gui {
 		inline const mw::Matrix44& getModelMatrix() {
 			return model_;
 		}
+
+		void setGlColor(float red, float green, float blue, float alpha = 1) const;
+		void setGlColor(const mw::Color& color) const;
+		void setGlModelMatrix(const mw::Matrix44& matrix) const;
+		void setGlProjectionMatrix(const mw::Matrix44& matrix) const;
+#if MW_OPENGLES2
+		void setGlVer2dCoords(const GLvoid* data) const;
+		void setGlVer2dCoords(GLsizei stride, const GLvoid* data) const;
+		void setGlTexCoords(const GLvoid* data) const;
+		void setGlTexCoords(GLsizei stride, const GLvoid* data) const;
+		void setGlTexture(bool texture) const;
+		void useGlShader() const;
+#endif // MW_OPENGLES2
 
 	protected:
 		Component();
@@ -195,7 +198,7 @@ namespace gui {
 
 	private:
 #if MW_OPENGLES2
-		WindowMatrixPtr windowMatrix_;
+		WindowMatrix windowMatrix_;
 #endif // MW_OPENGLES2
 				
 		std::shared_ptr<Panel> parent_;

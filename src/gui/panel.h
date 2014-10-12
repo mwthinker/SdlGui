@@ -72,10 +72,6 @@ namespace gui {
 		void validate() override;
 
 		void setFocus(bool focus) override;
-		
-#if MW_OPENGLES2
-		void setWindowMatrixPtr(const WindowMatrixPtr& windowMatrix) override;
-#endif // MW_OPENGLES2
 	
 	protected:
 		void setChildsParent() override;
