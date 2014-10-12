@@ -10,7 +10,7 @@
 #include <string>
 
 namespace gui {
-
+	
 	class Button : public Component {
 	public:
 		enum HorizontalAlignment {

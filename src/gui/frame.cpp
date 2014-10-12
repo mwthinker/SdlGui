@@ -97,6 +97,7 @@ namespace gui {
 	}
 
 	void Frame::resize(int width, int height) {
+		mw::ortho2D(Component::proj, 0, (float) width, 0, (float) height);
 		getCurrentPanel()->setPreferredSize((float) width, (float) height);
 		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);
@@ -104,7 +105,7 @@ namespace gui {
 #if MW_OPENGLES2
 		windowMatrix_->useShader();
 		mw::glViewport(0, 0, width, height);
-		windowMatrix_->setProjection(mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height));
+		windowMatrix_->setProjection(Component::proj);
 		windowMatrix_->setModel(mw::I_44);
 #else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);

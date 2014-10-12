@@ -155,6 +155,10 @@ namespace gui {
 		inline const mw::Matrix44& getModelMatrix() {
 			return model_;
 		}
+		
+		inline const mw::Matrix44& getProjectionMatrix() {
+			return proj;
+		}
 
 		void setGlColor(float red, float green, float blue, float alpha = 1) const;
 		void setGlColor(const mw::Color& color) const;
@@ -225,6 +229,7 @@ namespace gui {
 
 		bool isAdded_;
 		mw::Matrix44 model_;
+		static mw::Matrix44 proj;
 	};
 
 } // Namespace gui.

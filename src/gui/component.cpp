@@ -7,6 +7,8 @@
 
 namespace gui {
 
+	mw::Matrix44 Component::proj;
+
 	void Component::setLocation(float x, float y) {
 		setLocation(Point(x, y));
 	}
@@ -190,7 +192,8 @@ namespace gui {
 #if MW_OPENGLES2
 		windowMatrix_.setModel(matrix);
 #else // MW_OPENGLES2
-		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
+		glMatrixMode(GL_MODELVIEW);
+		glLoadMatrixf(matrix.data());
 #endif // MW_OPENGLES2
 	}
 
@@ -198,7 +201,9 @@ namespace gui {
 #if MW_OPENGLES2
 		windowMatrix_.setProjection(matrix);
 #else // MW_OPENGLES2
-		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
+		glMatrixMode(GL_PROJECTION);
+		glLoadMatrixf(matrix.data());
+		glMatrixMode(GL_MODELVIEW);
 #endif // MW_OPENGLES2
 	}
 
@@ -288,10 +293,7 @@ namespace gui {
 		setGlVer2dCoords(border);
 		mw::glDrawArrays(GL_TRIANGLES, 0, 6*4);
 #else // MW_OPENGLES2
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		borderColor_.glColor4f();
-
 		glBegin(GL_QUADS);
 
 		// South.
@@ -319,7 +321,6 @@ namespace gui {
 		glVertex2d(0, dimension_.height_);
 
 		glEnd();
-		glDisable(GL_BLEND);
 #endif // MW_OPENGLES2
 		mw::checkGlError();
 	}
@@ -352,9 +353,7 @@ namespace gui {
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 #else // MW_OPENGLES2
-			glEnable(GL_BLEND);
 			glEnable(GL_TEXTURE_2D);
-			glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 			glBegin(GL_QUADS);
 			glTexCoord2f(sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight());
 			glVertex2f(0, 0);
@@ -369,7 +368,6 @@ namespace gui {
 			glVertex2f(0, dimension_.height_);
 			glEnd();
 			glDisable(GL_TEXTURE_2D);
-			glDisable(GL_BLEND);
 #endif // MW_OPENGLES2
 			mw::checkGlError();
 		}
