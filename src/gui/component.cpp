@@ -110,8 +110,8 @@ namespace gui {
 		// Draw panel background.
 		Dimension dim = getSize();
 #if MW_OPENGLES2
-		useGlShader();
-		setGlModelMatrix(model_);
+		glUseProgram();
+		setGlModelMatrixU(model_);
 		
 		GLfloat aVertices[] = {
 			0, 0,
@@ -121,7 +121,7 @@ namespace gui {
 		};
 
 		setGlColor(backgroundColor_);
-		setGlVer2dCoords(aVertices);
+		setGlVerCoordsA(2, aVertices);
 		setGlTexture(false);
 		
 		mw::glEnable(GL_BLEND);
@@ -172,64 +172,24 @@ namespace gui {
 		layoutIndex_ = layoutIndex;
 	}
 
+#ifndef MW_OPENGLES2
 	void Component::setGlColor(float red, float green, float blue, float alpha) const {
-#if MW_OPENGLES2
-		windowMatrix_.setColor(red, green, blue, alpha);
-#else // MW_OPENGLES2
 		glColor4f(red, green, blue, alpha);
-#endif // MW_OPENGLES2
 	}
 	
 	void Component::setGlColor(const mw::Color& color) const {
-#if MW_OPENGLES2
-		windowMatrix_.setColor(color);
-#else // MW_OPENGLES2
 		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
-#endif // MW_OPENGLES2
 	}
 	
 	void Component::setGlModelMatrix(const mw::Matrix44& matrix) const {
-#if MW_OPENGLES2
-		windowMatrix_.setModel(matrix);
-#else // MW_OPENGLES2
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(matrix.data());
-#endif // MW_OPENGLES2
 	}
 
 	void Component::setGlProjectionMatrix(const mw::Matrix44& matrix) const {
-#if MW_OPENGLES2
-		windowMatrix_.setProjection(matrix);
-#else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadMatrixf(matrix.data());
 		glMatrixMode(GL_MODELVIEW);
-#endif // MW_OPENGLES2
-	}
-
-#if MW_OPENGLES2
-	void Component::setGlVer2dCoords(const GLvoid* data) const {
-		windowMatrix_.setVertexPosition(2, data);
-	}
-
-	void Component::setGlVer2dCoords(GLsizei stride, const GLvoid* data) const {
-		windowMatrix_.setVertexPosition(2, stride, data);
-	}
-
-	void Component::setGlTexCoords(const GLvoid* data) const {
-		windowMatrix_.setTexturePosition(2, data);
-	}
-
-	void Component::setGlTexCoords(GLsizei stride, const GLvoid* data) const {
-		windowMatrix_.setTexturePosition(2, stride, data);
-	}
-
-	void Component::setGlTexture(bool texture) const {
-		windowMatrix_.setTexture(texture);
-	}
-
-	void Component::useGlShader() const {
-		windowMatrix_.useShader();
 	}
 #endif // MW_OPENGLES2
 
@@ -255,7 +215,7 @@ namespace gui {
 
 	void Component::drawBorder() {
 #if MW_OPENGLES2
-		useGlShader();
+		glUseProgram();
 		setGlColor(borderColor_);
 		setGlTexture(false);
 
@@ -290,7 +250,7 @@ namespace gui {
 			dimension_.width_, 1
 		};
 
-		setGlVer2dCoords(border);
+		setGlVerCoordsA(2, border);
 		mw::glDrawArrays(GL_TRIANGLES, 0, 6*4);
 #else // MW_OPENGLES2
 		borderColor_.glColor4f();
@@ -347,8 +307,8 @@ namespace gui {
 			setGlTexture(true);
 
 			// Load the vertex data.
-			setGlVer2dCoords(aVertices);
-			setGlTexCoords(aTexCoord);
+			setGlVerCoordsA(2, aVertices);
+			setGlTexCoordsA(2, aTexCoord);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

@@ -2,7 +2,7 @@
 #define GUI_FRAME_H
 
 #include "panel.h"
-#include "windowmatrix.h"
+#include "guishader.h"
 
 #include <mw/window.h>
 #include <mw/color.h>
@@ -20,7 +20,11 @@ namespace gui {
 	using SdlEventListener = mw::Signal<Frame&, const SDL_Event&>;
 	using UpdateListener = mw::Signal<Frame&, Uint32>;
 
+#if MW_OPENGLES2
+	class Frame : public mw::Window, public GuiShader {
+#else // MW_OPENGLES2
 	class Frame : public mw::Window {
+#endif // MW_OPENGLES2
 	public:
 		Frame();
 		Frame(int x, int y, int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "", bool borderless = false);
@@ -138,9 +142,6 @@ namespace gui {
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;
 		int currentPanel_;
-#if MW_OPENGLES2
-		std::shared_ptr<WindowMatrix> windowMatrix_;
-#endif // MW_OPENGLES2
 	};
 
 } // Namespace gui.

@@ -52,7 +52,7 @@ namespace gui {
 			0, boxSize_,
 			0, 0,
 		};
-		setGlVer2dCoords(vertices); // vec2, i.e. dimension = 2.
+		setGlVerCoordsA(2, vertices);
 		mw::glDrawArrays(GL_LINE_STRIP, 0, 5); // 5 vertices.
 		if (selected_) {
 			float vertices[] = {
@@ -60,7 +60,7 @@ namespace gui {
 				boxSize_ * 0.2f + 2, boxSize_* 0.1f + 1,
 				boxSize_ * 0.9f + 2, boxSize_ * 0.9f + 1
 			};
-			setGlVer2dCoords(vertices);
+			setGlVerCoordsA(2, vertices);
 			mw::glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
 		}
 		text_.draw(boxSize_ + 2, 1);

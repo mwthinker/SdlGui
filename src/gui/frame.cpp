@@ -103,10 +103,10 @@ namespace gui {
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
 #if MW_OPENGLES2
-		windowMatrix_->useShader();
+		glUseProgram();
 		mw::glViewport(0, 0, width, height);
-		windowMatrix_->setProjection(Component::proj);
-		windowMatrix_->setModel(mw::I_44);
+		setGlProjectionMatrixU(Component::proj);
+		setGlModelMatrixU(mw::I_44);
 #else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();
@@ -180,9 +180,6 @@ namespace gui {
 	}
 
 	void Frame::init() {
-#if MW_OPENGLES2
-		windowMatrix_ = std::make_shared<WindowMatrix>();
-#endif // MW_OPENGLES2
 		currentPanel_ = 0;
 		
 		// Default layout for Frame.

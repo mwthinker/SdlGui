@@ -245,7 +245,7 @@ namespace gui {
 			0, dim.height_,
 			dim.width_, dim.height_};
 
-		setGlVer2dCoords(aVertices);
+		setGlVerCoordsA(2, aVertices);
 		setGlColor(color);
 		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		mw::glDisable(GL_BLEND);

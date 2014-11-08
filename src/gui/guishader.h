@@ -1,5 +1,5 @@
-#ifndef GUI_WINDOWMATRIX_H
-#define GUI_WINDOWMATRIX_H
+#ifndef GUI_GUISHADER_H
+#define GUI_GUISHADER_H
 #if MW_OPENGLES2
 
 #include <mw/matrix.h>
@@ -9,9 +9,9 @@
 
 namespace gui {
 
-	class WindowMatrix {
+	class GuiShader {
 	public:
-		WindowMatrix() {
+		GuiShader() {
 			shader_ = mw::Shader::getDefaultShader();
 			shader_.glUseProgram();
 			uModelIndex_ = shader_.getUniformLocation(mw::SHADER_U_MAT4_MODEL);
@@ -23,39 +23,33 @@ namespace gui {
 			aTexIndex_ = shader_.getAttributeLocation(mw::SHADER_A_VEC2_TEXCOORD);
 		}
 
-		void useShader() const {
+		inline void glUseProgram() const {
 			shader_.glUseProgram();
 		}
 
-		void setProjection(const mw::Matrix44& proj) const {
-			mw::glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
+		// Vertex buffer Attributes. ---------------------------
+
+		inline void setGlVerCoordsA(GLint dimension, const GLvoid* data) const {
+			setGlVerCoordsA(dimension, 0, data);
 		}
 
-		void setModel(const mw::Matrix44& model) const {
-			mw::glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
-		}
-		
-		void setVertexPosition(GLint dimension, const GLvoid* data) const {
-			mw::glVertexAttribPointer(aVertexIndex_, dimension, GL_FLOAT, GL_FALSE, 0, data);
-			mw::glEnableVertexAttribArray(aVertexIndex_);
-		}
-
-		void setTexturePosition(GLint dimension, const GLvoid* data) const {
-			mw::glVertexAttribPointer(aTexIndex_, dimension, GL_FLOAT, GL_FALSE, 0, data);
-			mw::glEnableVertexAttribArray(aTexIndex_);
-		}
-
-		void setVertexPosition(GLint dimension, GLsizei stride, const GLvoid* data) const {
+		inline void setGlVerCoordsA(GLint dimension, GLsizei stride, const GLvoid* data) const {
 			mw::glVertexAttribPointer(aVertexIndex_, dimension, GL_FLOAT, GL_FALSE, stride, data);
 			mw::glEnableVertexAttribArray(aVertexIndex_);
 		}
 
-		void setTexturePosition(GLint dimension, GLsizei stride, const GLvoid* data) const {
+		inline void setGlTexCoordsA(GLint dimension, const GLvoid* data) const {
+			setGlTexCoordsA(dimension, 0, data);
+		}
+
+		inline void setGlTexCoordsA(GLint dimension, GLsizei stride, const GLvoid* data) const {
 			mw::glVertexAttribPointer(aTexIndex_, dimension, GL_FLOAT, GL_FALSE, stride, data);
 			mw::glEnableVertexAttribArray(aTexIndex_);
 		}
 
-		void setTexture(bool texture) const {
+		// Uniforms. -------------------------------------------
+		
+		inline void setGlTexture(bool texture) const {
 			if (texture) {
 				mw::glUniform1f(uIsTexIndex_, 1);
 			} else {
@@ -63,12 +57,20 @@ namespace gui {
 			}
 		}
 
-		void setColor(const mw::Color& color) const {
+		inline void setGlColor(const mw::Color& color) const {
 			mw::glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 		}
 
-		void setColor(float red, float green, float blue, float alpha = 1.f) const {
+		inline void setGlColor(float red, float green, float blue, float alpha = 1.f) const {
 			mw::glUniform4f(uColorIndex_, red, green, blue, alpha);
+		}
+
+		inline void setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
+			mw::glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
+		}
+
+		inline void setGlModelMatrixU(const mw::Matrix44& matrix) const {
+			mw::glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 		}
 		
 	private:
@@ -84,4 +86,4 @@ namespace gui {
 } // Namespace gui.
 
 #endif // MW_OPENGLES2
-#endif // GUI_WINDOWMATRIX_H
+#endif // GUI_GUISHADER_H

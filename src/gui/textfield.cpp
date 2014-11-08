@@ -186,7 +186,7 @@ namespace gui {
 					float vertices[] = {
 						markerWidth_ + x, text_.getCharacterSize() + y,
 						markerWidth_ + x, 1 + y};
-					setGlVer2dCoords(vertices);
+					setGlVerCoordsA(2, vertices);
 					setGlTexture(false);
 					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
 				} else if (markerDeltaTime_ > 1000) {

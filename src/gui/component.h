@@ -2,7 +2,7 @@
 #define GUI_COMPONENT_H
 
 #include "dimension.h"
-#include "windowmatrix.h"
+#include "guishader.h"
 
 #include <mw/signal.h>
 #include <mw/color.h>
@@ -20,8 +20,12 @@ namespace gui {
 	using MouseListener = KeyListener;
 	using ActionListener = mw::Signal<Component&>;
 	using PanelChangeListener = mw::Signal<Component&, bool>;
-	
+
+#if MW_OPENGLES2
+	class Component : public GuiShader {
+#else // MW_OPENGLES2
 	class Component {
+#endif // MW_OPENGLES2
 	public:
 		friend class Frame;
 		friend class Panel;
@@ -160,17 +164,11 @@ namespace gui {
 			return proj;
 		}
 
+#ifndef MW_OPENGLES2
 		void setGlColor(float red, float green, float blue, float alpha = 1) const;
 		void setGlColor(const mw::Color& color) const;
 		void setGlModelMatrix(const mw::Matrix44& matrix) const;
 		void setGlProjectionMatrix(const mw::Matrix44& matrix) const;
-#if MW_OPENGLES2
-		void setGlVer2dCoords(const GLvoid* data) const;
-		void setGlVer2dCoords(GLsizei stride, const GLvoid* data) const;
-		void setGlTexCoords(const GLvoid* data) const;
-		void setGlTexCoords(GLsizei stride, const GLvoid* data) const;
-		void setGlTexture(bool texture) const;
-		void useGlShader() const;
 #endif // MW_OPENGLES2
 
 	protected:
@@ -201,10 +199,6 @@ namespace gui {
 		virtual void drawBorder();
 
 	private:
-#if MW_OPENGLES2
-		WindowMatrix windowMatrix_;
-#endif // MW_OPENGLES2
-				
 		std::shared_ptr<Panel> parent_;
 		std::shared_ptr<Component> thisComponent_;
 
