@@ -50,7 +50,6 @@ namespace gui {
 
 	void Button::setFont(const mw::Font& font) {
 		text_ = mw::Text(text_.getText(), font);
-		toWide_ = mw::Text(toWide_.getText(), font);
 		if (autoFit_) {
 			sizeToFitText();
 		}
@@ -182,8 +181,6 @@ namespace gui {
 
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
-		} else {
-			toWide_.draw();
 		}
 #else // MW_OPENGLES2
 		textColor_.glColor4f();
@@ -192,8 +189,6 @@ namespace gui {
 
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
-		} else {
-			toWide_.draw();
 		}
 		glPopMatrix();
 #endif // MW_OPENGLES2
@@ -229,8 +224,6 @@ namespace gui {
 		pushColor_ = mw::Color(0, 0, 0, 0.15f);
 
 		autoFit_ = false;
-		toWide_ = text_;
-		toWide_.setText(". . .");
 	}
 
 	void Button::drawButton(const mw::Color& color) const {

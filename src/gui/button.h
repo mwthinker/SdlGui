@@ -131,7 +131,6 @@ namespace gui {
 		void drawButton(const mw::Color& color) const;
 
 		mw::Text text_;
-		mw::Text toWide_;
 
 		mw::Color textColor_;
 		mw::Color hoverColor_;
