@@ -4,6 +4,7 @@
 #include <mw/font.h>
 #include <mw/window.h>
 #include <mw/exception.h>
+#include <mw/defaultshader.h>
 
 #include <string>
 
@@ -103,10 +104,10 @@ namespace gui {
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
 #if MW_OPENGLES2
-		glUseProgram();
+		mw::DefaultShader::get().glUseProgram();
 		mw::glViewport(0, 0, width, height);
-		setGlProjectionMatrixU(Component::proj);
-		setGlModelMatrixU(mw::I_44);
+		mw::DefaultShader::get().setGlProjectionMatrixU(Component::proj);
+		mw::DefaultShader::get().setGlModelMatrixU(mw::I_44);
 #else // MW_OPENGLES2
 		glMatrixMode(GL_PROJECTION);
 		glLoadIdentity();

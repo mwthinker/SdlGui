@@ -51,7 +51,7 @@ namespace gui {
 		}
 		
 #if MW_OPENGLES2
-		setGlColor(textColor_);
+		setGlColorU(textColor_);
 		text_.draw();
 #else // MW_OPENGLES2
 		textColor_.glColor4f();

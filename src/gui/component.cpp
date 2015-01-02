@@ -2,6 +2,7 @@
 #include "panel.h"
 
 #if MW_OPENGLES2
+#include <mw/defaultshader.h>
 #include <mw/matrix.h>
 #endif // MW_OPENGLES2
 
@@ -120,9 +121,9 @@ namespace gui {
 			dim.width_, dim.height_
 		};
 
-		setGlColor(backgroundColor_);
-		setGlVerCoordsA(2, aVertices);
-		setGlTexture(false);
+		setGlColorU(backgroundColor_);
+		setGlPosA(2, aVertices);
+		setGlTextureU(false);
 		
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -172,7 +173,51 @@ namespace gui {
 		layoutIndex_ = layoutIndex;
 	}
 
-#ifndef MW_OPENGLES2
+#ifdef MW_OPENGLES2
+
+	void Component::glUseProgram() const {
+		mw::DefaultShader::get().glUseProgram();
+	}
+
+	void Component::setGlPosA(GLint size, const GLvoid* data) const {
+		mw::DefaultShader::get().setGlPosA(size, data);
+	}
+
+	void Component::setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const {
+		mw::DefaultShader::get().setGlPosA(size, stride, data);
+	}
+
+	void Component::setGlTexA(GLint size, const GLvoid* data) const {
+		mw::DefaultShader::get().setGlPosA(size, data);
+	}
+
+	void Component::setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const {
+		mw::DefaultShader::get().setGlPosA(size, stride, data);
+	}	
+
+	// Uniforms. -------------------------------------------
+
+	void Component::setGlProjectionMatrixU(const mw::Matrix44& matrix) const {
+		mw::DefaultShader::get().setGlProjectionMatrixU(matrix);
+	}
+
+	void Component::setGlModelMatrixU(const mw::Matrix44& matrix) const {
+		mw::DefaultShader::get().setGlModelMatrixU(matrix);
+	}
+
+	void Component::setGlColorU(float red, float green, float blue, float alpha) const {
+		mw::DefaultShader::get().setGlColorU(red, green, blue, alpha);
+	}
+
+	void Component::setGlColorU(const mw::Color& color) const {
+		mw::DefaultShader::get().setGlColorU(color);
+	}
+
+	void Component::setGlTextureU(bool texture) const {
+		mw::DefaultShader::get().setGlTextureU(texture);
+	}
+
+#else //MW_OPENGLES2
 	void Component::setGlColor(float red, float green, float blue, float alpha) const {
 		glColor4f(red, green, blue, alpha);
 	}
@@ -216,8 +261,8 @@ namespace gui {
 	void Component::drawBorder() {
 #if MW_OPENGLES2
 		glUseProgram();
-		setGlColor(borderColor_);
-		setGlTexture(false);
+		setGlColorU(borderColor_);
+		setGlTextureU(false);
 
 		GLfloat border[] = {
 			// North.
@@ -250,7 +295,7 @@ namespace gui {
 			dimension_.width_, 1
 		};
 
-		setGlVerCoordsA(2, border);
+		setGlPosA(2, border);
 		mw::glDrawArrays(GL_TRIANGLES, 0, 6*4);
 #else // MW_OPENGLES2
 		borderColor_.glColor4f();
@@ -304,11 +349,11 @@ namespace gui {
 				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
 
-			setGlTexture(true);
+			setGlTextureU(true);
 
 			// Load the vertex data.
-			setGlVerCoordsA(2, aVertices);
-			setGlTexCoordsA(2, aTexCoord);
+			setGlPosA(2, aVertices);
+			setGlTexA(2, aTexCoord);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

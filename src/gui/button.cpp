@@ -177,7 +177,7 @@ namespace gui {
 		}
 
 #if MW_OPENGLES2		
-		setGlColor(textColor_);
+		setGlColorU(textColor_);
 
 		if (text_.getWidth() < dim.width_) {
 			text_.draw();
@@ -232,14 +232,14 @@ namespace gui {
 		mw::glEnable(GL_BLEND);
 		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-		GLfloat aVertices[] = {
+		GLfloat posCoords[] = {
 			0, 0,
 			dim.width_, 0,
 			0, dim.height_,
 			dim.width_, dim.height_};
 
-		setGlVerCoordsA(2, aVertices);
-		setGlColor(color);
+		setGlPosA(2, posCoords);
+		setGlColorU(color);
 		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		mw::glDisable(GL_BLEND);
 #else // MW_OPENGLES2

@@ -2,7 +2,6 @@
 #define GUI_COMPONENT_H
 
 #include "dimension.h"
-#include "guishader.h"
 
 #include <mw/signal.h>
 #include <mw/color.h>
@@ -22,7 +21,7 @@ namespace gui {
 	using PanelChangeListener = mw::Signal<Component&, bool>;
 
 #if MW_OPENGLES2
-	class Component : public GuiShader {
+	class Component {
 #else // MW_OPENGLES2
 	class Component {
 #endif // MW_OPENGLES2
@@ -164,7 +163,24 @@ namespace gui {
 			return proj;
 		}
 
-#ifndef MW_OPENGLES2
+#ifdef MW_OPENGLES2
+		void glUseProgram() const;
+
+		void setGlPosA(GLint size, const GLvoid* data) const;
+		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
+
+		void setGlTexA(GLint size, const GLvoid* data) const;
+		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
+
+		// Uniforms. -------------------------------------------
+		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
+		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
+
+		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
+		void setGlColorU(const mw::Color& color) const;
+		void setGlTextureU(bool texture) const;		
+
+#else // MW_OPENGLES2
 		void setGlColor(float red, float green, float blue, float alpha = 1) const;
 		void setGlColor(const mw::Color& color) const;
 		void setGlModelMatrix(const mw::Matrix44& matrix) const;

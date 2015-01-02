@@ -19,7 +19,6 @@ set(SOURCES
 	src/gui/frame.cpp
 	src/gui/frame.h
 	src/gui/gridlayout.h
-	src/gui/guishader.h
 	src/gui/traversalgroup.cpp
 	src/gui/traversalgroup.h
 	src/gui/inputformatter.h
