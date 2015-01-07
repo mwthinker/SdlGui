@@ -13,9 +13,8 @@ namespace gui {
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component) {
-		// Is already added?
+		// Was already added?
 		assert(!component->isAdded_);
-		component->thisComponent_ = component;
 		component->isAdded_ = true;
 		component->setLayoutIndex(0);
 		components_.push_back(component);
@@ -28,9 +27,8 @@ namespace gui {
 	}
 
 	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
-		// Is already added?
+		// Was already added?
 		assert(!component->isAdded_);
-		component->thisComponent_ = component;
 		component->isAdded_ = true;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
@@ -43,12 +41,9 @@ namespace gui {
 	}
 
 	void Panel::setChildsParent() {
-		if (thisComponent_ != nullptr) {
-			// Is only called by this panel object.
-			for (auto& c : components_) {
-				c->parent_ = std::static_pointer_cast<Panel>(thisComponent_);
-				c->setChildsParent();
-			}
+		for (auto& c : components_) {
+			c->parent_ = std::static_pointer_cast<Panel>(shared_from_this());
+			c->setChildsParent();
 		}
 	}
 
@@ -98,7 +93,7 @@ namespace gui {
 	void Panel::draw(Uint32 deltaTime) {
 		Component::draw(deltaTime);
 
-		// Draw components.
+		// Draw the components.
 		for (auto& component : *this) {
 			if (component->isVisible()) {
 #if MW_OPENGLES2

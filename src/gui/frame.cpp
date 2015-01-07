@@ -24,14 +24,12 @@ namespace gui {
 	int Frame::addPanelBack() {
 		std::shared_ptr<Panel> p = std::make_shared<Panel>();
 		p->setLayout(std::make_shared<BorderLayout>());
-		p->thisComponent_ = p;
 		p->setChildsParent();
 		return push_back(p);
 	}
 
 	int Frame::push_back(const std::shared_ptr<Panel>& panel) {
 		panels_.push_back(panel);
-		panel->thisComponent_ = panel;
 		panel->setChildsParent();
 		return panels_.size() - 1;
 	}

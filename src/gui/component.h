@@ -9,6 +9,8 @@
 
 #include <SDL.h>
 
+#include <memory>
+
 namespace gui {
 
 	class Component;
@@ -21,7 +23,7 @@ namespace gui {
 	using PanelChangeListener = mw::Signal<Component&, bool>;
 
 #if MW_OPENGLES2
-	class Component {
+	class Component : public std::enable_shared_from_this<Component> {
 #else // MW_OPENGLES2
 	class Component {
 #endif // MW_OPENGLES2
@@ -49,7 +51,7 @@ namespace gui {
 			return preferedDimension_;
 		}
 
-		// Return the components size.
+		// Return the component size.
 		inline Dimension getSize() const {
 			return dimension_;
 		}
@@ -142,12 +144,12 @@ namespace gui {
 
 		virtual void panelChanged(bool active);
 
-		// Gets the layout index for the component.
+		// Get the layout index for the component.
 		// 0 is the default value.
 		int getLayoutIndex() const;
 
-		// Defines the layout for the component.
-		// Must correspond to the active LayoutManager.
+		// Define the layout for the component.
+		// Should correspond to the active LayoutManager in order to work.
 		void setLayoutIndex(int layoutIndex);
 
 		// Draw the sprite in the component model.
@@ -193,17 +195,18 @@ namespace gui {
 		inline virtual void setChildsParent() {
 		}
 
-		// Takes care of all mouse events. And send it through to
+		// Take care of all mouse events. And send it through to
 		// all mouse listener callbacks.
 		// Mouse events: SDL_MOUSEMOTION, SDL_MOUSEBUTTONDOWN and SDL_MOUSEBUTTONUP.
 		virtual void handleMouse(const SDL_Event& mouseEvent);
 
-		// Takes care of all key events. And send it through to
+		// Take care of all key events. And send it through to
 		// all key listener callbacks.
 		// Key events: SDL_TEXTINPUT, SDL_TEXTEDITING, SDL_KEYDOWN and SDL_KEYUP.
 		virtual void handleKeyboard(const SDL_Event& keyEvent);
 
-		// Fixes all child components sizes.
+		// Fixe all child components sizes. Based on the layout manager and
+		// the preffered component size.
 		// If there are no childs nothing happens.
 		inline virtual void validate() {
 		}
@@ -215,8 +218,7 @@ namespace gui {
 		virtual void drawBorder();
 
 	private:
-		std::shared_ptr<Panel> parent_;
-		std::shared_ptr<Component> thisComponent_;
+		std::shared_ptr<Panel> parent_;		
 
 		mw::Sprite background_;
 		mw::Color backgroundColor_;
