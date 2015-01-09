@@ -188,11 +188,11 @@ namespace gui {
 	}
 
 	void Component::setGlTexA(GLint size, const GLvoid* data) const {
-		mw::DefaultShader::get().setGlPosA(size, data);
+		mw::DefaultShader::get().setGlTexA(size, data);
 	}
 
 	void Component::setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const {
-		mw::DefaultShader::get().setGlPosA(size, stride, data);
+		mw::DefaultShader::get().setGlTexA(size, stride, data);
 	}	
 
 	// Uniforms. -------------------------------------------
@@ -336,14 +336,14 @@ namespace gui {
 		if (texture.isValid()) {
 #if MW_OPENGLES2
 			// Centered square in ORIGO.
-			GLfloat aVertices[] = {
+			GLfloat aPos[] = {
 				0, 0,
 				dimension_.width_, 0,
 				0, dimension_.height_,
 				dimension_.width_, dimension_.height_};
 
 			// Map the sprite out from the texture.
-			GLfloat aTexCoord[] = {
+			GLfloat aTex[] = {
 				sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight(),
 				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
@@ -352,8 +352,8 @@ namespace gui {
 			setGlTextureU(true);
 
 			// Load the vertex data.
-			setGlPosA(2, aVertices);
-			setGlTexA(2, aTexCoord);
+			setGlPosA(2, aPos);
+			setGlTexA(2, aTex);
 
 			// Upload the attributes and draw the sprite.
 			mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

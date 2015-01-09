@@ -45,22 +45,22 @@ namespace gui {
 #if MW_OPENGLES2
 		setGlColorU(textColor_);
 		setGlTextureU(false);
-		float vertices[] = {
+		float pos[] = {
 			0, 0,
 			boxSize_, 0,
 			boxSize_, boxSize_,
 			0, boxSize_,
 			0, 0,
 		};
-		setGlPosA(2, vertices);
+		setGlPosA(2, pos);
 		mw::glDrawArrays(GL_LINE_STRIP, 0, 5); // 5 vertices.
 		if (selected_) {
-			float vertices[] = {
+			float pos[] = {
 				boxSize_ * 0.1f + 2, boxSize_* 0.9f + 1,
 				boxSize_ * 0.2f + 2, boxSize_* 0.1f + 1,
 				boxSize_ * 0.9f + 2, boxSize_ * 0.9f + 1
 			};
-			setGlPosA(2, vertices);
+			setGlPosA(2, pos);
 			mw::glDrawArrays(GL_LINE_STRIP, 0, 3); // 3 vertices.
 		}
 		text_.draw(boxSize_ + 2, 1);

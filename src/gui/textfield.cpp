@@ -183,10 +183,10 @@ namespace gui {
 				markerDeltaTime_ += deltaTime;
 #if MW_OPENGLES2
 				if (markerDeltaTime_ < 500) {
-					float vertices[] = {
+					float pos[] = {
 						markerWidth_ + x, text_.getCharacterSize() + y,
 						markerWidth_ + x, 1 + y};
-					setGlPosA(2, vertices);
+					setGlPosA(2, pos);
 					setGlTextureU(false);
 					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
 				} else if (markerDeltaTime_ > 1000) {
