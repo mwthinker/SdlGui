@@ -193,7 +193,7 @@ namespace gui {
 
 	void Component::setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const {
 		mw::DefaultShader::get().setGlTexA(size, stride, data);
-	}	
+	}
 
 	// Uniforms. -------------------------------------------
 
