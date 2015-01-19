@@ -114,7 +114,7 @@ namespace gui {
 		glUseProgram();
 		setGlModelMatrixU(model_);
 		
-		GLfloat aVertices[] = {
+		GLfloat aPos[] = {
 			0, 0,
 			dim.width_, 0,
 			0, dim.height_,
@@ -122,7 +122,8 @@ namespace gui {
 		};
 
 		setGlColorU(backgroundColor_);
-		setGlPosA(2, aVertices);
+		setGlPosA(2, aPos);
+		setGlTexA(2, aPos); // Not used.
 		setGlTextureU(false);
 		
 		mw::glEnable(GL_BLEND);
