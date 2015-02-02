@@ -12,6 +12,8 @@ set(SOURCES
 	src/gui/button.h
 	src/gui/checkbox.cpp
 	src/gui/checkbox.h
+	src/gui/combobox.cpp
+	src/gui/combobox.h
 	src/gui/component.cpp
 	src/gui/component.h
 	src/gui/dimension.h
@@ -27,6 +29,8 @@ set(SOURCES
 	src/gui/layoutmanager.h
 	src/gui/panel.cpp
 	src/gui/panel.h
+	src/gui/popupmenu.cpp
+	src/gui/popupmenu.h
 	src/gui/verticallayout.h
 	src/gui/horizontallayout.h
 	src/gui/textfield.cpp

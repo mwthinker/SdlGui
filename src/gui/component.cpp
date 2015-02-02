@@ -111,6 +111,9 @@ namespace gui {
 		// Draw panel background.
 		Dimension dim = getSize();
 #if MW_OPENGLES2
+		mw::glEnable(GL_BLEND);
+		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
 		glUseProgram();
 		setGlModelMatrixU(model_);
 		
@@ -124,13 +127,9 @@ namespace gui {
 		setGlColorU(backgroundColor_);
 		setGlPosA(2, aPos);
 		setGlTexA(2, aPos); // Not used.
-		setGlTextureU(false);
-		
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		setGlTextureU(false);		
 		
 		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		
 		drawSprite(background_);
 		drawBorder();
 

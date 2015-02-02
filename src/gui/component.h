@@ -22,11 +22,7 @@ namespace gui {
 	using ActionListener = mw::Signal<Component&>;
 	using PanelChangeListener = mw::Signal<Component&, bool>;
 
-#if MW_OPENGLES2
 	class Component : public std::enable_shared_from_this<Component> {
-#else // MW_OPENGLES2
-	class Component {
-#endif // MW_OPENGLES2
 	public:
 		friend class Frame;
 		friend class Panel;

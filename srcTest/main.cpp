@@ -45,7 +45,7 @@ void testFlowLayout() {
 	button->setVerticalAlignment(gui::Button::TOP);
 	frame.add(button);
 	frame.add(std::make_shared<gui::Button>("Button 4", font));
-	frame.add(std::make_shared<gui::CheckBox>("CheckBox 5", font));
+	frame.add(std::make_shared<gui::CheckBox>("CheckBox 5", font, mw::Sprite("box.png"), mw::Sprite("check.png")));
 	std::shared_ptr<gui::TextField> field = std::make_shared<gui::TextField>("Text:", font);
 	field->setGrabFocus(true);
 	frame.add(field);
