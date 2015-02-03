@@ -10,15 +10,25 @@
 
 namespace gui {
 
-	Frame::Frame() : mw::Window(-1, -1, 512, 512, true, "Frame", "") {		
-		init();
-	}
-
 	Frame::Frame(int x, int y, int width, int height, bool resizeable, 
 		std::string title, std::string icon, bool borderless) : 
-		mw::Window(x, y, width, height, resizeable, title, icon, borderless) {
+		mw::Window(x, y, width, height, resizeable, title, icon, borderless),
+		defaultClosing_(false),
+		currentPanel_(0) {
 
-		init();
+		SDL_StartTextInput();
+
+		// Default layout for Frame.
+		push_back(std::make_shared<Panel>());
+
+		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
+
+		// Init the opengl settings.
+		resize(getWidth(), getHeight());
+
+		getCurrentPanel()->setBackgroundColor(1, 1, 1);
+		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
+		getCurrentPanel()->setPreferredSize((float) getWidth(), (float) getHeight());
 	}
 
 	int Frame::addPanelBack() {
@@ -176,23 +186,6 @@ namespace gui {
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {
 		eventQueue_.push(windowEvent);
-	}
-
-	void Frame::init() {
-		currentPanel_ = 0;
-		
-		// Default layout for Frame.
-		push_back(std::make_shared<Panel>());
-
-		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
-
-		// Init the opengl settings.
-		resize(getWidth(), getHeight());
-
-		getCurrentPanel()->setBackgroundColor(1, 1, 1);
-		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
-		getCurrentPanel()->setPreferredSize((float) getWidth(), (float) getHeight());
-		defaultClosing_ = false;
 	}
 
 } // Namespace gui.

@@ -21,7 +21,6 @@ namespace gui {
 
 	class Frame : public mw::Window {
 	public:
-		Frame();
 		Frame(int x, int y, int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "", bool borderless = false);
 
 		// Adds default panel in the back in the internal vector.
@@ -126,8 +125,6 @@ namespace gui {
 		virtual void eventUpdate(const SDL_Event& windowEvent) override final;
 
 		void resize(int width, int height);
-
-		void init();
 
 		std::queue<SDL_Event> eventQueue_;
 		WindowListener windowListener_;

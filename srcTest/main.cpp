@@ -15,7 +15,7 @@
 #include <iostream>
 
 void testBorderLayout() {
-	gui::Frame frame;
+	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
 	frame.add(std::make_shared<gui::Button>(), gui::BorderLayout::NORTH);
 	
@@ -30,12 +30,11 @@ void testBorderLayout() {
 	panel->addToGroup(std::make_shared<gui::Button>());
 	panel->addToGroup(std::make_shared<gui::Button>());
 	panel->addToGroup(std::make_shared<gui::Button>());
-	SDL_StartTextInput();
 	frame.startLoop();
 }
 
 void testFlowLayout() {
-	gui::Frame frame;
+	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));
@@ -63,7 +62,6 @@ void testFlowLayout() {
 				break;
 		}
 	});
-	SDL_StartTextInput();
 	frame.startLoop();
 }
 
