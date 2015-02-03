@@ -19,7 +19,7 @@ namespace gui {
 		SDL_StartTextInput();
 
 		// Default layout for Frame.
-		push_back(std::make_shared<Panel>());
+		pushBackPanel(std::make_shared<Panel>());
 
 		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
 
@@ -35,32 +35,22 @@ namespace gui {
 		std::shared_ptr<Panel> p = std::make_shared<Panel>();
 		p->setLayout(std::make_shared<BorderLayout>());
 		p->setChildsParent();
-		return push_back(p);
+		return pushBackPanel(p);
 	}
 
-	int Frame::push_back(const std::shared_ptr<Panel>& panel) {
+	int Frame::pushBackPanel(const std::shared_ptr<Panel>& panel) {
 		panels_.push_back(panel);
 		panel->setChildsParent();
 		return panels_.size() - 1;
 	}
 
-	void Frame::add(const std::shared_ptr<Component>& component) {
-		getCurrentPanel()->add(component);
+	void Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
+		getCurrentPanel()->add(layoutIndex, component);
 		component->setChildsParent();
 	}
 
-	void Frame::add(const std::shared_ptr<Component>& component, int layoutIndex) {
-		getCurrentPanel()->add(component, layoutIndex);
-		component->setChildsParent();
-	}
-
-	void Frame::addToGroup(const std::shared_ptr<Component>& component) {
-		getCurrentPanel()->addToGroup(component);
-		component->setChildsParent();
-	}
-
-	void Frame::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
-		getCurrentPanel()->addToGroup(component, layoutIndex);
+	void Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
+		getCurrentPanel()->addToGroup(layoutIndex, component);
 		component->setChildsParent();
 	}
 

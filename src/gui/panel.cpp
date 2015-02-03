@@ -12,21 +12,7 @@ namespace gui {
 		setBorderColor(1, 1, 1, 0);
 	}
 
-	void Panel::add(const std::shared_ptr<Component>& component) {
-		// Was already added?
-		assert(!component->isAdded_);
-		component->isAdded_ = true;
-		component->setLayoutIndex(0);
-		components_.push_back(component);
-		setChildsParent();
-		if (component->isGrabFocus()) {
-			setFocus(true);
-			++nbrChildGrabFocus_;
-		}
-		validate();
-	}
-
-	void Panel::add(const std::shared_ptr<Component>& component, int layoutIndex) {
+	void Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		// Was already added?
 		assert(!component->isAdded_);
 		component->isAdded_ = true;
@@ -47,13 +33,8 @@ namespace gui {
 		}
 	}
 
-	void Panel::addToGroup(const std::shared_ptr<Component>& component) {
-		add(component);
-		group_.add(component);
-	}
-
-	void Panel::addToGroup(const std::shared_ptr<Component>& component, int layoutIndex) {
-		add(component, layoutIndex);
+	void Panel::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
+		add(layoutIndex, component);
 		group_.add(component);
 	}
 

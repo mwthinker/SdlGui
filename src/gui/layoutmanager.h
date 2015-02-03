@@ -3,12 +3,15 @@
 
 #include "dimension.h"
 
-namespace gui {	
+namespace gui {
+
+	static const int DEFAULT_INDEX = 0;
 
 	class Panel;
 
 	class LayoutManager {
 	public:
+
 		virtual ~LayoutManager() {
 		}
 

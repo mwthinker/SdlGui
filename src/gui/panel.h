@@ -21,29 +21,47 @@ namespace gui {
 		Panel();
 
 		virtual ~Panel() {
-		}
-
-		// Adds the component to the container. Takes the ownership.
-		// I.e. Deallocates the component when the panel is deallocated.
-		void add(const std::shared_ptr<Component>& component);
+		}		
 
 		// Adds the component to the container using the layout spcified 
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
-		void add(const std::shared_ptr<Component>& component, int layoutIndex);
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> add(int layoutIndex, Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			add(layoutIndex, c);
+			return c;
+		}
 
-		// Same as add(Component* component) but added to 
-		// a traversal group too.
-		void addToGroup(const std::shared_ptr<Component>& component);
+		// Adds the component to the container using the layout spcified 
+		// by the layout manager and the layoutIndex. Takes the ownership.
+		// I.e. Deallocates the component when the panel is deallocated.
+		void add(int layoutIndex, const std::shared_ptr<Component>& component);
 
 		// Same as add(Component* component, int layoutIndex) but added to 
 		// a traversal group too.
-		void addToGroup(const std::shared_ptr<Component>& component, int layoutIndex);
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			addToGroup(layoutIndex, c);
+			return c;
+		}
+
+		// Same as add(Component* component, int layoutIndex) but added to 
+		// a traversal group too.
+		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
 		// Sets the layouyt manager. Takes ower the ownership of the layoutManager.
 		// The old layoutManager are dealloted.
 		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
-		
+
+		template <class LManager, class... Args>
+		std::shared_ptr<LManager> setLayout(Args... args) {
+			std::shared_ptr<LManager> m = std::make_shared<LManager>(args...);
+			setLayout(layoutManager);
+			return m;
+		}
+
 		// Gets the current layout manager. Do not deallocate the layout manager
 		// the panel takes care of that!
 		std::shared_ptr<LayoutManager> getLayout() const;

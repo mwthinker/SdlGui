@@ -23,32 +23,49 @@ namespace gui {
 	public:
 		Frame(int x, int y, int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "", bool borderless = false);
 
-		// Adds default panel in the back in the internal vector.
+		// Add the default panel in the back of the internal vector.
 		// The panel index is returned.
 		int addPanelBack();
 		
-		// Adds the provided panel in the back in the internal vector.
+		// Add the provided panel in the back of the internal vector.
 		// The panel index is returned.
-		int push_back(const std::shared_ptr<Panel>& panel);
-
-		// Adds component, with layoutIndex set to default.
+		int pushBackPanel(const std::shared_ptr<Panel>& panel);		
+		
+		// Add the component, with the provided layoutIndex.
 		// Will assert if the component already added.
-		void add(const std::shared_ptr<Component>& component);
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> add(int layoutIndex, Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			add(layoutIndex, c);
+			return c;
+		}
 
 		// Adds component, with the provided layoutIndex.
 		// Will assert if the component already added.
-		void add(const std::shared_ptr<Component>& component, int layoutIndex);
+		void add(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Same as add(Component* component) but added to 
+		// Same as add(int layoutIndex, Component* component) but added to 
 		// a traversal group too.
-		void addToGroup(const std::shared_ptr<Component>& component);
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args);
+			addToGroup(layoutIndex, c);
+			return c;
+		}
 
-		// Same as add(Component* component, int layoutIndex) but added to 
+		// Same as add(int layoutIndex, Component* component) but added to 
 		// a traversal group too.
-		void addToGroup(const std::shared_ptr<Component>& component, int layoutIndex);
+		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
 		// Set the layout manager.
 		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
+
+		template <class LManager, class... Args>
+		std::shared_ptr<LManager> setLayout(Args... args) {
+			std::shared_ptr<LManager> m = std::make_shared<LManager>(args...);
+			setLayout(layoutManager);
+			return m;
+		}
 
 		// Get the current layout manager.
 		std::shared_ptr<LayoutManager> getLayout() const;
