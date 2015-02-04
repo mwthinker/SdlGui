@@ -21,9 +21,9 @@ namespace gui {
 		Panel();
 
 		virtual ~Panel() {
-		}		
+		}
 
-		// Adds the component to the container using the layout spcified 
+		// Adds the component to the container using the layout spcified
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
 		template <class Comp, class... Args>
@@ -33,12 +33,12 @@ namespace gui {
 			return c;
 		}
 
-		// Adds the component to the container using the layout spcified 
+		// Adds the component to the container using the layout spcified
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
 		void add(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Same as add(Component* component, int layoutIndex) but added to 
+		// Same as add(Component* component, int layoutIndex) but added to
 		// a traversal group too.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args) {
@@ -47,7 +47,7 @@ namespace gui {
 			return c;
 		}
 
-		// Same as add(Component* component, int layoutIndex) but added to 
+		// Same as add(Component* component, int layoutIndex) but added to
 		// a traversal group too.
 		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
@@ -58,7 +58,7 @@ namespace gui {
 		template <class LManager, class... Args>
 		std::shared_ptr<LManager> setLayout(Args... args) {
 			std::shared_ptr<LManager> m = std::make_shared<LManager>(args...);
-			setLayout(layoutManager);
+			setLayout(m);
 			return m;
 		}
 
@@ -80,7 +80,7 @@ namespace gui {
 		void handleMouse(const SDL_Event& mouseEvent) override;
 
 		void handleKeyboard(const SDL_Event&) override;
-		
+
 		void mouseMotionLeave() override;
 
 		void mouseOutsideUp() override;
@@ -90,7 +90,7 @@ namespace gui {
 		void validate() override;
 
 		void setFocus(bool focus) override;
-	
+
 	protected:
 		void setChildsParent() override;
 

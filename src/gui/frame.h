@@ -26,11 +26,11 @@ namespace gui {
 		// Add the default panel in the back of the internal vector.
 		// The panel index is returned.
 		int addPanelBack();
-		
+
 		// Add the provided panel in the back of the internal vector.
 		// The panel index is returned.
-		int pushBackPanel(const std::shared_ptr<Panel>& panel);		
-		
+		int pushBackPanel(const std::shared_ptr<Panel>& panel);
+
 		// Add the component, with the provided layoutIndex.
 		// Will assert if the component already added.
 		template <class Comp, class... Args>
@@ -44,16 +44,16 @@ namespace gui {
 		// Will assert if the component already added.
 		void add(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Same as add(int layoutIndex, Component* component) but added to 
+		// Same as add(int layoutIndex, Component* component) but added to
 		// a traversal group too.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args) {
-			std::shared_ptr<Comp> c = std::make_shared<Comp>(args);
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
 			addToGroup(layoutIndex, c);
 			return c;
 		}
 
-		// Same as add(int layoutIndex, Component* component) but added to 
+		// Same as add(int layoutIndex, Component* component) but added to
 		// a traversal group too.
 		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
@@ -63,7 +63,7 @@ namespace gui {
 		template <class LManager, class... Args>
 		std::shared_ptr<LManager> setLayout(Args... args) {
 			std::shared_ptr<LManager> m = std::make_shared<LManager>(args...);
-			setLayout(layoutManager);
+			setLayout(m);
 			return m;
 		}
 
@@ -82,8 +82,8 @@ namespace gui {
 		mw::signals::Connection addSdlEventListener(const SdlEventListener::Callback& callback);
 
 		// Set the default closing true or false.
-		// Makes the window's close by clicking the quit button or by 
-		// pressing the ESQ key if set to true. if set to false 
+		// Makes the window's close by clicking the quit button or by
+		// pressing the ESQ key if set to true. if set to false
 		// nothing happens.
 		void setDefaultClosing(bool defaultClosing);
 
