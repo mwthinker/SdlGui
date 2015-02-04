@@ -2,6 +2,7 @@
 #define GUI_FRAME_H
 
 #include "panel.h"
+#include "layoutmanager.h"
 
 #include <mw/window.h>
 #include <mw/color.h>
@@ -31,6 +32,19 @@ namespace gui {
 		// The panel index is returned.
 		int pushBackPanel(const std::shared_ptr<Panel>& panel);
 
+        // Add the component, with the provided layoutIndex.
+		// Will assert if the component already added.
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addDefault(Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			add(DEFAULT_INDEX, c);
+			return c;
+		}
+
+		// Add the component, with the default index layout.
+		// Will assert if the component already added.
+		std::shared_ptr<Component> addDefault(const std::shared_ptr<Component>& component);
+
 		// Add the component, with the provided layoutIndex.
 		// Will assert if the component already added.
 		template <class Comp, class... Args>
@@ -40,9 +54,22 @@ namespace gui {
 			return c;
 		}
 
-		// Adds component, with the provided layoutIndex.
+		// Add the component, with the default index layout.
 		// Will assert if the component already added.
-		void add(int layoutIndex, const std::shared_ptr<Component>& component);
+		std::shared_ptr<Component> add(int layoutIndex, const std::shared_ptr<Component>& component);
+
+		// Same as add(int layoutIndex, Component* component) but added to
+		// a traversal group too.
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addDefaultToGroup(Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			addToGroup(DEFAULT_INDEX, c);
+			return c;
+		}
+
+		// Same as add(int layoutIndex, Component* component) but added to
+		// a traversal group too.
+		std::shared_ptr<Component> addDefaultToGroup(const std::shared_ptr<Component>& component);
 
 		// Same as add(int layoutIndex, Component* component) but added to
 		// a traversal group too.
@@ -55,10 +82,10 @@ namespace gui {
 
 		// Same as add(int layoutIndex, Component* component) but added to
 		// a traversal group too.
-		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
+		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
 		// Set the layout manager.
-		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
+		std::shared_ptr<LayoutManager> setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
 		template <class LManager, class... Args>
 		std::shared_ptr<LManager> setLayout(Args... args) {
@@ -77,7 +104,7 @@ namespace gui {
 		// for this window.
 		mw::signals::Connection addWindowListener(const WindowListener::Callback& callback);
 
-		// Add a sdl event listener. A callback be be made when any sdl event is called
+		// Add a SDL event listener. A callback be be made when any SDL event is called
 		// for any window.
 		mw::signals::Connection addSdlEventListener(const SdlEventListener::Callback& callback);
 
@@ -129,7 +156,7 @@ namespace gui {
 			return getCurrentPanel()->addPanelChangeListener(callback);
 		}
 
-		// Add a uppdate listener to the current panel.
+		// Add a update listener to the current panel.
 		inline mw::signals::Connection addUpdateListener(const UpdateListener::Callback& callback) {
 			return updateListener_.connect(callback);
 		}

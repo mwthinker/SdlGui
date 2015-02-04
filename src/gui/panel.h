@@ -3,6 +3,7 @@
 
 #include "component.h"
 #include "traversalgroup.h"
+#include "layoutmanager.h"
 
 #include <vector>
 #include <cassert>
@@ -23,7 +24,25 @@ namespace gui {
 		virtual ~Panel() {
 		}
 
-		// Adds the component to the container using the layout spcified
+		 // Add the component, with the provided layoutIndex.
+		// Will assert if the component already added.
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addDefault(Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			add(DEFAULT_INDEX, c);
+			return c;
+		}
+
+		// Add the component, with the default index layout.
+		// Will assert if the component already added.
+		std::shared_ptr<Component> addDefault(const std::shared_ptr<Component>& component);
+
+		// Adds the component to the container using the layout specified
+		// by the layout manager and the layoutIndex. Takes the ownership.
+		// I.e. Deallocates the component when the panel is deallocated.
+		std::shared_ptr<Component> add(int layoutIndex, const std::shared_ptr<Component>& component);
+
+		// Adds the component to the container using the layout specified
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
 		template <class Comp, class... Args>
@@ -33,10 +52,18 @@ namespace gui {
 			return c;
 		}
 
-		// Adds the component to the container using the layout spcified
-		// by the layout manager and the layoutIndex. Takes the ownership.
-		// I.e. Deallocates the component when the panel is deallocated.
-		void add(int layoutIndex, const std::shared_ptr<Component>& component);
+		// Same as add(int layoutIndex, Component* component) but added to
+		// a traversal group too.
+		template <class Comp, class... Args>
+		std::shared_ptr<Comp> addDefaultToGroup(Args... args) {
+			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			addToGroup(DEFAULT_INDEX, c);
+			return c;
+		}
+
+		// Same as add(int layoutIndex, Component* component) but added to
+		// a traversal group too.
+		std::shared_ptr<Component> addDefaultToGroup(const std::shared_ptr<Component>& component);
 
 		// Same as add(Component* component, int layoutIndex) but added to
 		// a traversal group too.
@@ -49,11 +76,11 @@ namespace gui {
 
 		// Same as add(Component* component, int layoutIndex) but added to
 		// a traversal group too.
-		void addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
+		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Sets the layouyt manager. Takes ower the ownership of the layoutManager.
-		// The old layoutManager are dealloted.
-		void setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
+		// Sets the layout manager. Takes over the ownership of the layoutManager.
+		// The old layoutManager are deallocated.
+		std::shared_ptr<LayoutManager> setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
 		template <class LManager, class... Args>
 		std::shared_ptr<LManager> setLayout(Args... args) {

@@ -18,17 +18,17 @@ void testBorderLayout() {
 	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
 	frame.add(gui::BorderLayout::NORTH, std::make_shared<gui::Button>());
-	
+
 	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
 	panel->setLayout(std::make_shared<gui::VerticalLayout>());
 	frame.add(gui::BorderLayout::CENTER, panel);
 	frame.add<gui::Button>(gui::BorderLayout::WEST);
 	frame.add<gui::Button>(gui::BorderLayout::EAST);
 	frame.add<gui::Button>(gui::BorderLayout::SOUTH);
-	
-	panel->addToGroup(gui::DEFAULT_INDEX, std::make_shared<gui::Button>());
-	panel->addToGroup(gui::DEFAULT_INDEX, std::make_shared<gui::Button>());
-	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
+
+	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+	panel->addDefaultToGroup<gui::Button>();
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
 	frame.startLoop();
 }
@@ -38,13 +38,13 @@ void testFlowLayout() {
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));
-	frame.add<gui::Button>(gui::DEFAULT_INDEX, "Button 1", font);
-	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::Button>("Button 2", font));
+	frame.addDefault<gui::Button>("Button 1", font);
+	frame.addDefault(std::make_shared<gui::Button>("Button 2", font));
 	auto button = frame.add<gui::Button>(gui::DEFAULT_INDEX, "Button 3", font);
 	button->setVerticalAlignment(gui::Button::TOP);
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::Button>("Button 4", font));
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::CheckBox>("CheckBox 5", font, mw::Sprite("box.png"), mw::Sprite("check.png")));
-	auto field = frame.add<gui::TextField>(gui::DEFAULT_INDEX, "Text:", font);
+	auto field = frame.addDefault<gui::TextField>("Text:", font);
 	field->setGrabFocus(true);
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::TextField>("", font));
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::Label>("JAjajaj", font));

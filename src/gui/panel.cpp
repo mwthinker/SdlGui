@@ -12,7 +12,20 @@ namespace gui {
 		setBorderColor(1, 1, 1, 0);
 	}
 
-	void Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
+	void Panel::setChildsParent() {
+		for (auto& c : components_) {
+			c->parent_ = std::static_pointer_cast<Panel>(shared_from_this());
+			c->setChildsParent();
+		}
+	}
+
+	std::shared_ptr<Component> Panel::addDefault(const std::shared_ptr<Component>& component) {
+		add(DEFAULT_INDEX, component);
+		component->setChildsParent();
+		return component;
+	}
+
+    std::shared_ptr<Component> Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		// Was already added?
 		assert(!component->isAdded_);
 		component->isAdded_ = true;
@@ -24,22 +37,24 @@ namespace gui {
 			++nbrChildGrabFocus_;
 		}
 		validate();
+		return component;
 	}
 
-	void Panel::setChildsParent() {
-		for (auto& c : components_) {
-			c->parent_ = std::static_pointer_cast<Panel>(shared_from_this());
-			c->setChildsParent();
-		}
+	std::shared_ptr<Component> Panel::addDefaultToGroup(const std::shared_ptr<Component>& component) {
+		add(DEFAULT_INDEX, component);
+		group_.add(component);
+		return component;
 	}
 
-	void Panel::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
+	std::shared_ptr<Component> Panel::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
 		add(layoutIndex, component);
 		group_.add(component);
+		return component;
 	}
 
-	void Panel::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
+	std::shared_ptr<LayoutManager> Panel::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
 		layoutManager_ = layoutManager;
+		return layoutManager_;
 	}
 
 	void Panel::setFocus(bool focus) {

@@ -10,8 +10,8 @@
 
 namespace gui {
 
-	Frame::Frame(int x, int y, int width, int height, bool resizeable, 
-		std::string title, std::string icon, bool borderless) : 
+	Frame::Frame(int x, int y, int width, int height, bool resizeable,
+		std::string title, std::string icon, bool borderless) :
 		mw::Window(x, y, width, height, resizeable, title, icon, borderless),
 		defaultClosing_(false),
 		currentPanel_(0) {
@@ -44,18 +44,33 @@ namespace gui {
 		return panels_.size() - 1;
 	}
 
-	void Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
+	std::shared_ptr<Component> Frame::addDefault(const std::shared_ptr<Component>& component) {
+		getCurrentPanel()->add(DEFAULT_INDEX, component);
+		component->setChildsParent();
+		return component;
+	}
+
+	std::shared_ptr<Component> Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(layoutIndex, component);
 		component->setChildsParent();
+		return component;
 	}
 
-	void Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
+	std::shared_ptr<Component> Frame::addDefaultToGroup(const std::shared_ptr<Component>& component) {
+		getCurrentPanel()->addToGroup(DEFAULT_INDEX, component);
+		component->setChildsParent();
+		return component;
+	}
+
+	std::shared_ptr<Component> Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(layoutIndex, component);
 		component->setChildsParent();
+		return component;
 	}
 
-	void Frame::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
+	std::shared_ptr<LayoutManager> Frame::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
 		getCurrentPanel()->setLayout(layoutManager);
+		return layoutManager;
 	}
 
 	std::shared_ptr<LayoutManager> Frame::getLayout() const {
