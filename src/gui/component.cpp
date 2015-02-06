@@ -116,7 +116,7 @@ namespace gui {
 
 		glUseProgram();
 		setGlModelMatrixU(model_);
-		
+
 		GLfloat aPos[] = {
 			0, 0,
 			dim.width_, 0,
@@ -127,8 +127,8 @@ namespace gui {
 		setGlColorU(backgroundColor_);
 		setGlPosA(2, aPos);
 		setGlTexA(2, aPos); // Not used.
-		setGlTextureU(false);		
-		
+		setGlTextureU(false);
+
 		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		drawSprite(background_);
 		drawBorder();
@@ -221,11 +221,11 @@ namespace gui {
 	void Component::setGlColor(float red, float green, float blue, float alpha) const {
 		glColor4f(red, green, blue, alpha);
 	}
-	
+
 	void Component::setGlColor(const mw::Color& color) const {
 		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
 	}
-	
+
 	void Component::setGlModelMatrix(const mw::Matrix44& matrix) const {
 		glMatrixMode(GL_MODELVIEW);
 		glLoadMatrixf(matrix.data());

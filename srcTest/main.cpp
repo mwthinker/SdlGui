@@ -17,7 +17,9 @@
 void testBorderLayout() {
 	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
-	frame.add(gui::BorderLayout::NORTH, std::make_shared<gui::Button>());
+	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH);
+	b->setBorderColor(0,0,0,0);
+	b->setBackground(mw::Sprite("border.png"));
 
 	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
 	panel->setLayout(std::make_shared<gui::VerticalLayout>());

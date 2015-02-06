@@ -72,16 +72,16 @@ namespace gui {
 		mw::signals::Connection addActionListener(const ActionListener::Callback& callback);
 		mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback);
 
-		// If set to true makes the component to always have focus. All parents will 
-		// also be set to have focus. If the current state is the same as the change, 
-		// nothing happens. If set to false, it will stop grabing focus unless there are 
+		// If set to true makes the component to always have focus. All parents will
+		// also be set to have focus. If the current state is the same as the change,
+		// nothing happens. If set to false, it will stop grabbing focus unless there are
 		// children that want to grab focus.
 		void setGrabFocus(bool grabFocus);
 
 		bool isGrabFocus() const;
 
-		// Sets the focus for the component.
-		// Focuslistener is called if focus changes.
+		// Set the focus for the component.
+		// The focus listener is called if the focus changes.
 		virtual void setFocus(bool focus);
 
 		// Return the focus for the component.
@@ -121,7 +121,7 @@ namespace gui {
 			return borderColor_;
 		}
 
-		// Draws the gackground color.
+		// Draw the background color.
 		// Should be derived and should then draw the
 		// component in the size defined by getSize().
 		virtual void draw(Uint32 deltaTime);
@@ -149,14 +149,14 @@ namespace gui {
 		void setLayoutIndex(int layoutIndex);
 
 		// Draw the sprite in the component model.
-		// The current marix model ( getModelMatrix() ) is assumed to be used
+		// The current matrix model ( getModelMatrix() ) is assumed to be used
 		// in the shader.
 		void drawSprite(const mw::Sprite& sprite) const;
 
 		inline const mw::Matrix44& getModelMatrix() {
 			return model_;
 		}
-		
+
 		inline const mw::Matrix44& getProjectionMatrix() {
 			return proj;
 		}
@@ -176,7 +176,7 @@ namespace gui {
 
 		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 		void setGlColorU(const mw::Color& color) const;
-		void setGlTextureU(bool texture) const;		
+		void setGlTextureU(bool texture) const;
 
 #else // MW_OPENGLES2
 		void setGlColor(float red, float green, float blue, float alpha = 1) const;
@@ -201,20 +201,20 @@ namespace gui {
 		// Key events: SDL_TEXTINPUT, SDL_TEXTEDITING, SDL_KEYDOWN and SDL_KEYUP.
 		virtual void handleKeyboard(const SDL_Event& keyEvent);
 
-		// Fixe all child components sizes. Based on the layout manager and
-		// the preffered component size.
-		// If there are no childs nothing happens.
+		// Fix all child components sizes. Based on the layout manager and
+		// the preferred component size.
+		// If there are no children nothing happens.
 		inline virtual void validate() {
 		}
 
 		// Is called in order to signal the parent component that
-		// the childrens sizes must be recalculated.
+		// the children's sizes must be recalculated.
 		void validateParent();
 
 		virtual void drawBorder();
 
 	private:
-		std::shared_ptr<Panel> parent_;		
+		std::shared_ptr<Panel> parent_;
 
 		mw::Sprite background_;
 		mw::Color backgroundColor_;
