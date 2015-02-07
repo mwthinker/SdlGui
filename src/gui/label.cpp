@@ -50,16 +50,8 @@ namespace gui {
 				break;
 		}
 		
-#if MW_OPENGLES2
 		setGlColorU(textColor_);
-		text_.draw();
-#else // MW_OPENGLES2
-		textColor_.glColor4f();
-		glPushMatrix();
-		glTranslatef(x, y, 0);
-		text_.draw();
-		glPopMatrix();
-#endif // MW_OPENGLES2
+		drawText(text_, x, y);
 	}
 
 	void Label::setFont(const mw::Font& font) {

@@ -1,5 +1,6 @@
 #ifndef GUISHADER_H
 #define GUISHADER_H
+#if MW_OPENGLES2
 
 #include <mw/opengl.h>
 #include <mw/matrix.h>
@@ -8,36 +9,47 @@
 #include <mw/color.h>
 #include <mw/sprite.h>
 
-class GuiShader {
-public:
-	GuiShader();
-	GuiShader(std::string vShaderFile, std::string fShaderFile);
+namespace gui {
 
-	void glUseProgram() const;
+	class GuiShader {
+	public:
+		GuiShader();
+		GuiShader(std::string vShaderFile, std::string fShaderFile);
 
-	// Vertex buffer Attributes. ---------------------------
+		void glUseProgram() const;
 
-	void setGlPosA(GLint size, const GLvoid* data) const;
-	void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
+		// Vertex buffer Attributes. ---------------------------
 
-	void setGlTexA(GLint size, const GLvoid* data) const;
-	void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void setGlPosA(GLint size, const GLvoid* data) const;
+		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
 
-	void setGlColorA(GLint size, const GLvoid* data) const;
-	void setGlColorA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void setGlTexA(GLint size, const GLvoid* data) const;
+		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
 
-	// Uniforms. -------------------------------------------
+		// Uniforms. -------------------------------------------
 
-	void setGlMatrixU(const mw::Matrix44& matrix) const;
+		void setGlProjU(const mw::Matrix44& matrix) const;
 
-private:
-	mw::Shader shader_;
+		void setGlModelU(const mw::Matrix44& matrix) const;
 
-	int aPosIndex_;
-	int aTexIndex_;
-	int aColorIndex_;
+		void setGlTextureU(bool texture) const;
 
-	int uMatrixIndex_;
-};
+		void setGlColorU(const mw::Color& color) const;
+		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 
+	private:
+		mw::Shader shader_;
+
+		int aPosIndex_;
+		int aTexIndex_;
+
+		int uProjIndex_;
+		int uModelIndex_;
+		int uIsTexIndex_;
+		int uColorIndex_;
+	};
+
+} // Namespace gui.
+
+#endif // MW_OPENGLES2
 #endif // GUISHADER_H

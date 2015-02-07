@@ -45,9 +45,6 @@ namespace gui {
 		// Sets the color for the text.
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
-	protected:
-		virtual void drawText(Uint32 deltaTime, float x, float y);
-
 	private:
 		void init(std::string initialText, const mw::Font& font);
 		void handleKeyboard(const SDL_Event& keyEvent) override;

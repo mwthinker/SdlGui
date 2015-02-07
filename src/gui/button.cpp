@@ -176,38 +176,29 @@ namespace gui {
 				break;
 		}
 
-#if MW_OPENGLES2		
 		setGlColorU(textColor_);
 
 		if (text_.getWidth() < dim.width_) {
-			text_.draw();
+			drawText(text_, x, y);
 		}
-#else // MW_OPENGLES2
-		textColor_.glColor4f();
-		glPushMatrix();
-		glTranslatef(x, y, 0);
-
-		if (text_.getWidth() < dim.width_) {
-			text_.draw();
-		}
-		glPopMatrix();
-#endif // MW_OPENGLES2
-		mw::checkGlError();
 	}
 
 	void Button::drawOnMouseHover() {
 		Dimension dim = getSize();
-		drawButton(hoverColor_);
+		setGlColorU(hoverColor_);
+		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::drawOnFocus() {
 		Dimension dim = getSize();
-		drawButton(focusColor_);
+		setGlColorU(focusColor_);
+		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::drawOnPush() {
 		Dimension dim = getSize();
-		drawButton(pushColor_);
+		setGlColorU(pushColor_);
+		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::init() {
@@ -224,37 +215,6 @@ namespace gui {
 		pushColor_ = mw::Color(0, 0, 0, 0.15f);
 
 		autoFit_ = false;
-	}
-
-	void Button::drawButton(const mw::Color& color) const {
-		Dimension dim = getSize();
-#if MW_OPENGLES2
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-
-		GLfloat posCoords[] = {
-			0, 0,
-			dim.width_, 0,
-			0, dim.height_,
-			dim.width_, dim.height_};
-
-		setGlPosA(2, posCoords);
-		setGlColorU(color);
-		mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		mw::glDisable(GL_BLEND);
-#else // MW_OPENGLES2
-		color.glColor4f();
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		glBegin(GL_QUADS);
-		glVertex2d(0, 0);
-		glVertex2d(dim.width_, 0);
-		glVertex2d(dim.width_, dim.height_);
-		glVertex2d(0, dim.height_);
-		glEnd();
-		glDisable(GL_BLEND);
-#endif // MW_OPENGLES2
-		mw::checkGlError();
 	}
 	
 } // Namespace gui.

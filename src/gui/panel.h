@@ -6,7 +6,6 @@
 #include "layoutmanager.h"
 
 #include <vector>
-#include <cassert>
 
 namespace gui {
 

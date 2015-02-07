@@ -3,6 +3,7 @@
 
 #include "panel.h"
 #include "layoutmanager.h"
+#include "guishader.h"
 
 #include <mw/window.h>
 #include <mw/color.h>
@@ -174,6 +175,9 @@ namespace gui {
 		WindowListener windowListener_;
 		SdlEventListener sdlEventListener_;
 		UpdateListener updateListener_;
+#if MW_OPENGLES2
+		GuiShader guiShader_;
+#endif // MW_OPENGLES2
 
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;

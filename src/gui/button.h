@@ -126,9 +126,7 @@ namespace gui {
 		// Is drawn if the button was pushed.
 		virtual void drawOnPush();
 		// Draws the label.
-		virtual void drawLabel();
-
-		void drawButton(const mw::Color& color) const;
+		virtual void drawLabel();		
 
 		mw::Text text_;
 

@@ -2,10 +2,12 @@
 #define GUI_COMPONENT_H
 
 #include "dimension.h"
+#include "guishader.h"
 
 #include <mw/signal.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
+#include <mw/text.h>
 
 #include <SDL.h>
 
@@ -148,11 +150,6 @@ namespace gui {
 		// Should correspond to the active LayoutManager in order to work.
 		void setLayoutIndex(int layoutIndex);
 
-		// Draw the sprite in the component model.
-		// The current matrix model ( getModelMatrix() ) is assumed to be used
-		// in the shader.
-		void drawSprite(const mw::Sprite& sprite) const;
-
 		inline const mw::Matrix44& getModelMatrix() {
 			return model_;
 		}
@@ -161,29 +158,27 @@ namespace gui {
 			return proj;
 		}
 
-#ifdef MW_OPENGLES2
+		void drawArrays(GLenum mode, GLfloat* data, int size, bool drawTexture) const;
+		
+		void enableGlTransparancy() const;
+		void disableGlTransparancy() const;
+
 		void glUseProgram() const;
 
+#if MW_OPENGLES2
 		void setGlPosA(GLint size, const GLvoid* data) const;
 		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
 
 		void setGlTexA(GLint size, const GLvoid* data) const;
 		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
-
-		// Uniforms. -------------------------------------------
-		void setGlProjectionMatrixU(const mw::Matrix44& matrix) const;
-		void setGlModelMatrixU(const mw::Matrix44& matrix) const;
-
-		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
-		void setGlColorU(const mw::Color& color) const;
+		
 		void setGlTextureU(bool texture) const;
 
-#else // MW_OPENGLES2
-		void setGlColor(float red, float green, float blue, float alpha = 1) const;
-		void setGlColor(const mw::Color& color) const;
-		void setGlModelMatrix(const mw::Matrix44& matrix) const;
-		void setGlProjectionMatrix(const mw::Matrix44& matrix) const;
 #endif // MW_OPENGLES2
+
+		void setGlModelU(const mw::Matrix44& matrix) const;
+		void setGlColorU(const mw::Color& color) const;
+		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 
 	protected:
 		Component();
@@ -213,6 +208,10 @@ namespace gui {
 
 		virtual void drawBorder();
 
+		void drawSquare(float x, float y, float w, float h) const;
+		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
+		void drawText(const mw::Text& text, float x, float y) const;
+
 	private:
 		std::shared_ptr<Panel> parent_;
 
@@ -236,6 +235,11 @@ namespace gui {
 		int nbrChildGrabFocus_;
 
 		bool isAdded_;
+
+#if MW_OPENGLES2
+		GuiShader guiShader_;
+#endif // MW_OPENGLES2
+
 		mw::Matrix44 model_;
 		static mw::Matrix44 proj;
 	};

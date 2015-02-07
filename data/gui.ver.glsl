@@ -2,18 +2,15 @@
 
 precision mediump float;
 
-uniform mat4 uMat;
+uniform mat4 uProj;
+uniform mat4 uModel;
 
 attribute vec2 aPos;
 attribute vec2 aTex;
-attribute vec4 aColor;
 
 varying vec2 vTex;
-varying vec4 vColor;
 
 void main() {
-	gl_Position = uMat * vec4(aPos, 0, 1);
+	gl_Position = uProj * uModel * vec4(aPos, 0, 1);
 	vTex = aTex;
-	vColor = aColor;
 }
-

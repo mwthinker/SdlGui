@@ -70,11 +70,40 @@ namespace gui {
 				x = dim.width_ - text_.getWidth() - 2;
 				break;
 		}
+
+		setGlColorU(textColor_);
+		enableGlTransparancy();
+		drawText(text_, x, 0);
+		if (editable_) {
+			if (hasFocus()) {
+				markerDeltaTime_ += deltaTime;
 #if MW_OPENGLES2
-		drawText(deltaTime, x, 0);
+				if (markerDeltaTime_ < 500) {
+					float pos[] = {
+						markerWidth_ + x, text_.getCharacterSize(),
+						markerWidth_ + x, 1};
+					setGlPosA(2, pos);
+					setGlTexA(2, pos);
+					setGlTextureU(false);
+					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
+				} else if (markerDeltaTime_ > 1000) {
+					markerDeltaTime_ = 0;
+				}
 #else // MW_OPENGLES2
-		drawText(deltaTime, x, 0);
+				glBegin(GL_LINES);
+				if (markerDeltaTime_ < 500) {
+					glVertex2d(markerWidth_ + x, text_.getCharacterSize() + 0);
+					glVertex2d(markerWidth_ + x, 1 + 0);
+				} else if (markerDeltaTime_ > 1000) {
+					markerDeltaTime_ = 0;
+				}
+
+				glEnd();
 #endif // MW_OPENGLES2
+			} else {
+				markerDeltaTime_ = 0;
+			}
+		}
 	}
 
 	TextField::Alignment TextField::getAlignment() const {
@@ -167,44 +196,6 @@ namespace gui {
 					// One pixel to the right of the last character.
 				}
 				markerWidth_ = (float) w + 1;
-			}
-		}
-	}
-
-	void TextField::drawText(Uint32 deltaTime, float x, float y) {
-#if MW_OPENGLES2
-		setGlColorU(textColor_);
-#else // MW_OPENGLES2
-		textColor_.glColor4f();
-#endif // MW_OPENGLES2
-		text_.draw(x, y);
-		if (editable_) {
-			if (hasFocus()) {
-				markerDeltaTime_ += deltaTime;
-#if MW_OPENGLES2
-				if (markerDeltaTime_ < 500) {
-					float pos[] = {
-						markerWidth_ + x, text_.getCharacterSize() + y,
-						markerWidth_ + x, 1 + y};
-					setGlPosA(2, pos);
-					setGlTextureU(false);
-					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
-				} else if (markerDeltaTime_ > 1000) {
-					markerDeltaTime_ = 0;
-				}
-#else // MW_OPENGLES2
-				glBegin(GL_LINES);
-				if (markerDeltaTime_ < 500) {
-					glVertex2d(markerWidth_ + x, text_.getCharacterSize() + y);
-					glVertex2d(markerWidth_ + x, 1 + y);
-				} else if (markerDeltaTime_ > 1000) {
-					markerDeltaTime_ = 0;
-				}
-
-				glEnd();
-#endif // MW_OPENGLES2
-			} else {
-				markerDeltaTime_ = 0;
 			}
 		}
 	}

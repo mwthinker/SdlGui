@@ -11,54 +11,6 @@ namespace gui {
 			checkBox->setSelected(!checkBox->isSelected());
 		}
 
-		void drawComponentSprite(Component& c, const mw::Sprite& sprite, float w, float h) {
-			const mw::Texture& texture = sprite.getTexture();
-			texture.bindTexture();
-			if (texture.isValid()) {
-#if MW_OPENGLES2
-				// Centered square in ORIGO.
-				GLfloat aPos[] = {
-					0, 0,
-					w, 0,
-					0, h,
-					w, h};
-
-				// Map the sprite out from the texture.
-				GLfloat aTex[] = {
-					sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight(),
-					(sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight(),
-					sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
-					(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
-
-				c.setGlTextureU(true);
-
-				// Load the vertex data.
-				c.setGlPosA(2, aPos);
-				c.setGlTexA(2, aTex);
-
-				// Upload the attributes and draw the sprite.
-				mw::glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-#else // MW_OPENGLES2
-				glEnable(GL_TEXTURE_2D);
-				glBegin(GL_QUADS);
-				glTexCoord2f(sprite.getX() / texture.getWidth(), sprite.getY() / texture.getHeight());
-				glVertex2f(0, 0);
-
-				glTexCoord2f((sprite.getX() + sprite.getWidth()) / texture.getWidth(), sprite.getY() / texture.getHeight());
-				glVertex2f(w, 0);
-
-				glTexCoord2f((sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight());
-				glVertex2f(w, h);
-
-				glTexCoord2f(sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight());
-				glVertex2f(0, h);
-				glEnd();
-				glDisable(GL_TEXTURE_2D);
-#endif // MW_OPENGLES2
-				mw::checkGlError();
-			}
-		}
-
 	}
 
 	CheckBox::CheckBox(float characterSize, const mw::Sprite& box, const mw::Sprite& check) :
@@ -116,32 +68,15 @@ namespace gui {
 
 	void CheckBox::draw(Uint32 deltaTime) {
 		Component::draw(deltaTime);
-#if MW_OPENGLES2
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		enableGlTransparancy();
 		setGlColorU(boxColor_);
-		drawComponentSprite(*this, box_, boxSize_, boxSize_);
+		drawSprite(box_, 0, 0, boxSize_, boxSize_);
 		if (selected_) {
 			setGlColorU(checkColor_);
-			drawComponentSprite(*this, check_, boxSize_, boxSize_);
+			drawSprite(check_, 0, 0, boxSize_, boxSize_);
 		}
-		mw::glDisable(GL_BLEND);
 		setGlColorU(textColor_);
-		text_.draw(boxSize_, 0);
-#else // MW_OPENGLES2		
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		boxColor_.glColor4f();
-		drawComponentSprite(*this, box_, boxSize_, boxSize_);
-		if (selected_) {
-			checkColor_.glColor4f();
-			drawComponentSprite(*this, check_, boxSize_, boxSize_);
-		}
-		glDisable(GL_BLEND);
-		textColor_.glColor4f();
-		text_.draw(boxSize_, 0);
-#endif // MW_OPENGLES2
-		mw::checkGlError();
+		drawText(text_, boxSize_, 0);
 	}
 
 	void CheckBox::setTextColor(const mw::Color& color) {

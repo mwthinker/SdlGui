@@ -1,80 +1,81 @@
 #include "guishaderfunctions.h"
 
+#include <cassert>
 #include <algorithm>
 
 namespace {
-
-	inline void addVertex(GLfloat* data, int& index, const mw::Color& color) {
-		data[index + 4] = color.red_;
-		data[index + 5] = color.green_;
-		data[index + 6] = color.blue_;
-		data[index + 7] = color.alpha_;
-		index += 8;
-	}
+	
+	const int VERTEX_BYTES = 4;
+	const int TRIANGLES_VERTICES = 6;
 
 	inline void addVertex(GLfloat* data, int& index,
 		float x, float y) {
 
 		data[index] = x;
 		data[index + 1] = y;
-		index += 8;
+		index += VERTEX_BYTES;
 	}
 
 	inline void addVertex(GLfloat* data, int& index,
 		float x, float y,
-		float xTex, float yTex,
-		const mw::Color& color) {
+		float xTex, float yTex) {
 
 		data[index++] = x;
 		data[index++] = y;
 
 		data[index++] = xTex;
 		data[index++] = yTex;
-
-		data[index++] = color.red_;
-		data[index++] = color.green_;
-		data[index++] = color.blue_;
-		data[index++] = color.alpha_;
 	}
-
+	
 	// Add a triangle, GL_TRIANGLES, i.e. 3 vertices.
-	inline void addTriangle(GLfloat* data, int& index,
-		const mw::Color& color) {
-
-		addVertex(data, index, color);
-		addVertex(data, index, color);
-		addVertex(data, index, color);
-	}
-
-	// Add a triangle, GL_TRIANGLES, i.e. 3 vertices.
-	inline void addTriangle(GLfloat* data, int& index,
+	inline void addTriangle(GLenum mode, GLfloat* data, int& index,
 		float x1, float y1,
 		float x2, float y2,
 		float x3, float y3) {
 
-		addVertex(data, index, x1, y1);
-		addVertex(data, index, x2, y2);
-		addVertex(data, index, x3, y3);
+		switch (mode) {
+			case GL_TRIANGLES:
+				addVertex(data, index, x1, y1);
+				addVertex(data, index, x2, y2);
+				addVertex(data, index, x3, y3);
+				break;
+			case GL_TRIANGLE_FAN:
+				assert(0);
+				break;
+			case GL_TRIANGLE_STRIP:
+				assert(0);
+				break;
+			default:
+				break;
+		}
 	}
 
 	// Add a triangle, GL_TRIANGLES, i.e. 3 vertices.
-	inline void addTriangle(GLfloat* data, int& index,
+	inline void addTriangle(GLenum mode, GLfloat* data, int& index,
 		float x1, float y1,
 		float x2, float y2,
 		float x3, float y3,
 		float xTex1, float yTex1,
 		float xTex2, float yTex2,
-		float xTex3, float yTex3,
-		const mw::Color& color) {
-
-		addVertex(data, index, x1, y1, xTex1, yTex1, color);
-		addVertex(data, index, x2, y2, xTex2, yTex2, color);
-		addVertex(data, index, x3, y3, xTex3, yTex3, color);
+		float xTex3, float yTex3) {
+		switch (mode) {
+			case GL_TRIANGLES:
+				addVertex(data, index, x1, y1, xTex1, yTex1);
+				addVertex(data, index, x2, y2, xTex2, yTex2);
+				addVertex(data, index, x3, y3, xTex3, yTex3);
+				break;
+			case GL_TRIANGLE_FAN:
+				assert(0);
+				break;
+			case GL_TRIANGLE_STRIP:
+				assert(0);
+				break;
+		}
 	}
 
 } // Namespace mw.
 
-void addSquareToGuiShader(GLfloat* data, int& index,
+void addSquare(GLenum mode, GLfloat* data, int& index,
 	float x, float y,
 	float w, float h,
 	const mw::Sprite& sprite, const mw::Color& color) {
@@ -82,55 +83,37 @@ void addSquareToGuiShader(GLfloat* data, int& index,
 	int textureH = sprite.getTexture().getHeight();
 
 	// Left triangle |_
-	addTriangle(data, index,
+	addTriangle(mode, data, index,
 		x, y,
 		x + w, y,
 		x, y + h,
 		sprite.getX() / textureW, sprite.getY() / textureH,
 		(sprite.getX() + sprite.getWidth()) / textureW, sprite.getY() / textureH,
-		sprite.getX() / textureW, (sprite.getY() + sprite.getHeight()) / textureH,
-		color);
+		sprite.getX() / textureW, (sprite.getY() + sprite.getHeight()) / textureH);
 	//                _
 	// Right triangle  |
-	addTriangle(data, index,
+	addTriangle(mode, data, index,
 		x, y + h,
 		x + w, y,
 		x + w, y + h,
 		sprite.getX() / textureW, (sprite.getY() + sprite.getHeight()) / textureH,
 		(sprite.getX() + sprite.getWidth()) / textureW, sprite.getY() / textureH,
-		(sprite.getX() + sprite.getWidth()) / textureW, (sprite.getY() + sprite.getHeight()) / textureH,
-		color);
+		(sprite.getX() + sprite.getWidth()) / textureW, (sprite.getY() + sprite.getHeight()) / textureH);
 }
 
-void addSquareToGuiShader(GLfloat* data, int& index,
+void addSquare(GLenum mode, GLfloat* data, int& index,
 	float x, float y,
 	float w, float h) {
 
 	// Left triangle |_
-	addTriangle(data, index,
+	addTriangle(mode, data, index,
 		x, y,
 		x + w, y,
 		x, y + h);
 	//                _
 	// Right triangle  |
-	addTriangle(data, index,
+	addTriangle(mode, data, index,
 		x, y + h,
 		x + w, y,
 		x + w, y + h);
-}
-
-void addSquareToGuiShader(GLfloat* data, int& index,
-	const mw::Color& color) {
-
-	// Left triangle |_
-	addTriangle(data, index, color);
-	//                _
-	// Right triangle  |
-	addTriangle(data, index, color);
-}
-
-void setGuiShaderVertexAttribPointer(const GuiShader& shader) {
-	shader.setGlPosA(2, sizeof(GLfloat) * 8, (GLvoid*) 0);
-	shader.setGlTexA(2, sizeof(GLfloat) * 8, (GLvoid*) (sizeof(GLfloat) * 2));
-	shader.setGlColorA(4, sizeof(GLfloat) * 8, (GLvoid*) (sizeof(GLfloat) * 4));
 }

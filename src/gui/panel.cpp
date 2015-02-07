@@ -28,6 +28,9 @@ namespace gui {
     std::shared_ptr<Component> Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		// Was already added?
 		assert(!component->isAdded_);
+#if MW_OPENGLES2
+		component->guiShader_ = guiShader_;
+#endif // MW_OPENGLES2
 		component->isAdded_ = true;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
@@ -92,15 +95,7 @@ namespace gui {
 		// Draw the components.
 		for (auto& component : *this) {
 			if (component->isVisible()) {
-#if MW_OPENGLES2
 				component->draw(deltaTime);
-#else // MW_OPENGLES2
-				glPushMatrix();
-				Point p = component->getLocation();
-				glTranslated(p.x_, p.y_, 0.f);
-				component->draw(deltaTime);
-				glPopMatrix();
-#endif // MW_OPENGLES2
 			}
 		}
 	}
