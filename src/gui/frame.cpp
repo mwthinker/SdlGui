@@ -26,7 +26,7 @@ namespace gui {
 
 		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
 
-		// Init the opengl settings.
+		// Initialization the OpenGL settings.
 		resize(getWidth(), getHeight());
 
 		getCurrentPanel()->setBackgroundColor(1, 1, 1);

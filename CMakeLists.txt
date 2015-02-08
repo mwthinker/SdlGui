@@ -23,8 +23,6 @@ set(SOURCES
 	src/gui/gridlayout.h
 	src/gui/guishader.cpp
 	src/gui/guishader.h
-	src/gui/guishaderfunctions.cpp
-	src/gui/guishaderfunctions.h
 	src/gui/traversalgroup.cpp
 	src/gui/traversalgroup.h
 	src/gui/inputformatter.h

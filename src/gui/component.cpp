@@ -300,7 +300,7 @@ namespace gui {
 			dimension_.width_, 0, 0, 0,
 			dimension_.width_, 1, 0, 0
 		};
-		
+
 		setGlColorU(borderColor_);
 		drawArrays(GL_TRIANGLES, data, 6 * 4 * 4, false);
 	}
@@ -320,7 +320,7 @@ namespace gui {
 		// Upload the attributes and draw the sprite.
 		drawArrays(GL_TRIANGLE_STRIP, data, 16, false);
 	}
-	
+
 	void Component::drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const {
 		const mw::Texture& texture = sprite.getTexture();
 		if (texture.isValid()) {
@@ -336,26 +336,25 @@ namespace gui {
 				sprite.getX() / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight(),
 				x + w, y + h,
 				(sprite.getX() + sprite.getWidth()) / texture.getWidth(), (sprite.getY() + sprite.getHeight()) / texture.getHeight()};
-			
+
 			// Upload the attributes and draw the sprite.
 			drawArrays(GL_TRIANGLE_STRIP, data, 16, true);
 		}
 	}
 
 	void Component::drawText(const mw::Text& text, float x, float y) const {
-		const mw::Texture& texture = text.getTexture();
-		if (!text.getText().empty() && texture.isValid()) {
-			texture.bindTexture();
+		if (text.isValid()) {
+			text.bindTexture();
 
 			// Lower left corner is in ORIGO.
 			GLfloat data[16] = {
 				x, y,
 				0, 0,
-				x + texture.getWidth(), y,
+				x + text.getWidth(), y,
 				1, 0,
-				x, texture.getHeight() + y,
+				x, text.getHeight() + y,
 				0, 1,
-				x + texture.getWidth(), texture.getHeight() + y,
+				x + text.getWidth(), text.getHeight() + y,
 				1, 1};
 
 			// Upload the attributes and draw the sprite.
