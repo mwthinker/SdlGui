@@ -24,7 +24,7 @@ namespace gui {
 		// Default layout for Frame.
 		pushBackPanel(std::make_shared<Panel>());
 
-		getCurrentPanel()->setLayout(std::make_shared<BorderLayout>());
+		getCurrentPanel()->setLayout<BorderLayout>();
 
 		// Initialization the OpenGL settings.
 		resize(getWidth(), getHeight());
@@ -35,57 +35,69 @@ namespace gui {
 	}
 
 	int Frame::addPanelBack() {
-		std::shared_ptr<Panel> p = std::make_shared<Panel>();
-		p->setLayout(std::make_shared<BorderLayout>());
-		p->setChildsParent();
+		auto p = std::make_shared<Panel>();
+		p->setLayout<BorderLayout>();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		p->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		p->setChildsParent();
 		return pushBackPanel(p);
 	}
 
 	int Frame::pushBackPanel(const std::shared_ptr<Panel>& panel) {
 		panels_.push_back(panel);
-		panel->setChildsParent();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		panel->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		panel->setChildsParent();
 		return panels_.size() - 1;
 	}
 
 	std::shared_ptr<Component> Frame::addDefault(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(DEFAULT_INDEX, component);
-		component->setChildsParent();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		component->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		component->setChildsParent();
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(layoutIndex, component);
-		component->setChildsParent();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		component->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		component->setChildsParent();
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addDefaultToGroup(const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(DEFAULT_INDEX, component);
-		component->setChildsParent();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		component->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		component->setChildsParent();
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->addToGroup(layoutIndex, component);
-		component->setChildsParent();
 #if MW_OPENGLES2
+        // Must be called before setChildsParent() in order to give
+        // all components the shader.
 		component->guiShader_ = guiShader_;
 #endif // MW_OPENGLES2
+		component->setChildsParent();
 		return component;
 	}
 

@@ -249,7 +249,7 @@ namespace gui {
 
 #endif // MW_OPENGLES2
 
-	Component::Component() : parent_(nullptr), borderColor_(0,0,0), layoutIndex_(0), visible_(true),
+	Component::Component() : parent_(nullptr), borderColor_(0,0,0), backgroundColor_(0,0,0), layoutIndex_(0), visible_(true),
 		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),
 		model_(mw::I_44) {
 

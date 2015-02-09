@@ -41,7 +41,7 @@ namespace gui {
 		// I.e. Deallocates the component when the panel is deallocated.
 		std::shared_ptr<Component> add(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Adds the component to the container using the layout specified
+		// Add the component to the container using the layout specified
 		// by the layout manager and the layoutIndex. Takes the ownership.
 		// I.e. Deallocates the component when the panel is deallocated.
 		template <class Comp, class... Args>
@@ -121,7 +121,6 @@ namespace gui {
 		void setChildsParent() override;
 
 	private:
-
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;

@@ -17,12 +17,11 @@
 void testBorderLayout() {
 	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
-	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH);
-	b->setBorderColor(0,0,0,0);
-	b->setBackground(mw::Sprite("border.png"));
-
-	std::shared_ptr<gui::Panel> panel = std::make_shared<gui::Panel>();
-	panel->setLayout(std::make_shared<gui::VerticalLayout>());
+	mw::Font font("Ubuntu-B.ttf", 16);
+	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
+	b->setTextColor(1,0,0);
+	auto panel = std::make_shared<gui::Panel>();
+	panel->setLayout<gui::VerticalLayout>();
 	frame.add(gui::BorderLayout::CENTER, panel);
 	frame.add<gui::Button>(gui::BorderLayout::WEST);
 	frame.add<gui::Button>(gui::BorderLayout::EAST);
@@ -30,7 +29,7 @@ void testBorderLayout() {
 
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
-	panel->addDefaultToGroup<gui::Button>();
+	panel->addDefaultToGroup<gui::Button>("Hello", font);
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
 	frame.startLoop();
 }

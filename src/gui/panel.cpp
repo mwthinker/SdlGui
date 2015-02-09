@@ -13,8 +13,13 @@ namespace gui {
 	}
 
 	void Panel::setChildsParent() {
-		for (auto& c : components_) {
+	    for (auto& c : components_) {
 			c->parent_ = std::static_pointer_cast<Panel>(shared_from_this());
+#if MW_OPENGLES2
+            // Must be called before setChildsParent() in order to give
+            // all components the shader.
+            c->guiShader_ = guiShader_;
+#endif // MW_OPENGLES2
 			c->setChildsParent();
 		}
 	}
@@ -28,9 +33,6 @@ namespace gui {
     std::shared_ptr<Component> Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		// Was already added?
 		assert(!component->isAdded_);
-#if MW_OPENGLES2
-		component->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		component->isAdded_ = true;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
@@ -100,7 +102,6 @@ namespace gui {
 		}
 	}
 
-	// Todo! Reverse y-axis!
 	void Panel::handleMouse(const SDL_Event& mouseEvent) {
 		std::shared_ptr<Component> currentComponent;
 		switch (mouseEvent.type) {

@@ -159,7 +159,7 @@ namespace gui {
 		}
 
 		void drawArrays(GLenum mode, GLfloat* data, int size, bool drawTexture) const;
-		
+
 		void enableGlTransparancy() const;
 		void disableGlTransparancy() const;
 
@@ -171,7 +171,7 @@ namespace gui {
 
 		void setGlTexA(GLint size, const GLvoid* data) const;
 		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
-		
+
 		void setGlTextureU(bool texture) const;
 
 #endif // MW_OPENGLES2
