@@ -26,7 +26,6 @@ namespace gui {
 
 	std::shared_ptr<Component> Panel::addDefault(const std::shared_ptr<Component>& component) {
 		add(DEFAULT_INDEX, component);
-		component->setChildsParent();
 		return component;
 	}
 
