@@ -180,6 +180,10 @@ namespace gui {
 		void setGlColorU(const mw::Color& color) const;
 		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
 
+		void drawSquare(float x, float y, float w, float h) const;
+		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
+		void drawText(const mw::Text& text, float x, float y) const;
+
 	protected:
 		Component();
 
@@ -207,10 +211,6 @@ namespace gui {
 		void validateParent();
 
 		virtual void drawBorder();
-
-		void drawSquare(float x, float y, float w, float h) const;
-		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
-		void drawText(const mw::Text& text, float x, float y) const;
 
 	private:
 		std::shared_ptr<Panel> parent_;
