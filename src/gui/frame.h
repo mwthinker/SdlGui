@@ -37,7 +37,7 @@ namespace gui {
 		// Will assert if the component already added.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addDefault(Args... args) {
-			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			auto c = std::make_shared<Comp>(args...);
 			add(DEFAULT_INDEX, c);
 			return c;
 		}
@@ -50,7 +50,7 @@ namespace gui {
 		// Will assert if the component already added.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> add(int layoutIndex, Args... args) {
-			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			auto c = std::make_shared<Comp>(args...);
 			add(layoutIndex, c);
 			return c;
 		}
@@ -63,7 +63,7 @@ namespace gui {
 		// a traversal group too.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addDefaultToGroup(Args... args) {
-			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			auto c = std::make_shared<Comp>(args...);
 			addToGroup(DEFAULT_INDEX, c);
 			return c;
 		}
@@ -76,7 +76,7 @@ namespace gui {
 		// a traversal group too.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args) {
-			std::shared_ptr<Comp> c = std::make_shared<Comp>(args...);
+			auto c = std::make_shared<Comp>(args...);
 			addToGroup(layoutIndex, c);
 			return c;
 		}
@@ -90,7 +90,7 @@ namespace gui {
 
 		template <class LManager, class... Args>
 		std::shared_ptr<LManager> setLayout(Args... args) {
-			std::shared_ptr<LManager> m = std::make_shared<LManager>(args...);
+			auto m = std::make_shared<LManager>(args...);
 			setLayout(m);
 			return m;
 		}
