@@ -39,10 +39,10 @@ namespace gui {
 		Alignment getAlignment() const;
 		void setAlignment(Alignment alignment);
 
-		// Sets the color for the text.
+		// Set the color for the text.
 		void setTextColor(const mw::Color& textColor);
 
-		// Sets the color for the text.
+		// Set the color for the text.
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
 	private:
