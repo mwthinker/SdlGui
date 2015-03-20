@@ -101,11 +101,7 @@ namespace gui {
 	bool Component::hasFocus() const {
 		return focus_;
 	}
-
-	std::shared_ptr<Panel> Component::getParent() const {
-		return parent_;
-	}
-
+	
 	void Component::draw(Uint32 deltaTime) {
 		// Draw panel background.
 		Dimension dim = getSize();
@@ -249,7 +245,8 @@ namespace gui {
 
 #endif // MW_OPENGLES2
 
-	Component::Component() : parent_(nullptr), borderColor_(0,0,0), backgroundColor_(1,1,1), layoutIndex_(0), visible_(true),
+	Component::Component() : parent_(nullptr), ancestor_(nullptr),
+		borderColor_(0, 0, 0), backgroundColor_(1, 1, 1), layoutIndex_(0), visible_(true),
 		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),
 		model_(mw::I_44) {
 
@@ -270,38 +267,41 @@ namespace gui {
 	}
 
 	void Component::drawBorder() {
+		setGlColorU(borderColor_);
+		drawBorder(0, 0, dimension_.width_, dimension_.height_);
+	}
+
+	void Component::drawBorder(float x, float y, float w, float h) const {
 		GLfloat data[6 * 4 * 4] = {
 			// North.
-			0, dimension_.height_ - 1, 0, 0,
-			dimension_.width_, dimension_.height_ - 1, 0, 0,
-			0, dimension_.height_, 0, 0,
-			0, dimension_.height_, 0, 0,
-			dimension_.width_, dimension_.height_ - 1, 0, 0,
-			dimension_.width_, dimension_.height_, 0, 0,
+			x, y + h - 1, 0, 0,
+			x + w, y + h - 1, 0, 0,
+			x, y + h, 0, 0,
+			x, y + h, 0, 0,
+			x + w, y + h - 1, 0, 0,
+			x + w, y + h, 0, 0,
 			// West.
-			0, 0, 0, 0,
-			1, 0, 0, 0,
-			0, dimension_.height_ - 1, 0, 0,
-			0, dimension_.height_ - 1, 0, 0,
-			1, 0, 0, 0,
-			1, dimension_.height_ - 1, 0, 0,
+			x, y, 0, 0,
+			x + 1, y, 0, 0,
+			x, y + h - 1, 0, 0,
+			x, y + h - 1, 0, 0,
+			x + 1, y, 0, 0,
+			x + 1, y + h - 1, 0, 0,
 			// East.
-			dimension_.width_ - 1, 1, 0, 0,
-			dimension_.width_, 1, 0, 0,
-			dimension_.width_ - 1, dimension_.height_ - 1, 0, 0,
-			dimension_.width_ - 1, dimension_.height_ - 1, 0, 0,
-			dimension_.width_, 1, 0, 0,
-			dimension_.width_, dimension_.height_ - 1, 0, 0,
+			x + w - 1, y + 1, 0, 0,
+			x + w, y + 1, 0, 0,
+			x + w - 1, y + h - 1, 0, 0,
+			x + w - 1, y + h - 1, 0, 0,
+			x + w, y + 1, 0, 0,
+			x + w, y + h - 1, 0, 0,
 			// South.
-			0, 0, 0, 0,
-			dimension_.width_, 0, 0, 0,
-			0, 1, 0, 0,
-			0, 1, 0, 0,
-			dimension_.width_, 0, 0, 0,
-			dimension_.width_, 1, 0, 0
+			x, y, 0, 0,
+			x + w, y, 0, 0,
+			x, y + 1, 0, 0,
+			x, y + 1, 0, 0,
+			x + w, y, 0, 0,
+			x + w, y + 1, 0, 0
 		};
-
-		setGlColorU(borderColor_);
 		drawArrays(GL_TRIANGLES, data, 6 * 4 * 4, false);
 	}
 

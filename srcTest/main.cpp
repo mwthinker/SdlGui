@@ -10,6 +10,7 @@
 #include <gui/checkbox.h>
 #include <gui/horizontallayout.h>
 #include <gui/gridlayout.h>
+#include <gui/combobox.h>
 
 #include <cassert>
 #include <iostream>
@@ -29,6 +30,12 @@ void testBorderLayout() {
 
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+
+	auto comboBox = panel->addDefaultToGroup<gui::ComboBox>(font);
+	comboBox->addItem("Option 1");
+	comboBox->addItem("Option 2");
+	comboBox->addItem("Option 3");
+
 	panel->addDefaultToGroup<gui::Button>("Hello", font);
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
 	frame.startLoop();
@@ -66,6 +73,6 @@ void testFlowLayout() {
 
 int main(int argc, char** argv) {
 	testBorderLayout();
-	testFlowLayout();
+	//testFlowLayout();
 	return 0;
 }

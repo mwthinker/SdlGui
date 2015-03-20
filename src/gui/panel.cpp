@@ -1,6 +1,7 @@
 #include "panel.h"
 #include "component.h"
 #include "flowlayout.h"
+#include "frame.h"
 
 #include <list>
 #include <cassert>
@@ -15,6 +16,11 @@ namespace gui {
 	void Panel::setChildsParent() {
 	    for (auto& c : components_) {
 			c->parent_ = std::static_pointer_cast<Panel>(shared_from_this());
+			if (ancestor_ != nullptr) {
+				c->ancestor_ = ancestor_;
+			} else {
+				c->ancestor_ = c->parent_;
+			}
 #if MW_OPENGLES2
             // Must be called before setChildsParent() in order to give
             // all components the shader.
@@ -80,10 +86,6 @@ namespace gui {
 
 	std::vector<std::shared_ptr<Component>>::iterator Panel::end() {
 		return components_.end();
-	}
-
-	int Panel::nbrOfComponents() const {
-		return components_.size();
 	}
 
 	const std::vector<std::shared_ptr<Component>>& Panel::getComponents() const {
@@ -224,6 +226,22 @@ namespace gui {
 		}
 
 		group_.sort();
+	}
+
+	mw::signals::Connection Panel::addDrawListener(const DrawListener::Callback& callback) {
+		return drawListener_.connect(callback);
+	}
+
+	void Panel::drawFirst(Frame& frame, Uint32 deltaTime) {
+		for (auto& child : *this) {
+			child->drawFirst(frame, deltaTime);
+		}
+	}
+
+	void Panel::drawLast(Frame& frame, Uint32 deltaTime) {
+		for (auto& child : *this) {
+			child->drawLast(frame, deltaTime);
+		}
 	}
 
 } // Namespace gui.

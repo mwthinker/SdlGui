@@ -72,7 +72,7 @@ namespace gui {
 		mw::signals::Connection addMouseListener(const MouseListener::Callback& callback);
 		mw::signals::Connection addFocusListener(const FocusListener::Callback& callback);
 		mw::signals::Connection addActionListener(const ActionListener::Callback& callback);
-		mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback);
+		mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback);		
 
 		// If set to true makes the component to always have focus. All parents will
 		// also be set to have focus. If the current state is the same as the change,
@@ -89,7 +89,13 @@ namespace gui {
 		// Return the focus for the component.
 		bool hasFocus() const;
 
-		std::shared_ptr<Panel> getParent() const;
+		inline std::shared_ptr<Panel> getParent() const {
+			return parent_;
+		}
+
+		inline std::shared_ptr<Panel> getAncestor() const {
+			return parent_;
+		}
 
 		inline void setBackground(const mw::Sprite& background) {
 			background_ = background;
@@ -122,25 +128,9 @@ namespace gui {
 		inline const mw::Color& getBorderColor() const {
 			return borderColor_;
 		}
-
-		// Draw the background color.
-		// Should be derived and should then draw the
-		// component in the size defined by getSize().
-		virtual void draw(Uint32 deltaTime);
-
+		
 		// Do action.
-		void doAction();
-
-		// Only called when the mouse leave the component.
-		inline virtual void mouseMotionLeave() {
-		}
-
-		// Only called when the mouse up was inside the component.
-		// And the up event was outside.
-		inline virtual void mouseOutsideUp() {
-		}
-
-		virtual void panelChanged(bool active);
+		void doAction();		
 
 		// Get the layout index for the component.
 		// 0 is the default value.
@@ -183,9 +173,22 @@ namespace gui {
 		void drawSquare(float x, float y, float w, float h) const;
 		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
 		void drawText(const mw::Text& text, float x, float y) const;
-
+		void drawBorder(float x, float y, float w, float h) const;
+		
 	protected:
 		Component();
+
+		virtual void drawBorder();
+
+		// Draw the background color.
+		// Should be derived and should then draw the
+		// component in the size defined by getSize().
+		virtual void draw(Uint32 deltaTime);
+
+	
+		// Is called in order to signal the parent component that
+		// the children's sizes must be recalculated.
+		void validateParent();
 
 		inline virtual void setChildsParent() {
 		}
@@ -206,14 +209,26 @@ namespace gui {
 		inline virtual void validate() {
 		}
 
-		// Is called in order to signal the parent component that
-		// the children's sizes must be recalculated.
-		void validateParent();
+		// Only called when the mouse leave the component.
+		inline virtual void mouseMotionLeave() {
+		}
 
-		virtual void drawBorder();
+		// Only called when the mouse up was inside the component.
+		// And the up event was outside.
+		inline virtual void mouseOutsideUp() {
+		}
+
+		virtual void panelChanged(bool active);
+
+		inline virtual void drawFirst(Frame& frame, Uint32 deltaTime) {
+		}
+
+		inline virtual void drawLast(Frame& frame, Uint32 deltaTime) {
+		}
 
 	private:
 		std::shared_ptr<Panel> parent_;
+		std::shared_ptr<Panel> ancestor_;
 
 		mw::Sprite background_;
 		mw::Color backgroundColor_;

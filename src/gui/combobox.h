@@ -7,6 +7,7 @@
 #include <mw/font.h>
 
 #include <vector>
+#include <memory>
 
 namespace gui {
 
@@ -19,7 +20,7 @@ namespace gui {
 		void addItem(std::string item);
 
 		std::string getChosenItemText() const {
-			return chosenItem_;
+			return chosenItem_.getText();
 		}
 
 		void draw(Uint32 deltaTime) override;
@@ -52,13 +53,18 @@ namespace gui {
 			return items_.size();
 		}
 
+		void drawLast(Frame& frame, Uint32 deltaTime) override;
+
 	private:
 		void handleKeyboard(const SDL_Event& keyEvent) override;
 
-		mw::Color textColor_, markColor_;
-		mw::Font font_;
+		void handleMouse(const SDL_Event& mouseEvent) override;
+		
 		std::vector<mw::Text> items_;
-		std::string chosenItem_;
+		mw::Color textColor_, markColor_;
+		mw::Text chosenItem_;
+		bool addedDrawFunction_;
+		bool mouseInside_, pushed_;
 	};
 
 } // Namespace gui.

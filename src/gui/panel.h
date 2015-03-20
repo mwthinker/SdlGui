@@ -11,19 +11,21 @@ namespace gui {
 
 	class LayoutManager;
 
+	using DrawListener = mw::Signal<Frame&, Uint32>;
+
 	// Creates a panel able to contain other components. It manage the
 	// the layout of the components based on the layout manager.
 	class Panel : public Component {
 	public:
 		friend class Frame;
 
-		// Creates a empty panel. The default LayoutManager is FlowLayout.
+		// Create a empty panel. The default LayoutManager is FlowLayout.
 		Panel();
 
 		virtual ~Panel() {
 		}
 
-		 // Add the component, with the provided layoutIndex.
+		// Add the component, with the provided layoutIndex.
 		// Will assert if the component already added.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> addDefault(Args... args) {
@@ -77,8 +79,7 @@ namespace gui {
 		// a traversal group too.
 		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Sets the layout manager. Takes over the ownership of the layoutManager.
-		// The old layoutManager are deallocated.
+		// Set the current layout manager.
 		std::shared_ptr<LayoutManager> setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
 		template <class LManager, class... Args>
@@ -88,17 +89,18 @@ namespace gui {
 			return m;
 		}
 
-		// Gets the current layout manager. Do not deallocate the layout manager
-		// the panel takes care of that!
+		// Get the current layout manager.
 		std::shared_ptr<LayoutManager> getLayout() const;
 
 		std::vector<std::shared_ptr<Component>>::iterator begin();
 		std::vector<std::shared_ptr<Component>>::iterator end();
 
-		// Returns the number of components contained.
-		int nbrOfComponents() const;
+		// Return the number of components contained.
+		inline int getComponentsCount() const {
+			return components_.size();
+		}
 
-		// Gets the list holding all contained components.
+		// Get the list holding all contained components.
 		const std::vector<std::shared_ptr<Component>>& getComponents() const;
 
 		void draw(Uint32 deltaTime) override;
@@ -117,13 +119,20 @@ namespace gui {
 
 		void setFocus(bool focus) override;
 
+		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
+
 	protected:
 		void setChildsParent() override;
+
+		void drawFirst(Frame& frame, Uint32 deltaTime) override;
+
+		void drawLast(Frame& frame, Uint32 deltaTime) override;
 
 	private:
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;
+		DrawListener drawListener_;
 
 		std::shared_ptr<Component> mouseMotionInsideComponent_;
 		std::shared_ptr<Component> mouseDownInsideComponent_;

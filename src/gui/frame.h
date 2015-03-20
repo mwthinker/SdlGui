@@ -19,11 +19,13 @@ namespace gui {
 	class Frame;
 	using WindowListener = mw::Signal<Frame&, const SDL_Event&>;
 	using SdlEventListener = mw::Signal<Frame&, const SDL_Event&>;
-	using UpdateListener = mw::Signal<Frame&, Uint32>;
+	using DrawListener = mw::Signal<Frame&, Uint32>;
 
 	class Frame : public mw::Window {
 	public:
-		Frame(int x, int y, int width, int height, bool resizeable = true, std::string title = "Frame", std::string icon = "", bool borderless = false);
+		Frame(int x, int y, int width, int height,
+			bool resizeable = true, std::string title = "Frame",
+			std::string icon = "", bool borderless = false);
 
 		// Add the default panel in the back of the internal vector.
 		// The panel index is returned.
@@ -118,7 +120,7 @@ namespace gui {
 		// Returns if the default closing is active or not.
 		bool isDefaultClosing() const;
 
-		inline int getNbrOfPanels() const {
+		inline int getPanelsCount() const {
 			return panels_.size();
 		}
 
@@ -158,8 +160,8 @@ namespace gui {
 		}
 
 		// Add a update listener to the current panel.
-		inline mw::signals::Connection addUpdateListener(const UpdateListener::Callback& callback) {
-			return updateListener_.connect(callback);
+		inline mw::signals::Connection addDrawListener(const DrawListener::Callback& callback) {
+			return getCurrentPanel()->addDrawListener(callback);
 		}
 
 	private:
@@ -174,7 +176,6 @@ namespace gui {
 		std::queue<SDL_Event> eventQueue_;
 		WindowListener windowListener_;
 		SdlEventListener sdlEventListener_;
-		UpdateListener updateListener_;
 #if MW_OPENGLES2
 		GuiShader guiShader_;
 #endif // MW_OPENGLES2

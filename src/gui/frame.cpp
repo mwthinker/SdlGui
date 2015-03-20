@@ -160,7 +160,7 @@ namespace gui {
 	}
 
 	void Frame::update(Uint32 deltaTime) {
-		updateListener_(*this, deltaTime);
+		getCurrentPanel()->drawFirst(*this, deltaTime);
 
 		// Perform non critical event updates.
 		while (!eventQueue_.empty()) {
@@ -215,6 +215,7 @@ namespace gui {
 			}
 		}
 		getCurrentPanel()->draw(deltaTime);
+		getCurrentPanel()->drawLast(*this, deltaTime);
 	}
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {
