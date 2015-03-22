@@ -146,57 +146,26 @@ namespace gui {
 				break;
 		}
 		mw::checkGlError();
-#if MW_OPENGLES2
 		setGlTextureU(drawTexture);
 		setGlPosA(2, sizeof(GLfloat) * 4, (GLvoid*) data);
 		setGlTexA(2, sizeof(GLfloat) * 4, (GLvoid*) (data + 2));
-		mw::glDrawArrays(mode, 0, size / 4);
-#else // MW_OPENGLES2
-		if (drawTexture) {
-			glEnable(GL_TEXTURE_2D);
-			glBegin(mode);
-			for (int i = 0; i < size; i += 4) {
-				glTexCoord2f(data[i + 2], data[i + 3]);
-				glVertex2f(data[i], data[i + 1]);
-			}
-			glEnd();
-			glDisable(GL_TEXTURE_2D);
-		} else {
-			glBegin(mode);
-			for (int i = 0; i < size; i += 4) {
-				glVertex2f(data[i], data[i + 1]);
-			}
-			glEnd();
-		}
-#endif // MW_OPENGLES2
+		glDrawArrays(mode, 0, size / 4);
 		mw::checkGlError();
 	}
 
 	void Component::enableGlTransparancy() const {
-#if MW_OPENGLES2
-		mw::glEnable(GL_BLEND);
-		mw::glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#else // MW_OPENGLES2
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-#endif // MW_OPENGLES2
 	}
 
 	void Component::disableGlTransparancy() const {
-#if MW_OPENGLES2
-		mw::glDisable(GL_BLEND);
-#else // MW_OPENGLES2
 		glDisable(GL_BLEND);
-#endif // MW_OPENGLES2
 	}
 
 	void Component::glUseProgram() const {
-#if MW_OPENGLES2
 		guiShader_.glUseProgram();
-#endif // MW_OPENGLES2
 	}
 
-#if MW_OPENGLES2
 	void Component::setGlPosA(GLint size, const GLvoid* data) const {
 		guiShader_.setGlPosA(size, data);
 	}
@@ -228,23 +197,7 @@ namespace gui {
 	void Component::setGlColorU(float red, float green, float blue, float alpha) const {
 		guiShader_.setGlColorU(red, green, blue, alpha);
 	}
-
-#else // MW_OPENGLES2
-	void Component::setGlColorU(float red, float green, float blue, float alpha) const {
-		glColor4f(red, green, blue, alpha);
-	}
-
-	void Component::setGlColorU(const mw::Color& color) const {
-		glColor4f(color.red_, color.green_, color.blue_, color.alpha_);
-	}
-
-	void Component::setGlModelU(const mw::Matrix44& matrix) const {
-		glMatrixMode(GL_MODELVIEW);
-		glLoadMatrixf(matrix.data());
-	}
-
-#endif // MW_OPENGLES2
-
+	
 	Component::Component() : parent_(nullptr), ancestor_(nullptr),
 		borderColor_(0, 0, 0), backgroundColor_(1, 1, 1), layoutIndex_(0), visible_(true),
 		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),

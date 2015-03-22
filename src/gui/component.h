@@ -4,6 +4,7 @@
 #include "dimension.h"
 #include "guishader.h"
 
+#include <mw/matrix.h>
 #include <mw/signal.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
@@ -154,8 +155,6 @@ namespace gui {
 		void disableGlTransparancy() const;
 
 		void glUseProgram() const;
-
-#if MW_OPENGLES2
 		void setGlPosA(GLint size, const GLvoid* data) const;
 		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
 
@@ -163,8 +162,6 @@ namespace gui {
 		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
 
 		void setGlTextureU(bool texture) const;
-
-#endif // MW_OPENGLES2
 
 		void setGlModelU(const mw::Matrix44& matrix) const;
 		void setGlColorU(const mw::Color& color) const;
@@ -251,9 +248,7 @@ namespace gui {
 
 		bool isAdded_;
 
-#if MW_OPENGLES2
 		GuiShader guiShader_;
-#endif // MW_OPENGLES2
 
 		mw::Matrix44 model_;
 		static mw::Matrix44 proj;

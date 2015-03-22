@@ -1,5 +1,4 @@
 #include "guishader.h"
-#if MW_OPENGLES2
 
 namespace gui {
 
@@ -38,47 +37,45 @@ namespace gui {
 	// Vertex buffer Attributes. ---------------------------
 
 	void GuiShader::setGlPosA(GLint size, const GLvoid* data) const {
-		mw::glEnableVertexAttribArray(aPosIndex_);
-		mw::glVertexAttribPointer(aPosIndex_, size, GL_FLOAT, GL_FALSE, 0, data);
+		glEnableVertexAttribArray(aPosIndex_);
+		glVertexAttribPointer(aPosIndex_, size, GL_FLOAT, GL_FALSE, 0, data);
 	}
 
 	void GuiShader::setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const {
-		mw::glEnableVertexAttribArray(aPosIndex_);
-		mw::glVertexAttribPointer(aPosIndex_, size, GL_FLOAT, GL_FALSE, stride, data);
+		glEnableVertexAttribArray(aPosIndex_);
+		glVertexAttribPointer(aPosIndex_, size, GL_FLOAT, GL_FALSE, stride, data);
 	}
 
 	void GuiShader::setGlTexA(GLint size, const GLvoid* data) const {
-		mw::glEnableVertexAttribArray(aTexIndex_);
-		mw::glVertexAttribPointer(aTexIndex_, size, GL_FLOAT, GL_FALSE, 0, data);
+		glEnableVertexAttribArray(aTexIndex_);
+		glVertexAttribPointer(aTexIndex_, size, GL_FLOAT, GL_FALSE, 0, data);
 	}
 
 	void GuiShader::setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const {
-		mw::glEnableVertexAttribArray(aTexIndex_);
-		mw::glVertexAttribPointer(aTexIndex_, size, GL_FLOAT, GL_FALSE, stride, data);
+		glEnableVertexAttribArray(aTexIndex_);
+		glVertexAttribPointer(aTexIndex_, size, GL_FLOAT, GL_FALSE, stride, data);
 	}
 
 	// Uniforms. -------------------------------------------
 
 	void GuiShader::setGlProjU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uProjIndex_, 1, false, matrix.data());
 	}
 
 	void GuiShader::setGlModelU(const mw::Matrix44& matrix) const {
-		mw::glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
+		glUniformMatrix4fv(uModelIndex_, 1, false, matrix.data());
 	}
 
 	void GuiShader::setGlTextureU(bool texture) const {
-		mw::glUniform1f(uIsTexIndex_, texture);
+		glUniform1f(uIsTexIndex_, texture);
 	}
 
 	void GuiShader::setGlColorU(const mw::Color& color) const {
-		mw::glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
+		glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 	}
 
 	void GuiShader::setGlColorU(float red, float green, float blue, float alpha) const {
-		mw::glUniform4f(uColorIndex_, red, green, blue, alpha);
+		glUniform4f(uColorIndex_, red, green, blue, alpha);
 	}
 
 } // Namespace gui.
-
-#endif // MW_OPENGLES2

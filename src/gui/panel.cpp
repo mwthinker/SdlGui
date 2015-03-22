@@ -21,11 +21,9 @@ namespace gui {
 			} else {
 				c->ancestor_ = c->parent_;
 			}
-#if MW_OPENGLES2
             // Must be called before setChildsParent() in order to give
             // all components the shader.
             c->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 			c->setChildsParent();
 		}
 	}

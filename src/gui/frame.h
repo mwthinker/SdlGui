@@ -23,7 +23,8 @@ namespace gui {
 
 	class Frame : public mw::Window {
 	public:
-		Frame(int x, int y, int width, int height,
+		Frame(const int majorGlVersion, const int minorGlVersion, const bool glProfileEs,
+			int x, int y, int width, int height,
 			bool resizeable = true, std::string title = "Frame",
 			std::string icon = "", bool borderless = false);
 
@@ -176,9 +177,7 @@ namespace gui {
 		std::queue<SDL_Event> eventQueue_;
 		WindowListener windowListener_;
 		SdlEventListener sdlEventListener_;
-#if MW_OPENGLES2
 		GuiShader guiShader_;
-#endif // MW_OPENGLES2
 
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;

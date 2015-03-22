@@ -77,7 +77,6 @@ namespace gui {
 		if (editable_) {
 			if (hasFocus()) {
 				markerDeltaTime_ += deltaTime;
-#if MW_OPENGLES2
 				if (markerDeltaTime_ < 500) {
 					float pos[] = {
 						markerWidth_ + x, text_.getCharacterSize(),
@@ -85,21 +84,10 @@ namespace gui {
 					setGlPosA(2, pos);
 					setGlTexA(2, pos);
 					setGlTextureU(false);
-					mw::glDrawArrays(GL_LINE_STRIP, 0, 2);
+					glDrawArrays(GL_LINE_STRIP, 0, 2);
 				} else if (markerDeltaTime_ > 1000) {
 					markerDeltaTime_ = 0;
 				}
-#else // MW_OPENGLES2
-				glBegin(GL_LINES);
-				if (markerDeltaTime_ < 500) {
-					glVertex2d(markerWidth_ + x, text_.getCharacterSize() + 0);
-					glVertex2d(markerWidth_ + x, 1 + 0);
-				} else if (markerDeltaTime_ > 1000) {
-					markerDeltaTime_ = 0;
-				}
-
-				glEnd();
-#endif // MW_OPENGLES2
 			} else {
 				markerDeltaTime_ = 0;
 			}

@@ -10,12 +10,11 @@
 
 namespace gui {
 
-	Frame::Frame(int x, int y, int width, int height, bool resizeable,
+	Frame::Frame(const int majorGlVersion, const int minorGlVersion, const bool glProfileEs,
+		int x, int y, int width, int height, bool resizeable,
 		std::string title, std::string icon, bool borderless) :
-		mw::Window(x, y, width, height, resizeable, title, icon, borderless),
-#if MW_OPENGLES2
+		mw::Window(majorGlVersion, minorGlVersion, glProfileEs, x, y, width, height, resizeable, title, icon, borderless),
 		guiShader_("gui.ver.glsl", "gui.fra.glsl"),
-#endif // MW_OPENGLES2
 		defaultClosing_(false),
 		currentPanel_(0) {
 
@@ -37,61 +36,49 @@ namespace gui {
 	int Frame::addPanelBack() {
 		auto p = std::make_shared<Panel>();
 		p->setLayout<BorderLayout>();
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		p->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		return pushBackPanel(p);
 	}
 
 	int Frame::pushBackPanel(const std::shared_ptr<Panel>& panel) {
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		panel->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
         panel->setChildsParent();
 		panels_.push_back(panel);
 		return panels_.size() - 1;
 	}
 
 	std::shared_ptr<Component> Frame::addDefault(const std::shared_ptr<Component>& component) {
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		component->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		getCurrentPanel()->add(DEFAULT_INDEX, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		component->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		getCurrentPanel()->add(layoutIndex, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addDefaultToGroup(const std::shared_ptr<Component>& component) {
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		component->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		getCurrentPanel()->addToGroup(DEFAULT_INDEX, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
-#if MW_OPENGLES2
         // Must be called before setChildsParent() in order to give
         // all components the shader.
 		component->guiShader_ = guiShader_;
-#endif // MW_OPENGLES2
 		getCurrentPanel()->addToGroup(layoutIndex, component);
 		return component;
 	}
@@ -144,19 +131,10 @@ namespace gui {
 		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
-#if MW_OPENGLES2
 		guiShader_.glUseProgram();
-		mw::glViewport(0, 0, width, height);
+		glViewport(0, 0, width, height);
 		guiShader_.setGlProjU(Component::proj);
 		guiShader_.setGlModelU(mw::I_44);
-#else // MW_OPENGLES2
-		glMatrixMode(GL_PROJECTION);
-		glLoadIdentity();
-		glViewport(0, 0, getWidth(), getHeight());
-		glOrtho(0, getWidth(), 0, getHeight(), -1, 1);
-		glMatrixMode(GL_MODELVIEW);
-		glLoadIdentity();
-#endif // MW_OPENGLES2
 	}
 
 	void Frame::update(Uint32 deltaTime) {

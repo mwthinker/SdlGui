@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 2.8)
 project(SdlGui)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/cmake/Modules/")
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/MwLibrary2/cmake/Modules/")
 if (NOT MSVC)
 	set(CMAKE_CXX_FLAGS "-std=c++11")
 	set(CMAKE_BUILD_TYPE "Debug")
@@ -49,41 +49,33 @@ find_package(SDL2 REQUIRED)
 find_package(SDL2_image REQUIRED)
 find_package(SDL2_mixer REQUIRED)
 find_package(SDL2_ttf REQUIRED)
-
-if (NOT OpenGLES2_REMOVE_OPTION)
-	option(OpenGLES2 "OpenGLES2 is activated" OFF)
-endif ()
-
-if (OpenGLES2)
-	add_definitions(-DMW_OPENGLES2)
-endif ()
-
-if (NOT OpenGLES2)
-	find_package(OpenGL REQUIRED)
-endif ()
+find_package(GLEW REQUIRED)
+find_package(OpenGL REQUIRED)
 
 add_subdirectory(MwLibrary2)
 add_subdirectory(Signal)
 
 option(SdlGuiTest "SdlGuiTest project is added" OFF)
 
-include_directories(${OPENGL_INCLUDE_DIR}
+include_directories(
 	${SDL2_INCLUDE_DIR}
 	${SDL2_IMAGE_INCLUDE_DIR}
 	${SDL2_TTF_INCLUDE_DIR}
-	${SDL2_MIXER_INCLUDE_DIR}
+	${SDL2_MIXER_INCLUDE_DIR}	
+	${GLEW_INCLUDE_DIRS}
 	MwLibrary2/src/
 	Signal/src/
 )
 
 add_library(SdlGui ${SOURCES})
 
-set(ALL_SDL_LIBRARIES
+set(ALL_MW_LIBRARIES
+	${GLEW_LIBRARIES}
+	${OPENGL_LIBRARIES}
 	${SDL2_LIBRARIES}
 	${SDL2_TTF_LIBRARIES}
 	${SDL2_MIXER_LIBRARIES}
-	${SDL2_IMAGE_LIBRARIES}
-)
+	${SDL2_IMAGE_LIBRARIES})
 
 if (SdlGuiTest)
 	include_directories(src)
@@ -93,11 +85,7 @@ if (SdlGuiTest)
 		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 	endif (MSVC)
 	
-	if (OpenGLES2)
-		target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_SDL_LIBRARIES})
-	else ()
-		target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_SDL_LIBRARIES} ${OPENGL_LIBRARIES})
-	endif ()
+	target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_MW_LIBRARIES})
 
 	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 endif (SdlGuiTest)

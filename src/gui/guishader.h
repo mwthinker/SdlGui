@@ -1,6 +1,5 @@
 #ifndef GUISHADER_H
 #define GUISHADER_H
-#if MW_OPENGLES2
 
 #include <mw/opengl.h>
 #include <mw/matrix.h>
@@ -51,5 +50,4 @@ namespace gui {
 
 } // Namespace gui.
 
-#endif // MW_OPENGLES2
 #endif // GUISHADER_H
