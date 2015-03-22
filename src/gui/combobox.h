@@ -15,8 +15,6 @@ namespace gui {
 	public:
 		ComboBox(const mw::Font& font);
 
-		ComboBox(const std::vector<std::string>&  items, const mw::Font& font);
-
 		void addItem(std::string item);
 
 		std::string getChosenItemText() const {

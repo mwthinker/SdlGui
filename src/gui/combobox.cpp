@@ -13,19 +13,6 @@ namespace gui {
 		setPreferredSize(150, 20);
 	}
 
-	ComboBox::ComboBox(const std::vector<std::string>&  items, const mw::Font& font) :
-		chosenItem_("", font), textColor_(0, 0, 0), addedDrawFunction_(false),
-		mouseInside_(false), pushed_(false) {
-
-		setBorderColor(0, 0, 0);
-		setBackgroundColor(1, 1, 1);
-
-		for (auto& text : items) {
-			items_.emplace_back(text, font);
-		}
-		setPreferredSize(150, 20);
-	}
-
 	void ComboBox::addItem(std::string item) {
 		items_.emplace_back(item, chosenItem_.getFont());
 	}
