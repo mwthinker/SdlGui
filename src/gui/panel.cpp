@@ -231,6 +231,7 @@ namespace gui {
 	}
 
 	void Panel::drawFirst(Frame& frame, Uint32 deltaTime) {
+		drawListener_(frame, deltaTime);
 		for (auto& child : *this) {
 			child->drawFirst(frame, deltaTime);
 		}
