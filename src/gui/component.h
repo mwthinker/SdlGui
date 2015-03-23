@@ -18,6 +18,7 @@ namespace gui {
 
 	class Component;
 	class Panel;
+	class Frame;
 
 	using FocusListener = mw::Signal<Component&>;
 	using KeyListener = mw::Signal<Component&, const SDL_Event&>;
