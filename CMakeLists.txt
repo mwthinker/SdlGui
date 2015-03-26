@@ -3,7 +3,6 @@ project(SdlGui)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/MwLibrary2/cmake/Modules/")
 if (NOT MSVC)
 	set(CMAKE_CXX_FLAGS "-std=c++11")
-	set(CMAKE_BUILD_TYPE "Debug")
 endif ()
 
 # Source files.
@@ -61,11 +60,10 @@ include_directories(
 	${SDL2_INCLUDE_DIR}
 	${SDL2_IMAGE_INCLUDE_DIR}
 	${SDL2_TTF_INCLUDE_DIR}
-	${SDL2_MIXER_INCLUDE_DIR}	
+	${SDL2_MIXER_INCLUDE_DIR}
 	${GLEW_INCLUDE_DIRS}
 	MwLibrary2/src/
-	Signal/src/
-)
+	Signal/src/)
 
 add_library(SdlGui ${SOURCES})
 
@@ -89,3 +87,4 @@ if (SdlGuiTest)
 
 	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 endif (SdlGuiTest)
+

@@ -138,6 +138,7 @@ namespace gui {
 	}
 
 	void Frame::update(Uint32 deltaTime) {
+	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		getCurrentPanel()->drawFirst(*this, deltaTime);
 
 		// Perform non critical event updates.
