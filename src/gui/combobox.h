@@ -21,7 +21,7 @@ namespace gui {
 			return chosenItem_.getText();
 		}
 
-		void draw(Uint32 deltaTime) override;
+		void draw(std::chrono::high_resolution_clock::duration delta) override;
 
 		void setTextColor(const mw::Color& color) {
 			textColor_ = color;
@@ -51,7 +51,7 @@ namespace gui {
 			return items_.size();
 		}
 
-		void drawLast(Frame& frame, Uint32 deltaTime) override;
+		void drawLast(Frame& frame, std::chrono::high_resolution_clock::duration) override;
 
 	private:
 		void handleKeyboard(const SDL_Event& keyEvent) override;

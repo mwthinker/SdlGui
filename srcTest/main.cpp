@@ -73,6 +73,6 @@ void testFlowLayout() {
 
 int main(int argc, char** argv) {
 	testBorderLayout();
-	//testFlowLayout();
+	testFlowLayout();
 	return 0;
 }

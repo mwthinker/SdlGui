@@ -13,6 +13,7 @@
 #include <SDL.h>
 
 #include <memory>
+#include <chrono>
 
 namespace gui {
 
@@ -181,7 +182,7 @@ namespace gui {
 		// Draw the background color.
 		// Should be derived and should then draw the
 		// component in the size defined by getSize().
-		virtual void draw(Uint32 deltaTime);
+		virtual void draw(std::chrono::high_resolution_clock::duration);
 
 	
 		// Is called in order to signal the parent component that
@@ -218,10 +219,10 @@ namespace gui {
 
 		virtual void panelChanged(bool active);
 
-		inline virtual void drawFirst(Frame& frame, Uint32 deltaTime) {
+		inline virtual void drawFirst(Frame& frame, std::chrono::high_resolution_clock::duration) {
 		}
 
-		inline virtual void drawLast(Frame& frame, Uint32 deltaTime) {
+		inline virtual void drawLast(Frame& frame, std::chrono::high_resolution_clock::duration) {
 		}
 
 	private:

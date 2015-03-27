@@ -34,7 +34,7 @@ namespace gui {
 
 		bool isEditable() const;
 
-		virtual void draw(Uint32 deltaTime) override;
+		virtual void draw(std::chrono::high_resolution_clock::duration) override;
 
 		Alignment getAlignment() const;
 		void setAlignment(Alignment alignment);
@@ -58,7 +58,7 @@ namespace gui {
 		mw::Color textColor_;
 		Alignment alignment_;
 		InputFormatter inputFormatter_;
-		Uint32 markerDeltaTime_;
+		std::chrono::milliseconds markerDeltaTime_;
 	};
 
 } // Namespace gui.

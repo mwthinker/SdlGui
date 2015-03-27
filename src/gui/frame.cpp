@@ -137,9 +137,9 @@ namespace gui {
 		guiShader_.setGlModelU(mw::I_44);
 	}
 
-	void Frame::update(Uint32 deltaTime) {
+	void Frame::update(std::chrono::high_resolution_clock::duration delta) {
 	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		getCurrentPanel()->drawFirst(*this, deltaTime);
+		getCurrentPanel()->drawFirst(*this, delta);
 
 		// Perform non critical event updates.
 		while (!eventQueue_.empty()) {
@@ -193,8 +193,8 @@ namespace gui {
 					break;
 			}
 		}
-		getCurrentPanel()->draw(deltaTime);
-		getCurrentPanel()->drawLast(*this, deltaTime);
+		getCurrentPanel()->draw(delta);
+		getCurrentPanel()->drawLast(*this, delta);
 	}
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {

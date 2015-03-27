@@ -23,8 +23,8 @@ namespace gui {
 	// Then one of the following functions is called: 
 	// drawOnMouseHover(), drawOnFocus() or drawOnPush().
 	// On top of everything is the drawing of the label.
-	void Button::draw(Uint32 deltaTime) {
-		Component::draw(deltaTime);
+	void Button::draw(std::chrono::high_resolution_clock::duration delta) {
+		Component::draw(delta);
 		if (pushed_ && mouseInside_) {
 			drawOnPush();
 		} else if (mouseInside_) {

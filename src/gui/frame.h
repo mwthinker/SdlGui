@@ -13,13 +13,14 @@
 
 #include <string>
 #include <queue>
+#include <chrono>
 
 namespace gui {
 
 	class Frame;
 	using WindowListener = mw::Signal<Frame&, const SDL_Event&>;
 	using SdlEventListener = mw::Signal<Frame&, const SDL_Event&>;
-	using DrawListener = mw::Signal<Frame&, Uint32>;
+	using DrawListener = mw::Signal<Frame&, std::chrono::high_resolution_clock::duration>;
 
 	class Frame : public mw::Window {
 	public:
@@ -167,7 +168,7 @@ namespace gui {
 
 	private:
 		// Override mw::Window.
-		virtual void update(Uint32 deltaTime) override final;
+		virtual void update(std::chrono::high_resolution_clock::duration) override final;
 
 		// Override mw::Window.
 		virtual void eventUpdate(const SDL_Event& windowEvent) override final;

@@ -90,13 +90,13 @@ namespace gui {
 		return components_;
 	}
 
-	void Panel::draw(Uint32 deltaTime) {
-		Component::draw(deltaTime);
+	void Panel::draw(std::chrono::high_resolution_clock::duration delta) {
+		Component::draw(delta);
 
 		// Draw the components.
 		for (auto& component : *this) {
 			if (component->isVisible()) {
-				component->draw(deltaTime);
+				component->draw(delta);
 			}
 		}
 	}
@@ -230,16 +230,16 @@ namespace gui {
 		return drawListener_.connect(callback);
 	}
 
-	void Panel::drawFirst(Frame& frame, Uint32 deltaTime) {
-		drawListener_(frame, deltaTime);
+	void Panel::drawFirst(Frame& frame, std::chrono::high_resolution_clock::duration delta) {
+		drawListener_(frame, delta);
 		for (auto& child : *this) {
-			child->drawFirst(frame, deltaTime);
+			child->drawFirst(frame, delta);
 		}
 	}
 
-	void Panel::drawLast(Frame& frame, Uint32 deltaTime) {
+	void Panel::drawLast(Frame& frame, std::chrono::high_resolution_clock::duration delta) {
 		for (auto& child : *this) {
-			child->drawLast(frame, deltaTime);
+			child->drawLast(frame, delta);
 		}
 	}
 
