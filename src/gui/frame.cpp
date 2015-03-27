@@ -138,7 +138,6 @@ namespace gui {
 	}
 
 	void Frame::update(std::chrono::high_resolution_clock::duration delta) {
-	    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 		getCurrentPanel()->drawFirst(*this, delta);
 
 		// Perform non critical event updates.
