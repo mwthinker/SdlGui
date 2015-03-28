@@ -137,8 +137,8 @@ namespace gui {
 		guiShader_.setGlModelU(mw::I_44);
 	}
 
-	void Frame::update(std::chrono::high_resolution_clock::duration delta) {
-		getCurrentPanel()->drawFirst(*this, delta);
+	void Frame::update(double deltaTime) {
+		getCurrentPanel()->drawFirst(*this, deltaTime);
 
 		// Perform non critical event updates.
 		while (!eventQueue_.empty()) {
@@ -192,8 +192,8 @@ namespace gui {
 					break;
 			}
 		}
-		getCurrentPanel()->draw(delta);
-		getCurrentPanel()->drawLast(*this, delta);
+		getCurrentPanel()->draw(deltaTime);
+		getCurrentPanel()->drawLast(*this, deltaTime);
 	}
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {

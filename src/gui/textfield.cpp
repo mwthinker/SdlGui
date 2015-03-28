@@ -21,7 +21,7 @@ namespace gui {
 		// One pixel to the right of the last character.
 		markerWidth_ = text_.getWidth() + 1;
 		alignment_ = LEFT;
-		markerDeltaTime_ = std::chrono::milliseconds(0);
+		markerDeltaTime_ = 0;
 		markerChanged_ = false;
 	}
 
@@ -53,8 +53,8 @@ namespace gui {
 		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	void TextField::draw(std::chrono::high_resolution_clock::duration delta) {
-		Component::draw(delta);
+	void TextField::draw(double deltaTime) {
+		Component::draw(deltaTime);
 
 		Dimension dim = getSize();
 		float x = 0.0;
@@ -76,8 +76,8 @@ namespace gui {
 		drawText(text_, x, 0);
 		if (editable_) {
 			if (hasFocus()) {
-				markerDeltaTime_ += std::chrono::duration_cast<std::chrono::milliseconds>(delta);
-				if (markerDeltaTime_ < std::chrono::milliseconds(500)) {
+				markerDeltaTime_ += deltaTime;
+				if (markerDeltaTime_ < 0.5) {
 					float pos[] = {
 						markerWidth_ + x, text_.getCharacterSize(),
 						markerWidth_ + x, 1};
@@ -85,11 +85,11 @@ namespace gui {
 					setGlTexA(2, pos);
 					setGlTextureU(false);
 					glDrawArrays(GL_LINE_STRIP, 0, 2);
-				} else if (markerDeltaTime_ > std::chrono::milliseconds(1000)) {
-					markerDeltaTime_ = std::chrono::milliseconds(0);
+				} else if (markerDeltaTime_ > 1.0) {
+					markerDeltaTime_ = 0;
 				}
 			} else {
-				markerDeltaTime_ = std::chrono::milliseconds(0);
+				markerDeltaTime_ = 0;
 			}
 		}
 	}
@@ -116,7 +116,7 @@ namespace gui {
 					break;
 				case SDL_KEYDOWN:
 					// Reset marker animation.
-					markerDeltaTime_ = std::chrono::milliseconds(0);
+					markerDeltaTime_ = 0;
 					switch (keyEvent.key.keysym.sym) {
 						case SDLK_v: // Paste from clipboard!
 							if ((keyEvent.key.keysym.mod & KMOD_CTRL) && SDL_HasClipboardText()) {

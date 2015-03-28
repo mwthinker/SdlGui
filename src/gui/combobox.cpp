@@ -17,15 +17,15 @@ namespace gui {
 		items_.emplace_back(item, chosenItem_.getFont());
 	}
 
-	void ComboBox::draw(std::chrono::high_resolution_clock::duration delta) {
-		Component::draw(delta);
+	void ComboBox::draw(double deltaTime) {
+		Component::draw(deltaTime);
 		setGlColorU(textColor_);
 		enableGlTransparancy();
 
 		drawText(chosenItem_, 2, 0);
 	}
 
-	void ComboBox::drawLast(Frame& frame, std::chrono::high_resolution_clock::duration delta) {
+	void ComboBox::drawLast(Frame& frame, double deltaTime) {
 		if (pushed_) {
 			glUseProgram();
 			auto dim = getSize();

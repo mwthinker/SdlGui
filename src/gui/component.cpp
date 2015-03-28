@@ -102,7 +102,7 @@ namespace gui {
 		return focus_;
 	}
 	
-	void Component::draw(std::chrono::high_resolution_clock::duration delta) {
+	void Component::draw(double deltaTime) {
 		// Draw panel background.
 		Dimension dim = getSize();
 		enableGlTransparancy();

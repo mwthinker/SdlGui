@@ -32,7 +32,7 @@ namespace gui {
 		virtual ~Button() {
 		}
 
-		virtual void draw(std::chrono::high_resolution_clock::duration) override;
+		virtual void draw(double deltaTime) override;
 
 		// Get the label of the Button instance.
 		std::string getLabel() const;

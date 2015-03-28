@@ -7,7 +7,7 @@ namespace gui {
 
 	class PopUpMenu : public Component {
 	public:
-		virtual void draw(std::chrono::high_resolution_clock::duration) override;
+		virtual void draw(double deltaTime) override;
 
 	private:
 	};

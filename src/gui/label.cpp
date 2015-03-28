@@ -21,8 +21,8 @@ namespace gui {
 		init();
 	}
 	
-	void Label::draw(std::chrono::high_resolution_clock::duration delta) {
-		Component::draw(delta);
+	void Label::draw(double deltaTime) {
+		Component::draw(deltaTime);
 
 		Dimension dim = getSize();
 		float x = 0.0;

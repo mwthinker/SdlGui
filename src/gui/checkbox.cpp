@@ -66,8 +66,8 @@ namespace gui {
 		setBackgroundColor(1, 1, 1, 0);
 	}
 
-	void CheckBox::draw(std::chrono::high_resolution_clock::duration delta) {
-		Component::draw(delta);
+	void CheckBox::draw(double deltaTime) {
+		Component::draw(deltaTime);
 		enableGlTransparancy();
 		setGlColorU(boxColor_);
 		drawSprite(box_, 0, 0, boxSize_, boxSize_);

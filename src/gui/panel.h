@@ -11,7 +11,7 @@ namespace gui {
 
 	class LayoutManager;
 
-	using DrawListener = mw::Signal<Frame&, std::chrono::high_resolution_clock::duration>;
+	using DrawListener = mw::Signal<Frame&, double>;
 
 	// Creates a panel able to contain other components. It manage the
 	// the layout of the components based on the layout manager.
@@ -103,7 +103,7 @@ namespace gui {
 		// Get the list holding all contained components.
 		const std::vector<std::shared_ptr<Component>>& getComponents() const;
 
-		void draw(std::chrono::high_resolution_clock::duration delta) override;
+		void draw(double deltaTime) override;
 
 		void handleMouse(const SDL_Event& mouseEvent) override;
 
@@ -124,9 +124,9 @@ namespace gui {
 	protected:
 		void setChildsParent() override;
 
-		void drawFirst(Frame& frame, std::chrono::high_resolution_clock::duration) override;
+		void drawFirst(Frame& frame, double deltaTime) override;
 
-		void drawLast(Frame& frame, std::chrono::high_resolution_clock::duration delta) override;
+		void drawLast(Frame& frame, double deltaTime) override;
 
 	private:
 		std::vector<std::shared_ptr<Component>> components_;
