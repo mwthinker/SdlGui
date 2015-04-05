@@ -71,8 +71,8 @@ namespace gui {
 				break;
 		}
 
-		setGlColorU(textColor_);
-		enableGlTransparancy();
+		setColorU(textColor_);
+		enableTransparancy();
 		drawText(text_, x, 0);
 		if (editable_) {
 			if (hasFocus()) {
@@ -81,9 +81,9 @@ namespace gui {
 					float pos[] = {
 						markerWidth_ + x, text_.getCharacterSize(),
 						markerWidth_ + x, 1};
-					setGlPosA(2, pos);
-					setGlTexA(2, pos);
-					setGlTextureU(false);
+					setPosA(2, pos);
+					setTexA(2, pos);
+					setTextureU(false);
 					glDrawArrays(GL_LINE_STRIP, 0, 2);
 				} else if (markerDeltaTime_ > 1.0) {
 					markerDeltaTime_ = 0;

@@ -131,10 +131,10 @@ namespace gui {
 		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
-		guiShader_.glUseProgram();
+		guiShader_.useProgram();
 		glViewport(0, 0, width, height);
-		guiShader_.setGlProjU(Component::proj);
-		guiShader_.setGlModelU(mw::I_44);
+		guiShader_.setProjU(Component::proj);
+		guiShader_.setModelU(mw::I_44);
 	}
 
 	void Frame::update(double deltaTime) {

@@ -68,14 +68,14 @@ namespace gui {
 
 	void CheckBox::draw(double deltaTime) {
 		Component::draw(deltaTime);
-		enableGlTransparancy();
-		setGlColorU(boxColor_);
+		enableTransparancy();
+		setColorU(boxColor_);
 		drawSprite(box_, 0, 0, boxSize_, boxSize_);
 		if (selected_) {
-			setGlColorU(checkColor_);
+			setColorU(checkColor_);
 			drawSprite(check_, 0, 0, boxSize_, boxSize_);
 		}
-		setGlColorU(textColor_);
+		setColorU(textColor_);
 		drawText(text_, boxSize_, 0);
 	}
 

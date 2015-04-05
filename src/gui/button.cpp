@@ -176,7 +176,7 @@ namespace gui {
 				break;
 		}
 
-		setGlColorU(textColor_);
+		setColorU(textColor_);
 
 		if (text_.getWidth() < dim.width_) {
 			drawText(text_, x, y);
@@ -185,19 +185,19 @@ namespace gui {
 
 	void Button::drawOnMouseHover() {
 		Dimension dim = getSize();
-		setGlColorU(hoverColor_);
+		setColorU(hoverColor_);
 		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::drawOnFocus() {
 		Dimension dim = getSize();
-		setGlColorU(focusColor_);
+		setColorU(focusColor_);
 		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::drawOnPush() {
 		Dimension dim = getSize();
-		setGlColorU(pushColor_);
+		setColorU(pushColor_);
 		drawSquare(0, 0, dim.width_, dim.height_);
 	}
 

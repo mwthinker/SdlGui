@@ -152,21 +152,21 @@ namespace gui {
 
 		void drawArrays(GLenum mode, GLfloat* data, int size, bool drawTexture) const;
 
-		void enableGlTransparancy() const;
-		void disableGlTransparancy() const;
+		void enableTransparancy() const;
+		void disableTransparancy() const;
 
-		void glUseProgram() const;
-		void setGlPosA(GLint size, const GLvoid* data) const;
-		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void useProgram() const;
+		void setPosA(GLint size, const GLvoid* data) const;
+		void setPosA(GLint size, GLsizei stride, const GLvoid* data) const;
 
-		void setGlTexA(GLint size, const GLvoid* data) const;
-		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void setTexA(GLint size, const GLvoid* data) const;
+		void setTexA(GLint size, GLsizei stride, const GLvoid* data) const;
 
-		void setGlTextureU(bool texture) const;
+		void setTextureU(bool texture) const;
 
-		void setGlModelU(const mw::Matrix44& matrix) const;
-		void setGlColorU(const mw::Color& color) const;
-		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
+		void setModelU(const mw::Matrix44& matrix) const;
+		void setColorU(const mw::Color& color) const;
+		void setColorU(float red, float green, float blue, float alpha = 1) const;
 
 		void drawSquare(float x, float y, float w, float h) const;
 		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;

@@ -50,7 +50,7 @@ namespace gui {
 				break;
 		}
 		
-		setGlColorU(textColor_);
+		setColorU(textColor_);
 		drawText(text_, x, y);
 	}
 

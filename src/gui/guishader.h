@@ -15,26 +15,26 @@ namespace gui {
 		GuiShader();
 		GuiShader(std::string vShaderFile, std::string fShaderFile);
 
-		void glUseProgram() const;
+		void useProgram() const;
 
 		// Vertex buffer Attributes. ---------------------------
 
-		void setGlPosA(GLint size, const GLvoid* data) const;
-		void setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void setPosA(GLint size, const GLvoid* data) const;
+		void setPosA(GLint size, GLsizei stride, const GLvoid* data) const;
 
-		void setGlTexA(GLint size, const GLvoid* data) const;
-		void setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const;
+		void setTexA(GLint size, const GLvoid* data) const;
+		void setTexA(GLint size, GLsizei stride, const GLvoid* data) const;
 
 		// Uniforms. -------------------------------------------
 
-		void setGlProjU(const mw::Matrix44& matrix) const;
+		void setProjU(const mw::Matrix44& matrix) const;
 
-		void setGlModelU(const mw::Matrix44& matrix) const;
+		void setModelU(const mw::Matrix44& matrix) const;
 
-		void setGlTextureU(bool texture) const;
+		void setTextureU(bool texture) const;
 
-		void setGlColorU(const mw::Color& color) const;
-		void setGlColorU(float red, float green, float blue, float alpha = 1) const;
+		void setColorU(const mw::Color& color) const;
+		void setColorU(float red, float green, float blue, float alpha = 1) const;
 
 	private:
 		mw::Shader shader_;

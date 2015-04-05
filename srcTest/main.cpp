@@ -35,7 +35,7 @@ void testBorderLayout() {
 	comboBox->addItem("Option 1");
 	comboBox->addItem("Option 2");
 	comboBox->addItem("Option 3");
-
+	
 	panel->addDefaultToGroup<gui::Button>("Hello", font);
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
 	frame.startLoop();

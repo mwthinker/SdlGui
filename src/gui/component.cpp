@@ -105,10 +105,10 @@ namespace gui {
 	void Component::draw(double deltaTime) {
 		// Draw panel background.
 		Dimension dim = getSize();
-		enableGlTransparancy();
-		glUseProgram();
-		setGlModelU(model_);
-		setGlColorU(backgroundColor_);
+		enableTransparancy();
+		useProgram();
+		setModelU(model_);
+		setColorU(backgroundColor_);
 		drawSquare(0, 0, dim.width_, dim.height_);
 		drawSprite(background_, 0, 0, dim.width_, dim.height_);
 		drawBorder();
@@ -146,56 +146,56 @@ namespace gui {
 				break;
 		}
 		mw::checkGlError();
-		setGlTextureU(drawTexture);
-		setGlPosA(2, sizeof(GLfloat) * 4, (GLvoid*) data);
-		setGlTexA(2, sizeof(GLfloat) * 4, (GLvoid*) (data + 2));
+		setTextureU(drawTexture);
+		setPosA(2, sizeof(GLfloat) * 4, (GLvoid*) data);
+		setTexA(2, sizeof(GLfloat) * 4, (GLvoid*) (data + 2));
 		glDrawArrays(mode, 0, size / 4);
 		mw::checkGlError();
 	}
 
-	void Component::enableGlTransparancy() const {
+	void Component::enableTransparancy() const {
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	}
 
-	void Component::disableGlTransparancy() const {
+	void Component::disableTransparancy() const {
 		glDisable(GL_BLEND);
 	}
 
-	void Component::glUseProgram() const {
-		guiShader_.glUseProgram();
+	void Component::useProgram() const {
+		guiShader_.useProgram();
 	}
 
-	void Component::setGlPosA(GLint size, const GLvoid* data) const {
-		guiShader_.setGlPosA(size, data);
+	void Component::setPosA(GLint size, const GLvoid* data) const {
+		guiShader_.setPosA(size, data);
 	}
 
-	void Component::setGlPosA(GLint size, GLsizei stride, const GLvoid* data) const {
-		guiShader_.setGlPosA(size, stride, data);
+	void Component::setPosA(GLint size, GLsizei stride, const GLvoid* data) const {
+		guiShader_.setPosA(size, stride, data);
 	}
 
-	void Component::setGlTexA(GLint size, const GLvoid* data) const {
-		guiShader_.setGlTexA(size, data);
+	void Component::setTexA(GLint size, const GLvoid* data) const {
+		guiShader_.setTexA(size, data);
 	}
 
-	void Component::setGlTexA(GLint size, GLsizei stride, const GLvoid* data) const {
-		guiShader_.setGlTexA(size, stride, data);
+	void Component::setTexA(GLint size, GLsizei stride, const GLvoid* data) const {
+		guiShader_.setTexA(size, stride, data);
 	}
 
-	void Component::setGlTextureU(bool texture) const {
-		guiShader_.setGlTextureU(texture);
+	void Component::setTextureU(bool texture) const {
+		guiShader_.setTextureU(texture);
 	}
 
-	void Component::setGlModelU(const mw::Matrix44& matrix) const {
-		guiShader_.setGlModelU(matrix);
+	void Component::setModelU(const mw::Matrix44& matrix) const {
+		guiShader_.setModelU(matrix);
 	}
 
-	void Component::setGlColorU(const mw::Color& color) const {
-		guiShader_.setGlColorU(color);
+	void Component::setColorU(const mw::Color& color) const {
+		guiShader_.setColorU(color);
 	}
 
-	void Component::setGlColorU(float red, float green, float blue, float alpha) const {
-		guiShader_.setGlColorU(red, green, blue, alpha);
+	void Component::setColorU(float red, float green, float blue, float alpha) const {
+		guiShader_.setColorU(red, green, blue, alpha);
 	}
 	
 	Component::Component() : parent_(nullptr), ancestor_(nullptr),
@@ -220,7 +220,7 @@ namespace gui {
 	}
 
 	void Component::drawBorder() {
-		setGlColorU(borderColor_);
+		setColorU(borderColor_);
 		drawBorder(0, 0, dimension_.width_, dimension_.height_);
 	}
 
