@@ -129,6 +129,7 @@ namespace gui {
 	}
 
 	void Graphic::setProj(const mw::Matrix44& proj) {
+		proj_ = proj;
 		glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
 	}
 

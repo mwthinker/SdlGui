@@ -24,7 +24,7 @@ namespace gui {
 		void drawText(const mw::Text& text, float x, float y) const;
 		void drawBorder(float x, float y, float w, float h) const;
 
-		inline const mw::Matrix44& getProjectionMatrix() {
+		inline const mw::Matrix44& getProjectionMatrix() const {
 			return proj_;
 		}
 
