@@ -45,10 +45,12 @@ namespace gui {
 
 	// Uniforms. -------------------------------------------
 	void Graphic::setColor(const mw::Color& color) const {
+		shader_.useProgram();
 		glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 	}
 
 	void Graphic::setColor(float red, float green, float blue, float alpha) const {
+		shader_.useProgram();
 		glUniform4f(uColorIndex_, red, green, blue, alpha);
 	}
 	
@@ -64,6 +66,7 @@ namespace gui {
 	}
 
 	void Graphic::drawSquare(float x, float y, float w, float h) const {
+		shader_.useProgram();
 		mw::Matrix44 uPos = mw::I_44;
 		mw::translate2D(uPos, x, y);
 		mw::scale2D(uPos, w, h);
@@ -80,6 +83,7 @@ namespace gui {
 	void Graphic::drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const {
 		const mw::Texture& texture = sprite.getTexture();
 		if (texture.isValid()) {
+			shader_.useProgram();
 			texture.bindTexture();
 
 			mw::Matrix44 uPos = mw::I_44;
@@ -104,6 +108,7 @@ namespace gui {
 
 	void Graphic::drawText(const mw::Text& text, float x, float y) const {
 		if (text.isValid()) {
+			shader_.useProgram();
 			text.bindTexture();
 
 			mw::Matrix44 uPos = mw::I_44;
@@ -125,11 +130,13 @@ namespace gui {
 	}
 
 	void Graphic::setModel(const mw::Matrix44& model) const {
+		shader_.useProgram();
 		glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
 	}
 
 	void Graphic::setProj(const mw::Matrix44& proj) {
 		proj_ = proj;
+		shader_.useProgram();
 		glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
 	}
 
