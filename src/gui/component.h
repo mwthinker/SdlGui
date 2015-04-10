@@ -2,13 +2,14 @@
 #define GUI_COMPONENT_H
 
 #include "dimension.h"
-#include "guishader.h"
+#include "graphic.h"
 
 #include <mw/matrix.h>
 #include <mw/signal.h>
 #include <mw/color.h>
 #include <mw/sprite.h>
 #include <mw/text.h>
+#include <mw/vertexbufferobject.h>
 
 #include <SDL.h>
 
@@ -145,44 +146,14 @@ namespace gui {
 		inline const mw::Matrix44& getModelMatrix() {
 			return model_;
 		}
-
-		inline const mw::Matrix44& getProjectionMatrix() {
-			return proj;
-		}
-
-		void drawArrays(GLenum mode, GLfloat* data, int size, bool drawTexture) const;
-
-		void enableTransparancy() const;
-		void disableTransparancy() const;
-
-		void useProgram() const;
-		void setPosA(GLint size, const GLvoid* data) const;
-		void setPosA(GLint size, GLsizei stride, const GLvoid* data) const;
-
-		void setTexA(GLint size, const GLvoid* data) const;
-		void setTexA(GLint size, GLsizei stride, const GLvoid* data) const;
-
-		void setTextureU(bool texture) const;
-
-		void setModelU(const mw::Matrix44& matrix) const;
-		void setColorU(const mw::Color& color) const;
-		void setColorU(float red, float green, float blue, float alpha = 1) const;
-
-		void drawSquare(float x, float y, float w, float h) const;
-		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
-		void drawText(const mw::Text& text, float x, float y) const;
-		void drawBorder(float x, float y, float w, float h) const;
 		
 	protected:
 		Component();
 
-		virtual void drawBorder();
-
 		// Draw the background color.
 		// Should be derived and should then draw the
 		// component in the size defined by getSize().
-		virtual void draw(double deltaTime);
-
+		virtual void draw(const Graphic& graphic, double deltaTime);
 	
 		// Is called in order to signal the parent component that
 		// the children's sizes must be recalculated.
@@ -218,10 +189,10 @@ namespace gui {
 
 		virtual void panelChanged(bool active);
 
-		inline virtual void drawFirst(Frame& frame, double deltaTime) {
+		inline virtual void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
-		inline virtual void drawLast(Frame& frame, double deltaTime) {
+		inline virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
 	private:
@@ -248,11 +219,8 @@ namespace gui {
 		int nbrChildGrabFocus_;
 
 		bool isAdded_;
-
-		GuiShader guiShader_;
-
+		
 		mw::Matrix44 model_;
-		static mw::Matrix44 proj;
 	};
 
 } // Namespace gui.

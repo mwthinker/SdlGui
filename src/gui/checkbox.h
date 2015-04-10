@@ -17,7 +17,7 @@ namespace gui {
 		CheckBox(std::string text, const mw::Font& font, const mw::Sprite& box, const mw::Sprite& check);
 		CheckBox(const mw::Text& text, const mw::Sprite& box, const mw::Sprite& check);
 
-		virtual void draw(double deltaTime) override;
+		virtual void draw(const Graphic& graphic,double deltaTime) override;
 
 		inline bool isSelected() const {
 			return selected_;

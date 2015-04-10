@@ -21,8 +21,8 @@ set(SOURCES
 	src/gui/frame.cpp
 	src/gui/frame.h
 	src/gui/gridlayout.h
-	src/gui/guishader.cpp
-	src/gui/guishader.h
+	src/gui/graphic.cpp
+	src/gui/graphic.h
 	src/gui/traversalgroup.cpp
 	src/gui/traversalgroup.h
 	src/gui/inputformatter.h
@@ -79,12 +79,11 @@ if (SdlGuiTest)
 	include_directories(src)
 	add_executable(SdlGuiTest ${SOURCES_TEST})
 
-	if (MSVC)	
+	if (MSVC)
 		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 	endif (MSVC)
-	
+
 	target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_MW_LIBRARIES})
 
 	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 endif (SdlGuiTest)
-

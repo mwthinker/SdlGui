@@ -27,7 +27,7 @@ namespace gui {
 		virtual ~Label() {
 		}
 
-		virtual void draw(double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 		// Sets the font used by the label.
 		void setFont(const mw::Font& font);

@@ -7,7 +7,7 @@ namespace gui {
 
 	class PopUpMenu : public Component {
 	public:
-		virtual void draw(double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 	private:
 	};

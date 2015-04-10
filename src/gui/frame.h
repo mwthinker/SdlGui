@@ -3,7 +3,7 @@
 
 #include "panel.h"
 #include "layoutmanager.h"
-#include "guishader.h"
+#include "graphic.h"
 
 #include <mw/window.h>
 #include <mw/color.h>
@@ -177,7 +177,7 @@ namespace gui {
 		std::queue<SDL_Event> eventQueue_;
 		WindowListener windowListener_;
 		SdlEventListener sdlEventListener_;
-		GuiShader guiShader_;
+		Graphic graphic_;
 
 		bool defaultClosing_;
 		std::vector<std::shared_ptr<Panel>> panels_;

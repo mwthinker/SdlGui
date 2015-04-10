@@ -23,16 +23,16 @@ namespace gui {
 	// Then one of the following functions is called: 
 	// drawOnMouseHover(), drawOnFocus() or drawOnPush().
 	// On top of everything is the drawing of the label.
-	void Button::draw(double deltaTime) {
-		Component::draw(deltaTime);
+	void Button::draw(const Graphic& graphic,double deltaTime) {
+		Component::draw(graphic, deltaTime);
 		if (pushed_ && mouseInside_) {
-			drawOnPush();
+			drawOnPush(graphic);
 		} else if (mouseInside_) {
-			drawOnMouseHover();
+			drawOnMouseHover(graphic);
 		} else if (hasFocus()) {
-			drawOnFocus();
+			drawOnFocus(graphic);
 		}
-		drawLabel();
+		drawLabel(graphic);
 	}
 
 	// Get the label of this Button instance.
@@ -148,7 +148,7 @@ namespace gui {
 		return autoFit_;
 	}
 
-	void Button::drawLabel() {
+	void Button::drawLabel(const Graphic& graphic) {
 		Dimension dim = getSize();
 
 		float x = 0.0;
@@ -176,29 +176,29 @@ namespace gui {
 				break;
 		}
 
-		setColorU(textColor_);
+		graphic.setColor(textColor_);
 
 		if (text_.getWidth() < dim.width_) {
-			drawText(text_, x, y);
+			graphic.drawText(text_, x, y);
 		}
 	}
 
-	void Button::drawOnMouseHover() {
+	void Button::drawOnMouseHover(const Graphic& graphic) {
 		Dimension dim = getSize();
-		setColorU(hoverColor_);
-		drawSquare(0, 0, dim.width_, dim.height_);
+		graphic.setColor(hoverColor_);
+		graphic.drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
-	void Button::drawOnFocus() {
+	void Button::drawOnFocus(const Graphic& graphic) {
 		Dimension dim = getSize();
-		setColorU(focusColor_);
-		drawSquare(0, 0, dim.width_, dim.height_);
+		graphic.setColor(focusColor_);
+		graphic.drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
-	void Button::drawOnPush() {
+	void Button::drawOnPush(const Graphic& graphic) {
 		Dimension dim = getSize();
-		setColorU(pushColor_);
-		drawSquare(0, 0, dim.width_, dim.height_);
+		graphic.setColor(pushColor_);
+		graphic.drawSquare(0, 0, dim.width_, dim.height_);
 	}
 
 	void Button::init() {

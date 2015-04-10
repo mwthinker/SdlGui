@@ -34,7 +34,7 @@ namespace gui {
 
 		bool isEditable() const;
 
-		virtual void draw(double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 		Alignment getAlignment() const;
 		void setAlignment(Alignment alignment);

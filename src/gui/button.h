@@ -32,7 +32,7 @@ namespace gui {
 		virtual ~Button() {
 		}
 
-		virtual void draw(double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 		// Get the label of the Button instance.
 		std::string getLabel() const;
@@ -119,14 +119,14 @@ namespace gui {
 	protected:
 		// Is drawn if this butten has focus while the mouse 
 		// button was is oustside this button.
-		virtual void drawOnFocus();
+		virtual void drawOnFocus(const Graphic& graphic);
 		// Is drawn if the mouse is hovering and 
 		// the mouse is not pushed down.
-		virtual void drawOnMouseHover();
+		virtual void drawOnMouseHover(const Graphic& graphic);
 		// Is drawn if the button was pushed.
-		virtual void drawOnPush();
+		virtual void drawOnPush(const Graphic& graphic);
 		// Draws the label.
-		virtual void drawLabel();		
+		virtual void drawLabel(const Graphic& graphic);
 
 		mw::Text text_;
 

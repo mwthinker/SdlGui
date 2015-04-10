@@ -21,9 +21,6 @@ namespace gui {
 			} else {
 				c->ancestor_ = c->parent_;
 			}
-            // Must be called before setChildsParent() in order to give
-            // all components the shader.
-            c->guiShader_ = guiShader_;
 			c->setChildsParent();
 		}
 	}
@@ -90,13 +87,17 @@ namespace gui {
 		return components_;
 	}
 
-	void Panel::draw(double deltaTime) {
-		Component::draw(deltaTime);
+	void Panel::draw(const Graphic& graphic, double deltaTime) {
+		graphic.useProgram();
+		graphic.setModel(Component::model_);
+		Component::draw(graphic, deltaTime);
 
 		// Draw the components.
 		for (auto& component : *this) {
 			if (component->isVisible()) {
-				component->draw(deltaTime);
+				graphic.useProgram();
+				graphic.setModel(component->model_);
+				component->draw(graphic, deltaTime);
 			}
 		}
 	}
@@ -230,16 +231,22 @@ namespace gui {
 		return drawListener_.connect(callback);
 	}
 
-	void Panel::drawFirst(Frame& frame, double deltaTime) {
+	void Panel::drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
+		graphic.useProgram();
+		graphic.setModel(Component::model_);
 		drawListener_(frame, deltaTime);
 		for (auto& child : *this) {
-			child->drawFirst(frame, deltaTime);
+			graphic.useProgram();
+			graphic.setModel(child->model_);
+			child->drawFirst(frame, graphic, deltaTime);
 		}
 	}
 
-	void Panel::drawLast(Frame& frame, double deltaTime) {
+	void Panel::drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		for (auto& child : *this) {
-			child->drawLast(frame, deltaTime);
+			graphic.useProgram();
+			graphic.setModel(child->model_);
+			child->drawLast(frame, graphic, deltaTime);
 		}
 	}
 

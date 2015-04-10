@@ -103,7 +103,7 @@ namespace gui {
 		// Get the list holding all contained components.
 		const std::vector<std::shared_ptr<Component>>& getComponents() const;
 
-		void draw(double deltaTime) override;
+		void draw(const Graphic& graphic, double deltaTime) override;
 
 		void handleMouse(const SDL_Event& mouseEvent) override;
 
@@ -124,9 +124,9 @@ namespace gui {
 	protected:
 		void setChildsParent() override;
 
-		void drawFirst(Frame& frame, double deltaTime) override;
+		void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) override;
 
-		void drawLast(Frame& frame, double deltaTime) override;
+		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
 
 	private:
 		std::vector<std::shared_ptr<Component>> components_;

@@ -53,8 +53,8 @@ namespace gui {
 		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	void TextField::draw(double deltaTime) {
-		Component::draw(deltaTime);
+	void TextField::draw(const Graphic& graphic, double deltaTime) {
+		Component::draw(graphic, deltaTime);
 
 		Dimension dim = getSize();
 		float x = 0.0;
@@ -71,20 +71,13 @@ namespace gui {
 				break;
 		}
 
-		setColorU(textColor_);
-		enableTransparancy();
-		drawText(text_, x, 0);
+		graphic.setColor(textColor_);
+		graphic.drawText(text_, x, 0);
 		if (editable_) {
 			if (hasFocus()) {
 				markerDeltaTime_ += deltaTime;
 				if (markerDeltaTime_ < 0.5) {
-					float pos[] = {
-						markerWidth_ + x, text_.getCharacterSize(),
-						markerWidth_ + x, 1};
-					setPosA(2, pos);
-					setTexA(2, pos);
-					setTextureU(false);
-					glDrawArrays(GL_LINE_STRIP, 0, 2);
+					graphic.drawSquare(markerWidth_ + x, 1, 1, text_.getCharacterSize());
 				} else if (markerDeltaTime_ > 1.0) {
 					markerDeltaTime_ = 0;
 				}

@@ -17,29 +17,24 @@ namespace gui {
 		items_.emplace_back(item, chosenItem_.getFont());
 	}
 
-	void ComboBox::draw(double deltaTime) {
-		Component::draw(deltaTime);
-		setColorU(textColor_);
-		enableTransparancy();
-
-		drawText(chosenItem_, 2, 0);
+	void ComboBox::draw(const Graphic& graphic, double deltaTime) {
+		Component::draw(graphic, deltaTime);
+		graphic.setColor(textColor_);
+		graphic.drawText(chosenItem_, 2, 0);
 	}
 
-	void ComboBox::drawLast(Frame& frame, double deltaTime) {
+	void ComboBox::drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		if (pushed_) {
-			useProgram();
 			auto dim = getSize();
-			enableTransparancy();
-			setModelU(getModelMatrix());
 			float y = 2;
 			for (auto& text : items_) {
 				y += text.getHeight();
-				setColorU(getBackgroundColor());
-				drawSquare(0, -y, dim.width_, text.getHeight());
-				setColorU(getBorderColor());
-				drawBorder(0, -y, dim.width_, text.getHeight());
-				setColorU(textColor_);
-				drawText(text, 2, -y);
+				graphic.setColor(getBackgroundColor());
+				graphic.drawSquare(0, -y, dim.width_, text.getHeight());
+				graphic.setColor(getBorderColor());
+				graphic.drawBorder(0, -y, dim.width_, text.getHeight());
+				graphic.setColor(textColor_);
+				graphic.drawText(text, 2, -y);
 			}
 		}
 	}

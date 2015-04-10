@@ -21,8 +21,8 @@ namespace gui {
 		init();
 	}
 	
-	void Label::draw(double deltaTime) {
-		Component::draw(deltaTime);
+	void Label::draw(const Graphic& graphic, double deltaTime) {
+		Component::draw(graphic, deltaTime);
 
 		Dimension dim = getSize();
 		float x = 0.0;
@@ -50,8 +50,8 @@ namespace gui {
 				break;
 		}
 		
-		setColorU(textColor_);
-		drawText(text_, x, y);
+		graphic.setColor(textColor_);
+		graphic.drawText(text_, x, y);
 	}
 
 	void Label::setFont(const mw::Font& font) {

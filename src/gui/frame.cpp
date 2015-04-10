@@ -1,6 +1,5 @@
 #include "frame.h"
 #include "borderlayout.h"
-#include "guishader.h"
 
 #include <mw/font.h>
 #include <mw/window.h>
@@ -14,7 +13,7 @@ namespace gui {
 		int x, int y, int width, int height, bool resizeable,
 		std::string title, std::string icon, bool borderless) :
 		mw::Window(majorGlVersion, minorGlVersion, glProfileEs, x, y, width, height, resizeable, title, icon, borderless),
-		guiShader_("gui.ver.glsl", "gui.fra.glsl"),
+		graphic_("gui.ver.glsl", "gui.fra.glsl"),
 		defaultClosing_(false),
 		currentPanel_(0) {
 
@@ -36,49 +35,31 @@ namespace gui {
 	int Frame::addPanelBack() {
 		auto p = std::make_shared<Panel>();
 		p->setLayout<BorderLayout>();
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		p->guiShader_ = guiShader_;
 		return pushBackPanel(p);
 	}
 
 	int Frame::pushBackPanel(const std::shared_ptr<Panel>& panel) {
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		panel->guiShader_ = guiShader_;
         panel->setChildsParent();
 		panels_.push_back(panel);
 		return panels_.size() - 1;
 	}
 
 	std::shared_ptr<Component> Frame::addDefault(const std::shared_ptr<Component>& component) {
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		component->guiShader_ = guiShader_;
 		getCurrentPanel()->add(DEFAULT_INDEX, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		component->guiShader_ = guiShader_;
 		getCurrentPanel()->add(layoutIndex, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addDefaultToGroup(const std::shared_ptr<Component>& component) {
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		component->guiShader_ = guiShader_;
 		getCurrentPanel()->addToGroup(DEFAULT_INDEX, component);
 		return component;
 	}
 
 	std::shared_ptr<Component> Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
-        // Must be called before setChildsParent() in order to give
-        // all components the shader.
-		component->guiShader_ = guiShader_;
 		getCurrentPanel()->addToGroup(layoutIndex, component);
 		return component;
 	}
@@ -126,19 +107,16 @@ namespace gui {
 	}
 
 	void Frame::resize(int width, int height) {
-		mw::ortho2D(Component::proj, 0, (float) width, 0, (float) height);
+		graphic_.setProj(mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height));
 		getCurrentPanel()->setPreferredSize((float) width, (float) height);
 		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);
 		getCurrentPanel()->validate();
-		guiShader_.useProgram();
 		glViewport(0, 0, width, height);
-		guiShader_.setProjU(Component::proj);
-		guiShader_.setModelU(mw::I_44);
 	}
 
 	void Frame::update(double deltaTime) {
-		getCurrentPanel()->drawFirst(*this, deltaTime);
+		getCurrentPanel()->drawFirst(*this, graphic_, deltaTime);
 
 		// Perform non critical event updates.
 		while (!eventQueue_.empty()) {
@@ -192,8 +170,8 @@ namespace gui {
 					break;
 			}
 		}
-		getCurrentPanel()->draw(deltaTime);
-		getCurrentPanel()->drawLast(*this, deltaTime);
+		getCurrentPanel()->draw(graphic_, deltaTime);
+		getCurrentPanel()->drawLast(*this, graphic_, deltaTime);
 	}
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {

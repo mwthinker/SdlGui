@@ -66,17 +66,16 @@ namespace gui {
 		setBackgroundColor(1, 1, 1, 0);
 	}
 
-	void CheckBox::draw(double deltaTime) {
-		Component::draw(deltaTime);
-		enableTransparancy();
-		setColorU(boxColor_);
-		drawSprite(box_, 0, 0, boxSize_, boxSize_);
+	void CheckBox::draw(const Graphic& graphic, double deltaTime) {
+		Component::draw(graphic, deltaTime);
+		graphic.setColor(boxColor_);
+		graphic.drawSprite(box_, 0, 0, boxSize_, boxSize_);
 		if (selected_) {
-			setColorU(checkColor_);
-			drawSprite(check_, 0, 0, boxSize_, boxSize_);
+			graphic.setColor(checkColor_);
+			graphic.drawSprite(check_, 0, 0, boxSize_, boxSize_);
 		}
-		setColorU(textColor_);
-		drawText(text_, boxSize_, 0);
+		graphic.setColor(textColor_);
+		graphic.drawText(text_, boxSize_, 0);
 	}
 
 	void CheckBox::setTextColor(const mw::Color& color) {
