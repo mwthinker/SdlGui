@@ -19,7 +19,6 @@ namespace gui {
 
 	Graphic::Graphic(std::string vShaderFile, std::string fShaderFile) {
 		shader_.bindAttribute("aPos");
-		shader_.bindAttribute("aTex");
 		shader_.loadAndLinkFromFile(vShaderFile, fShaderFile);
 
 		shader_.useProgram();
