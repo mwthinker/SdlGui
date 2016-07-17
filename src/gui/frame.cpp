@@ -17,8 +17,6 @@ namespace gui {
 		defaultClosing_(false),
 		currentPanel_(0) {
 
-		SDL_StartTextInput();
-
 		// Default layout for Frame.
 		addPanelBack();
 
