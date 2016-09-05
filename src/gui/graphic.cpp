@@ -13,8 +13,6 @@ namespace gui {
 		uTexIndex_ = -1;
 		uIsTexIndex_ = -1;
 		uColorIndex_ = -1;
-
-		vao_ = 0;
 	}
 
 	Graphic::Graphic(std::string vShaderFile, std::string fShaderFile) {
@@ -32,10 +30,8 @@ namespace gui {
 		uPosIndex_ = shader_.getUniformLocation("uPos");
 		uTexIndex_ = shader_.getUniformLocation("uTex");
 		uIsTexIndex_ = shader_.getUniformLocation("uIsTex");
-		uColorIndex_ = shader_.getUniformLocation("uColor");
+		uColorIndex_ = shader_.getUniformLocation("uColor");		
 		
-		glGenVertexArrays(1, &vao_);
-		glBindVertexArray(vao_);
 		// A vertex quad defined as a GL_TRIANGLE_STRIP.
 		std::array<float, 8> data = {0, 0, 1, 0, 0, 1, 1, 1};
 
@@ -85,15 +81,21 @@ namespace gui {
 			shader_.useProgram();
 			texture.bindTexture();
 
-			mw::Matrix44 uPos = mw::I_44;
-			mw::translate2D(uPos, x, y);
-			mw::scale2D(uPos, w, h);
+			mw::Matrix44 uPos(
+				w, 0, 0, x,
+				0, h, 0, y,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+			);
 			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
 			mw::checkGlError();
 
-			mw::Matrix44 uTex = mw::I_44;
-			mw::translate2D(uTex, sprite.getX(), sprite.getY());
-			mw::scale2D(uTex, sprite.getWidth() / texture.getWidth(), sprite.getHeight() / texture.getHeight());
+			mw::Matrix44 uTex(
+				sprite.getWidth() / texture.getWidth(), 0, 0, sprite.getX() / texture.getWidth(),
+				0, sprite.getHeight() / texture.getHeight(), 0, sprite.getY() / texture.getHeight(),
+				0, 0, 1, 0,
+				0, 0, 0, 1
+			);
 			glUniformMatrix4fv(uTexIndex_, 1, false, uTex.data());
 			mw::checkGlError();
 			
@@ -109,10 +111,14 @@ namespace gui {
 		if (text.isValid()) {
 			shader_.useProgram();
 			text.bindTexture();
+			
+			mw::Matrix44 uPos(
+				text.getWidth(), 0, 0, x,
+				0, text.getHeight(), 0, y,
+				0, 0, 1, 0,
+				0, 0, 0, 1
+			);
 
-			mw::Matrix44 uPos = mw::I_44;
-			mw::translate2D(uPos, x, y);
-			mw::scale2D(uPos, text.getWidth(), text.getHeight());
 			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
 			mw::checkGlError();
 			
@@ -145,7 +151,6 @@ namespace gui {
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		mw::checkGlError();
 
-		glBindVertexArray(vao_);
 		glEnableVertexAttribArray(aPosIndex_);
 		glVertexAttribPointer(aPosIndex_, 2, GL_FLOAT, GL_FALSE, 0, 0);		
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);

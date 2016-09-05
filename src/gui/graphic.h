@@ -47,7 +47,6 @@ namespace gui {
 
 		mw::Shader shader_;
 		mw::VertexBufferObject vbo_;
-		GLuint vao_;
 
 		int aPosIndex_;
 
