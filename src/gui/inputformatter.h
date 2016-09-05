@@ -82,30 +82,30 @@ namespace gui {
 
 		// Updates the input.
 		void update(InputFormatter::Input input) {
-				switch (input) {
-					case INPUT_ERASE_LEFT:
-						removeChar(true);
-						break;
-					case INPUT_ERASE_RIGHT:
-						removeChar(false);
-						break;
-					case INPUT_MOVE_MARKER_LEFT:
-						if (marker_ > 0) {
-							marker_ += -textUtf8_[marker_ - 1];
-						}
-						break;
-					case INPUT_MOVE_MARKER_RIGHT:
-						if (marker_ < size_) {
-							marker_ += textUtf8_[marker_];
-						}
-						break;
-					case INPUT_MOVE_MARKER_HOME:
-						marker_ = 0;
-						break;
-					case INPUT_MOVE_MARKER_END:
-						marker_ = size_;
-						break;
-				}			
+			switch (input) {
+				case INPUT_ERASE_LEFT:
+					removeChar(true);
+					break;
+				case INPUT_ERASE_RIGHT:
+					removeChar(false);
+					break;
+				case INPUT_MOVE_MARKER_LEFT:
+					if (marker_ > 0) {
+						marker_ += -textUtf8_[marker_ - 1];
+					}
+					break;
+				case INPUT_MOVE_MARKER_RIGHT:
+					if (marker_ < size_) {
+						marker_ += textUtf8_[marker_];
+					}
+					break;
+				case INPUT_MOVE_MARKER_HOME:
+					marker_ = 0;
+					break;
+				case INPUT_MOVE_MARKER_END:
+					marker_ = size_;
+					break;
+			}
 		}
 
 		int getNbrOfCharacters() const {

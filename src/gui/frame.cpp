@@ -37,7 +37,7 @@ namespace gui {
 	}
 
 	int Frame::pushBackPanel(const std::shared_ptr<Panel>& panel) {
-        panel->setChildsParent();
+		panel->setChildsParent();
 		panels_.push_back(panel);
 		return panels_.size() - 1;
 	}

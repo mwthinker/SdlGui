@@ -30,8 +30,8 @@ namespace gui {
 		uPosIndex_ = shader_.getUniformLocation("uPos");
 		uTexIndex_ = shader_.getUniformLocation("uTex");
 		uIsTexIndex_ = shader_.getUniformLocation("uIsTex");
-		uColorIndex_ = shader_.getUniformLocation("uColor");		
-		
+		uColorIndex_ = shader_.getUniformLocation("uColor");
+
 		// A vertex quad defined as a GL_TRIANGLE_STRIP.
 		std::array<float, 8> data = {0, 0, 1, 0, 0, 1, 1, 1};
 
@@ -48,7 +48,7 @@ namespace gui {
 		shader_.useProgram();
 		glUniform4f(uColorIndex_, red, green, blue, alpha);
 	}
-	
+
 	void Graphic::drawBorder(float x, float y, float w, float h) const {
 		// North.
 		drawSquare(x, y + h - 1, w, 1);
@@ -67,7 +67,7 @@ namespace gui {
 		mw::scale2D(uPos, w, h);
 		glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
 		mw::checkGlError();
-			
+
 		// Use as non texture!
 		glUniform1f(uIsTexIndex_, 0);
 		mw::checkGlError();
@@ -98,11 +98,11 @@ namespace gui {
 			);
 			glUniformMatrix4fv(uTexIndex_, 1, false, uTex.data());
 			mw::checkGlError();
-			
+
 			// Use as texture!
 			glUniform1f(uIsTexIndex_, 1);
 			mw::checkGlError();
-			
+
 			draw();
 		}
 	}
@@ -111,7 +111,7 @@ namespace gui {
 		if (text.isValid()) {
 			shader_.useProgram();
 			text.bindTexture();
-			
+
 			mw::Matrix44 uPos(
 				text.getWidth(), 0, 0, x,
 				0, text.getHeight(), 0, y,
@@ -121,7 +121,7 @@ namespace gui {
 
 			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
 			mw::checkGlError();
-			
+
 			// Send the whole texture => I_44.
 			glUniformMatrix4fv(uTexIndex_, 1, false, mw::I_44.data());
 			mw::checkGlError();
@@ -152,11 +152,11 @@ namespace gui {
 		mw::checkGlError();
 
 		glEnableVertexAttribArray(aPosIndex_);
-		glVertexAttribPointer(aPosIndex_, 2, GL_FLOAT, GL_FALSE, 0, 0);		
+		glVertexAttribPointer(aPosIndex_, 2, GL_FLOAT, GL_FALSE, 0, 0);
 		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
 		glDisableVertexAttribArray(aPosIndex_);
 		mw::checkGlError();
-		
+
 		glDisable(GL_BLEND);
 		vbo_.unbindBuffer();
 	}

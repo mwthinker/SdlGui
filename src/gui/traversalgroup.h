@@ -1,5 +1,5 @@
-#ifndef TRAVERSALGROUP_H
-#define TRAVERSALGROUP_H
+#ifndef GUI_TRAVERSALGROUP_H
+#define GUI_TRAVERSALGROUP_H
 
 #include "component.h"
 
@@ -27,4 +27,4 @@ namespace gui {
 
 } // Namespace gui.
 
-#endif // TRAVERSALGROUP_H
+#endif // GUI_TRAVERSALGROUP_H
