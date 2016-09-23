@@ -105,7 +105,7 @@ namespace gui {
 	}
 
 	void Frame::resize(int width, int height) {
-		graphic_.setProj(mw::getOrthoProjectionMatrix44(0, (float) width, 0, (float) height));
+		graphic_.setProj(mw::getOrthoProjectionMatrix44<GLfloat>(0, (GLfloat) width, 0, (GLfloat) height));
 		getCurrentPanel()->setPreferredSize((float) width, (float) height);
 		getCurrentPanel()->setSize((float) width, (float) height);
 		getCurrentPanel()->setLocation(0, 0);

@@ -24,7 +24,7 @@ namespace gui {
 		void drawText(const mw::Text& text, float x, float y) const;
 		void drawBorder(float x, float y, float w, float h) const;
 
-		inline const mw::Matrix44& getProjectionMatrix() const {
+		inline const mw::Matrix44<GLfloat>& getProjectionMatrix() const {
 			return proj_;
 		}
 
@@ -39,11 +39,11 @@ namespace gui {
 
 		void draw() const;
 
-		void setModel(const mw::Matrix44& model) const;
+		void setModel(const mw::Matrix44<GLfloat>& model) const;
 
-		void setProj(const mw::Matrix44& proj);
+		void setProj(const mw::Matrix44<GLfloat>& proj);
 
-		mw::Matrix44 proj_;
+		mw::Matrix44<GLfloat> proj_;
 
 		mw::Shader shader_;
 		mw::VertexBufferObject vbo_;

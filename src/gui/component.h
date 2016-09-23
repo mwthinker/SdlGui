@@ -143,7 +143,7 @@ namespace gui {
 		// Should correspond to the active LayoutManager in order to work.
 		void setLayoutIndex(int layoutIndex);
 
-		inline const mw::Matrix44& getModelMatrix() {
+		inline const mw::Matrix44<GLfloat>& getModelMatrix() {
 			return model_;
 		}
 		
@@ -220,7 +220,7 @@ namespace gui {
 
 		bool isAdded_;
 		
-		mw::Matrix44 model_;
+		mw::Matrix44<GLfloat> model_;
 	};
 
 } // Namespace gui.

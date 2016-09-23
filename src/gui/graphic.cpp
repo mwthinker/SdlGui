@@ -33,7 +33,7 @@ namespace gui {
 		uColorIndex_ = shader_.getUniformLocation("uColor");
 
 		// A vertex quad defined as a GL_TRIANGLE_STRIP.
-		std::array<float, 8> data = {0, 0, 1, 0, 0, 1, 1, 1};
+		std::array<GLfloat, 8> data = {0, 0, 1, 0, 0, 1, 1, 1};
 
 		vbo_.bindBufferData(GL_ARRAY_BUFFER, sizeof(data), data.data(), GL_STATIC_DRAW);
 	}
@@ -62,7 +62,7 @@ namespace gui {
 
 	void Graphic::drawSquare(float x, float y, float w, float h) const {
 		shader_.useProgram();
-		mw::Matrix44 uPos = mw::I_44;
+		mw::Matrix44<GLfloat> uPos = mw::Matrix44<GLfloat>::I;
 		mw::translate2D(uPos, x, y);
 		mw::scale2D(uPos, w, h);
 		glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
@@ -81,7 +81,7 @@ namespace gui {
 			shader_.useProgram();
 			texture.bindTexture();
 
-			mw::Matrix44 uPos(
+			mw::Matrix44<GLfloat> uPos(
 				w, 0, 0, x,
 				0, h, 0, y,
 				0, 0, 1, 0,
@@ -90,7 +90,7 @@ namespace gui {
 			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
 			mw::checkGlError();
 
-			mw::Matrix44 uTex(
+			mw::Matrix44<GLfloat> uTex(
 				sprite.getWidth() / texture.getWidth(), 0, 0, sprite.getX() / texture.getWidth(),
 				0, sprite.getHeight() / texture.getHeight(), 0, sprite.getY() / texture.getHeight(),
 				0, 0, 1, 0,
@@ -112,7 +112,7 @@ namespace gui {
 			shader_.useProgram();
 			text.bindTexture();
 
-			mw::Matrix44 uPos(
+			mw::Matrix44<GLfloat> uPos(
 				text.getWidth(), 0, 0, x,
 				0, text.getHeight(), 0, y,
 				0, 0, 1, 0,
@@ -123,7 +123,7 @@ namespace gui {
 			mw::checkGlError();
 
 			// Send the whole texture => I_44.
-			glUniformMatrix4fv(uTexIndex_, 1, false, mw::I_44.data());
+			glUniformMatrix4fv(uTexIndex_, 1, false, mw::Matrix44<GLfloat>::I.data());
 			mw::checkGlError();
 
 			// Use as texture!
@@ -134,12 +134,12 @@ namespace gui {
 		}
 	}
 
-	void Graphic::setModel(const mw::Matrix44& model) const {
+	void Graphic::setModel(const mw::Matrix44<GLfloat>& model) const {
 		shader_.useProgram();
 		glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
 	}
 
-	void Graphic::setProj(const mw::Matrix44& proj) {
+	void Graphic::setProj(const mw::Matrix44<GLfloat>& proj) {
 		proj_ = proj;
 		shader_.useProgram();
 		glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
