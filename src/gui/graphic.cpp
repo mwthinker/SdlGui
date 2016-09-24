@@ -39,7 +39,7 @@ namespace gui {
 	}
 
 	// Uniforms. -------------------------------------------
-	void Graphic::setColor(const mw::Color& color) const {
+	void Graphic::setColor(const mw::Color<GLfloat>& color) const {
 		shader_.useProgram();
 		glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
 	}

@@ -5,16 +5,18 @@
 
 namespace gui {
 
-	Button::Button() {
-		init();
+	Button::Button() : Button(mw::Text()) {
 	}
 
-	Button::Button(std::string text, const mw::Font& font) : text_(text , font) {
-		init();
+	Button::Button(std::string text, const mw::Font& font) : Button(mw::Text(text, font)) {
 	}
 
-	Button::Button(mw::Text text) : text_(text) {
-		init();
+	Button::Button(mw::Text text) : text_(text), pushed_(false), mouseDown_(false), mouseInside_(false),
+		autoFit_(false), vTextAlignment_(VerticalAlignment::VCENTER), hTextAlignment_(HorizontalAlignment::HCENTER),
+		textColor_(0,0,0), focusColor_(0, 0, 0, 0.05f), hoverColor_(0, 0, 0, 0.1f), pushColor_(0, 0, 0, 0.15f) {
+		
+		setPreferredSize(50, 50);
+		setBackgroundColor(0.9f, 0.9f, 0.9f);
 	}
 
 	// Draw the button. The button is drawed by calls
@@ -123,12 +125,12 @@ namespace gui {
 		hTextAlignment_ = alignment;
 	}
 
-	void Button::setTextColor(const mw::Color& textColor) {
+	void Button::setTextColor(const mw::Color<GLfloat>& textColor) {
 		textColor_ = textColor;
 	}
 
 	void Button::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color(red, green, blue, alpha);
+		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 	}
 
 	void Button::sizeToFitText() {
@@ -199,22 +201,6 @@ namespace gui {
 		Dimension dim = getSize();
 		graphic.setColor(pushColor_);
 		graphic.drawSquare(0, 0, dim.width_, dim.height_);
-	}
-
-	void Button::init() {
-		setPreferredSize(50, 50);
-		pushed_ = false;
-		mouseDown_ = false;
-		mouseInside_ = false;
-		vTextAlignment_ = VerticalAlignment::VCENTER;
-		hTextAlignment_ = HorizontalAlignment::HCENTER;
-		setBackgroundColor(0.9f, 0.9f, 0.9f);
-		textColor_ = mw::Color(0, 0, 0);
-		focusColor_ = mw::Color(0, 0, 0, 0.05f);
-		hoverColor_ = mw::Color(0, 0, 0, 0.1f);
-		pushColor_ = mw::Color(0, 0, 0, 0.15f);
-
-		autoFit_ = false;
 	}
 	
 } // Namespace gui.

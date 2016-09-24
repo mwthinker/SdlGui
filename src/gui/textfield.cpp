@@ -2,27 +2,20 @@
 
 namespace gui {
 
-	TextField::TextField(const mw::Font& font) {
-		init("", font);
+	TextField::TextField(const mw::Font& font) : TextField("", font) {
 	}
 
-	TextField::TextField(std::string initialText, const mw::Font& font) {
-		init(initialText, font);
-	}
-
-	void TextField::init(std::string initialText, const mw::Font& font) {
-		font_ = font;
-		inputFormatter_.update(initialText.c_str());
-		editable_ = true;
+	TextField::TextField(std::string initialText, const mw::Font& font) :
+		font_(font), editable_(true), textColor_(0, 0, 0),
+		alignment_(LEFT), markerDeltaTime_(0), markerChanged_(false) {
+		
 		setPreferredSize(150, 20);
 		setBackgroundColor(0.8f, 0.8f, 0.8f);
-		textColor_ = mw::Color(0, 0, 0);
+		
+		inputFormatter_.update(initialText.c_str());
 		text_ = mw::Text(inputFormatter_.getText(), font);
 		// One pixel to the right of the last character.
 		markerWidth_ = text_.getWidth() + 1;
-		alignment_ = LEFT;
-		markerDeltaTime_ = 0;
-		markerChanged_ = false;
 	}
 
 	// Get the current text.
@@ -45,12 +38,12 @@ namespace gui {
 		return editable_;
 	}
 
-	void TextField::setTextColor(const mw::Color& color) {
+	void TextField::setTextColor(const mw::Color<GLfloat>& color) {
 		textColor_ = color;
 	}
 
 	void TextField::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color(red, green, blue, alpha);
+		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 	}
 
 	void TextField::draw(const Graphic& graphic, double deltaTime) {

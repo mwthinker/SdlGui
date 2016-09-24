@@ -5,20 +5,17 @@
 
 namespace gui {
 
-	Label::Label(std::string text, const mw::Font& font) {
-		text_ = mw::Text(text, font);
-		if (text_.getWidth() > 1 && text_.getWidth() > 1) {
-			setPreferredSize(text_.getWidth() + 2, text_.getHeight() + 2);
-		}
-		init();
+	Label::Label(std::string text, const mw::Font& font) : Label(mw::Text(text, font)) {
 	}
 
-	Label::Label(mw::Text text) {
-		text_ = text;
+	Label::Label(mw::Text text) : text_(text), hTextAlignment_(HCENTER), vTextAlignment_(VCENTER) {
 		if (text_.getWidth() > 1 && text_.getWidth() > 1) {
 			setPreferredSize(text_.getWidth() + 2, text_.getHeight() + 2);
 		}
-		init();
+		
+		setTextColor(0, 0, 0);
+		setBorderColor(1, 1, 1, 0);
+		setBackgroundColor(1, 1, 1, 0);
 	}
 	
 	void Label::draw(const Graphic& graphic, double deltaTime) {
@@ -85,20 +82,12 @@ namespace gui {
 		vTextAlignment_ = alignment;
 	}
 		
-	void Label::setTextColor(const mw::Color& color) {
+	void Label::setTextColor(const mw::Color<GLfloat>& color) {
 		textColor_ = color;
 	}
 
 	void Label::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color(red, green, blue, alpha);
-	}
-
-	void Label::init() {
-		setTextColor(0, 0, 0);
-		hTextAlignment_ = HCENTER;
-		vTextAlignment_ = VCENTER;
-		setBorderColor(1, 1, 1, 0);
-		setBackgroundColor(1, 1, 1, 0);
+		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 	}
 
 } // Namespace gui.

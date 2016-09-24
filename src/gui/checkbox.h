@@ -17,7 +17,7 @@ namespace gui {
 		CheckBox(std::string text, const mw::Font& font, const mw::Sprite& box, const mw::Sprite& check);
 		CheckBox(const mw::Text& text, const mw::Sprite& box, const mw::Sprite& check);
 
-		virtual void draw(const Graphic& graphic,double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 		inline bool isSelected() const {
 			return selected_;
@@ -28,19 +28,19 @@ namespace gui {
 		}
 
 		// Set the color for the text label.
-		void setTextColor(const mw::Color& color);
+		void setTextColor(const mw::Color<GLfloat>& color);
 
 		// Set the color for the text label.
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
 		// Set the box color.
-		void setBoxColor(const mw::Color& color);
+		void setBoxColor(const mw::Color<GLfloat>& color);
 
 		// Set the box color.
 		void setBoxColor(float red, float green, float blue, float alpha = 1);
 
 		// Set the check color.
-		void setCheckColor(const mw::Color& color);
+		void setCheckColor(const mw::Color<GLfloat>& color);
 
 		// Set the check color.
 		void setCheckColor(float red, float green, float blue, float alpha = 1);
@@ -49,7 +49,7 @@ namespace gui {
 		void handleMouse(const SDL_Event&) override;
 
 		mw::Text text_;
-		mw::Color textColor_, boxColor_, checkColor_;
+		mw::Color<GLfloat> textColor_, boxColor_, checkColor_;
 		mw::Sprite box_, check_;
 
 		float boxSize_;

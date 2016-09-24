@@ -42,16 +42,14 @@ namespace gui {
 		void setVerticalAlignment(VerticalAlignment alignment);
 
 		// Sets the color for the text.
-		void setTextColor(const mw::Color& textColor);
+		void setTextColor(const mw::Color<GLfloat>& textColor);
 
 		// Sets the color for the text.
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
 	private:
-		void init();
-
 		mw::Text text_;
-		mw::Color textColor_;
+		mw::Color<GLfloat> textColor_;
 		VerticalAlignment vTextAlignment_;
 		HorizontalAlignment hTextAlignment_;
 	};

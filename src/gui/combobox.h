@@ -23,27 +23,27 @@ namespace gui {
 
 		void draw(const Graphic& graphic, double deltaTime) override;
 
-		void setTextColor(const mw::Color& color) {
+		void setTextColor(const mw::Color<GLfloat>& color) {
 			textColor_ = color;
 		}
 
 		void setTextColor(float red, float green, float blue, float alpha = 1) {
-			textColor_ = mw::Color(red, green, blue, alpha);
+			textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline mw::Color getTextColor() const {
+		inline mw::Color<GLfloat> getTextColor() const {
 			return textColor_;
 		}
 				
-		void setMarkColor(const mw::Color& color) {
+		void setMarkColor(const mw::Color<GLfloat>& color) {
 			markColor_ = color;
 		}
 		
 		void setMarkColor(float red, float green, float blue, float alpha = 1) {
-			markColor_ = mw::Color(red, green, blue, alpha);
+			markColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline mw::Color getMarkColor() const {
+		inline mw::Color<GLfloat> getMarkColor() const {
 			return markColor_;
 		}
 
@@ -59,7 +59,7 @@ namespace gui {
 		void handleMouse(const SDL_Event& mouseEvent) override;
 		
 		std::vector<mw::Text> items_;
-		mw::Color textColor_, markColor_;
+		mw::Color<GLfloat> textColor_, markColor_;
 		mw::Text chosenItem_;
 		bool addedDrawFunction_;
 		bool mouseInside_, pushed_;

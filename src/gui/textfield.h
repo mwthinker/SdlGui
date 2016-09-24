@@ -40,13 +40,12 @@ namespace gui {
 		void setAlignment(Alignment alignment);
 
 		// Set the color for the text.
-		void setTextColor(const mw::Color& textColor);
+		void setTextColor(const mw::Color<GLfloat>& textColor);
 
 		// Set the color for the text.
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
 	private:
-		void init(std::string initialText, const mw::Font& font);
 		void handleKeyboard(const SDL_Event& keyEvent) override;
 
 		bool editable_;
@@ -55,7 +54,7 @@ namespace gui {
 		bool markerChanged_;
 		mw::Font font_;
 
-		mw::Color textColor_;
+		mw::Color<GLfloat> textColor_;
 		Alignment alignment_;
 		InputFormatter inputFormatter_;
 		double markerDeltaTime_;
