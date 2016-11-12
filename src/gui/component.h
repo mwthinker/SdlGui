@@ -4,7 +4,7 @@
 #include "dimension.h"
 #include "graphic.h"
 
-#include <mw/matrix.h>
+#include <mw/matrix44.h>
 #include <mw/signal.h>
 #include <mw/color.h>
 #include <mw/sprite.h>

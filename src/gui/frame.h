@@ -23,10 +23,13 @@ namespace gui {
 
 	class Frame : public mw::Window {
 	public:
-		Frame(const int majorGlVersion, const int minorGlVersion, const bool glProfileEs,
-			int x, int y, int width, int height,
+		Frame(int x, int y, int width, int height,
 			bool resizeable = true, std::string title = "Frame",
 			std::string icon = "", bool borderless = false);
+
+		Frame(int x, int y, int width, int height,
+			bool resizeable, std::string title,
+			std::string icon, bool borderless, std::function<void()> initGl);
 
 		// Add the default panel in the back of the internal vector.
 		// The panel index is returned.

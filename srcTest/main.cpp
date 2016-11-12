@@ -16,7 +16,7 @@
 #include <iostream>
 
 void testBorderLayout() {
-	gui::Frame frame(2, 1, false, -1, -1, 512, 512);
+	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
@@ -42,7 +42,7 @@ void testBorderLayout() {
 }
 
 void testFlowLayout() {
-	gui::Frame frame(2, 1, false, -1, -1, 512, 512);
+	gui::Frame frame(-1, -1, 512, 512);
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	frame.setLayout(std::make_shared<gui::FlowLayout>(gui::FlowLayout::LEFT));

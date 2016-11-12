@@ -1,7 +1,7 @@
 #include "component.h"
 #include "panel.h"
 
-#include <mw/matrix.h>
+#include <mw/matrix44.h>
 
 #include <cassert>
 
