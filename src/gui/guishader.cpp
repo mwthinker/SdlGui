@@ -28,30 +28,32 @@ namespace gui {
 	}
 	
 	void GuiShader::setVertexAttribPointer() const {
-		mw::checkGlError();
 		glEnableVertexAttribArray(aPos_);
-		mw::checkGlError();
 		glVertexAttribPointer(aPos_, 2, GL_FLOAT, GL_FALSE, vertexSizeInBytes(), (GLvoid*) (sizeof(GLfloat) * 0));
-		mw::checkGlError();
 	}
 	
 	void GuiShader::setUProj(const mw::Matrix44<float>& matrix) const {
+		shader_.useProgram();
 		glUniformMatrix4fv(uProj_, 1, false, matrix.data());
 	}
 	
 	void GuiShader::setUModel(const mw::Matrix44<float>& matrix) const {
+		shader_.useProgram();
 		glUniformMatrix4fv(uModel_, 1, false, matrix.data());
 	}
 	
 	void GuiShader::setUPos(const mw::Matrix44<float>& matrix) const {
+		shader_.useProgram();
 		glUniformMatrix4fv(uPos_, 1, false, matrix.data());
 	}
 	
 	void GuiShader::setUTex(const mw::Matrix44<float>& matrix) const {
+		shader_.useProgram();
 		glUniformMatrix4fv(uTex_, 1, false, matrix.data());
 	}
 	
 	void GuiShader::setUColor(const mw::Color<float>& color) const {
+		shader_.useProgram();
 		glUniform4f(uColor_, color.red_, color.green_, color.blue_, color.alpha_);
 	}
 	
