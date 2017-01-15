@@ -161,10 +161,10 @@ namespace gui {
 		inline mw::signals::Connection addDrawListener(const DrawListener::Callback& callback) {
 			return getCurrentPanel()->addDrawListener(callback);
 		}
-
-	private:
+	protected:
 		virtual void initPreLoop() override;
 
+	private:
 		// Override mw::Window.
 		virtual void update(double deltaTime) override final;
 
