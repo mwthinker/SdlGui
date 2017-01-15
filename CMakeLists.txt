@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 2.8)
 project(SdlGui)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/MwLibrary2/cmake/Modules/")
 if (NOT MSVC)
-	set(CMAKE_CXX_FLAGS "-std=c++11")
+	set(CMAKE_CXX_FLAGS "-std=c++1y")
 endif ()
 
 # Source files.
@@ -20,11 +20,13 @@ set(SOURCES
 	src/gui/flowlayout.h
 	src/gui/frame.cpp
 	src/gui/frame.h
-	src/gui/gridlayout.h
 	src/gui/graphic.cpp
 	src/gui/graphic.h
-	src/gui/traversalgroup.cpp
-	src/gui/traversalgroup.h
+	src/gui/gridlayout.h
+	src/gui/guishader.cpp
+	src/gui/guishader.h
+	src/gui/guivertexdata.h
+	src/gui/horizontallayout.h
 	src/gui/inputformatter.h
 	src/gui/label.cpp
 	src/gui/label.h
@@ -33,10 +35,11 @@ set(SOURCES
 	src/gui/panel.h
 	src/gui/popupmenu.cpp
 	src/gui/popupmenu.h
-	src/gui/verticallayout.h
-	src/gui/horizontallayout.h
 	src/gui/textfield.cpp
 	src/gui/textfield.h
+	src/gui/traversalgroup.cpp
+	src/gui/traversalgroup.h
+	src/gui/verticallayout.h
 )
 
 set(SOURCES_TEST

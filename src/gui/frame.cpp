@@ -9,42 +9,12 @@
 #include <iostream>
 
 namespace gui {
-
-	Frame::Frame(int x, int y, int width, int height, bool resizeable,
-		std::string title, std::string icon, bool borderless) :
-		Frame(x, y, width, height, resizeable, title, icon, borderless, []() {
-
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
-
-		const int MAJOR_VERSION = 2;
-		const int MINOR_VERSION = 1;
-
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, MAJOR_VERSION);
-		SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, MINOR_VERSION);
-
-		if (SDL_GL_LoadLibrary(0) != 0) {
-			std::cerr << "SDL_GL_LoadLibrary failed: " << SDL_GetError() << std::endl;
-			std::cerr << "Failed to OpenGL version" << MAJOR_VERSION << "." << MINOR_VERSION << std::endl;
-			std::exit(1);
-		}
-	}) {
-	}
-
-	Frame::Frame(int x, int y, int width, int height, bool resizeable,
-		std::string title, std::string icon, bool borderless, std::function<void()> initGl) :
-		mw::Window(x, y, width, height, resizeable, title, icon, borderless, initGl),
-		graphic_("gui.ver.glsl", "gui.fra.glsl"),
-		defaultClosing_(false),
-		currentPanel_(0) {
-
+	
+	Frame::Frame() : defaultClosing_(false), currentPanel_(0) {
 		// Default layout for Frame.
 		addPanelBack();
 
 		getCurrentPanel()->setLayout<BorderLayout>();
-
-		// Initialization the OpenGL settings.
-		resize(getWidth(), getHeight());
-
 		getCurrentPanel()->setBackgroundColor(1, 1, 1);
 		getCurrentPanel()->setSize((float) getWidth(), (float) getHeight());
 		getCurrentPanel()->setPreferredSize((float) getWidth(), (float) getHeight());
@@ -194,6 +164,13 @@ namespace gui {
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {
 		eventQueue_.push(windowEvent);
+	}
+
+	void Frame::initPreLoop() {
+		graphic_ = Graphic("gui.ver.glsl", "gui.fra.glsl");
+
+		// Initialization the OpenGL settings.
+		resize(getWidth(), getHeight());
 	}
 
 } // Namespace gui.

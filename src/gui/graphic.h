@@ -9,6 +9,9 @@
 #include <mw/sprite.h>
 #include <mw/vertexbufferobject.h>
 
+#include "guishader.h"
+#include "guivertexdata.h"
+
 namespace gui {
 
 	class Graphic {
@@ -31,10 +34,10 @@ namespace gui {
 		void setColor(const mw::Color<GLfloat>& color) const;
 
 		void setColor(float red, float green, float blue, float alpha = 1) const;
-
+	
 	private:
 		inline void useProgram() const {
-			shader_.useProgram();
+			guiShader_.useProgram();
 		}
 
 		void draw() const;
@@ -45,17 +48,8 @@ namespace gui {
 
 		mw::Matrix44<GLfloat> proj_;
 
-		mw::Shader shader_;
-		mw::VertexBufferObject vbo_;
-
-		int aPosIndex_;
-
-		int uProjIndex_;
-		int uModelIndex_;
-		int uPosIndex_;
-		int uTexIndex_;
-		int uIsTexIndex_;
-		int uColorIndex_;
+		GuiShader guiShader_;
+		std::shared_ptr<GuiVertexData> guiVertexData_;
 	};
 
 } // Namespace gui.

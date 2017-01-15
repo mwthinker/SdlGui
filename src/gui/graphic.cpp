@@ -1,52 +1,34 @@
 #include "graphic.h"
 
+#include <mw/buffer.h>
+
 #include <array>
 
 namespace gui {
 
 	Graphic::Graphic() {
-		aPosIndex_ = -1;
-
-		uProjIndex_ = -1;
-		uModelIndex_ = -1;
-		uPosIndex_ = -1;
-		uTexIndex_ = -1;
-		uIsTexIndex_ = -1;
-		uColorIndex_ = -1;
 	}
 
 	Graphic::Graphic(std::string vShaderFile, std::string fShaderFile) {
-		shader_.bindAttribute("aPos");
-		shader_.loadAndLinkFromFile(vShaderFile, fShaderFile);
+		guiShader_ = GuiShader(vShaderFile, fShaderFile);
 
-		shader_.useProgram();
-
-		// Collect the vertex buffer attributes indexes.
-		aPosIndex_ = shader_.getAttributeLocation("aPos");
-
-		// Collect the vertex buffer uniforms indexes.
-		uProjIndex_ = shader_.getUniformLocation("uProj");
-		uModelIndex_ = shader_.getUniformLocation("uModel");
-		uPosIndex_ = shader_.getUniformLocation("uPos");
-		uTexIndex_ = shader_.getUniformLocation("uTex");
-		uIsTexIndex_ = shader_.getUniformLocation("uIsTex");
-		uColorIndex_ = shader_.getUniformLocation("uColor");
-
-		// A vertex quad defined as a GL_TRIANGLE_STRIP.
-		std::array<GLfloat, 8> data = {0, 0, 1, 0, 0, 1, 1, 1};
-
-		vbo_.bindBufferData(GL_ARRAY_BUFFER, sizeof(data), data.data(), GL_STATIC_DRAW);
+		guiVertexData_ = std::make_shared<GuiVertexData>(guiShader_);
+		guiVertexData_->begin();
+		guiVertexData_->addSquareTRIANGLE_STRIP(0, 0, 1, 1);
+		guiVertexData_->end();
+		
+		mw::Buffer buffer(true);
+		buffer.addVertexData(guiVertexData_);
+		buffer.uploadToGraphicCard();
 	}
 
 	// Uniforms. -------------------------------------------
 	void Graphic::setColor(const mw::Color<GLfloat>& color) const {
-		shader_.useProgram();
-		glUniform4f(uColorIndex_, color.red_, color.green_, color.blue_, color.alpha_);
+		guiShader_.setUColor(color);
 	}
 
 	void Graphic::setColor(float red, float green, float blue, float alpha) const {
-		shader_.useProgram();
-		glUniform4f(uColorIndex_, red, green, blue, alpha);
+		guiShader_.setUColor(mw::Color<GLfloat>(red, green, blue, alpha));
 	}
 
 	void Graphic::drawBorder(float x, float y, float w, float h) const {
@@ -61,24 +43,20 @@ namespace gui {
 	}
 
 	void Graphic::drawSquare(float x, float y, float w, float h) const {
-		shader_.useProgram();
 		mw::Matrix44<GLfloat> uPos = mw::Matrix44<GLfloat>::I;
 		mw::translate2D(uPos, x, y);
 		mw::scale2D(uPos, w, h);
-		glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
-		mw::checkGlError();
+		guiShader_.setUPos(uPos);
 
 		// Use as non texture!
-		glUniform1f(uIsTexIndex_, 0);
-		mw::checkGlError();
-
+		guiShader_.setUIsTex(false);
 		draw();
 	}
 
 	void Graphic::drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const {
 		const mw::Texture& texture = sprite.getTexture();
 		if (texture.isValid()) {
-			shader_.useProgram();
+			guiShader_.useProgram();
 			texture.bindTexture();
 
 			mw::Matrix44<GLfloat> uPos(
@@ -87,8 +65,7 @@ namespace gui {
 				0, 0, 1, 0,
 				0, 0, 0, 1
 			);
-			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
-			mw::checkGlError();
+			guiShader_.setUPos(uPos);
 
 			mw::Matrix44<GLfloat> uTex(
 				sprite.getWidth() / texture.getWidth(), 0, 0, sprite.getX() / texture.getWidth(),
@@ -96,20 +73,17 @@ namespace gui {
 				0, 0, 1, 0,
 				0, 0, 0, 1
 			);
-			glUniformMatrix4fv(uTexIndex_, 1, false, uTex.data());
-			mw::checkGlError();
+			guiShader_.setUTex(uTex);
 
 			// Use as texture!
-			glUniform1f(uIsTexIndex_, 1);
-			mw::checkGlError();
-
+			guiShader_.setUIsTex(true);
 			draw();
 		}
 	}
 
 	void Graphic::drawText(const mw::Text& text, float x, float y) const {
 		if (text.isValid()) {
-			shader_.useProgram();
+			guiShader_.useProgram();
 			text.bindTexture();
 
 			mw::Matrix44<GLfloat> uPos(
@@ -118,47 +92,32 @@ namespace gui {
 				0, 0, 1, 0,
 				0, 0, 0, 1
 			);
-
-			glUniformMatrix4fv(uPosIndex_, 1, false, uPos.data());
-			mw::checkGlError();
+			guiShader_.setUPos(uPos);
 
 			// Send the whole texture => I_44.
-			glUniformMatrix4fv(uTexIndex_, 1, false, mw::Matrix44<GLfloat>::I.data());
-			mw::checkGlError();
+			guiShader_.setUTex(mw::Matrix44<GLfloat>::I);
 
 			// Use as texture!
-			glUniform1f(uIsTexIndex_, 1);
-			mw::checkGlError();
-
+			guiShader_.setUIsTex(true);
 			draw();
 		}
 	}
 
 	void Graphic::setModel(const mw::Matrix44<GLfloat>& model) const {
-		shader_.useProgram();
-		glUniformMatrix4fv(uModelIndex_, 1, false, model.data());
+		guiShader_.setUModel(model);
 	}
 
 	void Graphic::setProj(const mw::Matrix44<GLfloat>& proj) {
 		proj_ = proj;
-		shader_.useProgram();
-		glUniformMatrix4fv(uProjIndex_, 1, false, proj.data());
+		guiShader_.setUProj(proj);
 	}
 
 	void Graphic::draw() const {
-		vbo_.bindBuffer();
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		mw::checkGlError();
-
-		glEnableVertexAttribArray(aPosIndex_);
-		glVertexAttribPointer(aPosIndex_, 2, GL_FLOAT, GL_FALSE, 0, 0);
-		glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
-		glDisableVertexAttribArray(aPosIndex_);
-		mw::checkGlError();
+		guiVertexData_->drawTRIANGLE_STRIP();
 
 		glDisable(GL_BLEND);
-		vbo_.unbindBuffer();
 	}
 
 } // Namespace gui.
