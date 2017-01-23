@@ -22,8 +22,7 @@ namespace gui {
 		// Create a empty panel. The default LayoutManager is FlowLayout.
 		Panel();
 
-		virtual ~Panel() {
-		}
+		virtual ~Panel() = default;
 
 		// Add the component, with the provided layoutIndex.
 		// Will assert if the component already added.

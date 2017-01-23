@@ -17,7 +17,7 @@ namespace gui {
 		guiVertexData_->addSquareTRIANGLE_STRIP(0, 0, 1, 1);
 		guiVertexData_->end();
 		
-		mw::Buffer buffer(true);
+		mw::Buffer buffer(mw::Buffer::STATIC);
 		buffer.addVertexData(guiVertexData_);
 		buffer.uploadToGraphicCard();
 	}

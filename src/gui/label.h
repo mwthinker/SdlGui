@@ -24,8 +24,7 @@ namespace gui {
 		Label(std::string text, const mw::Font& font);
 		Label(mw::Text text);
 
-		virtual ~Label() {
-		}
+		virtual ~Label() = default;
 
 		virtual void draw(const Graphic& graphic, double deltaTime) override;
 

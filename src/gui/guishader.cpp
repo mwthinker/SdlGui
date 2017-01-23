@@ -58,6 +58,7 @@ namespace gui {
 	}
 	
 	void GuiShader::setUIsTex(float value) const {
+		shader_.useProgram();
 		glUniform1f(uIsTex_, value);
 	}
 

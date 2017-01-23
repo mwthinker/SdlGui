@@ -15,6 +15,8 @@ namespace gui {
 		inline GuiVertexData(const GuiShader& guiShader) : guiShader_(guiShader) {
 		}
 
+		virtual ~GuiVertexData() = default;
+
 		inline unsigned int vertexSizeInFloat() const override {
 			return guiShader_.vertexSizeInFloat();
 		}

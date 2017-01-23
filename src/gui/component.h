@@ -32,8 +32,7 @@ namespace gui {
 		friend class Frame;
 		friend class Panel;
 
-		virtual ~Component() {
-		}
+		virtual ~Component() = default;
 
 		// Return the component's location in the parent's coordinate space.
 		inline Point getLocation() const {

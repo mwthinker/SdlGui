@@ -29,8 +29,7 @@ namespace gui {
 		Button(std::string text, const mw::Font& font);
 		Button(mw::Text text);
 
-		virtual ~Button() {
-		}
+		virtual ~Button() = default;
 
 		virtual void draw(const Graphic& graphic, double deltaTime) override;
 

@@ -23,6 +23,8 @@ namespace gui {
 
 		TextField(std::string initialText , const mw::Font& font);
 
+		~TextField() = default;
+
 		// Get the current text.
 		std::string getText() const;
 

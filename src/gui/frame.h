@@ -25,6 +25,8 @@ namespace gui {
 	public:
 		Frame();
 
+		virtual ~Frame() = default;
+
 		// Add the default panel in the back of the internal vector.
 		// The panel index is returned.
 		int addPanelBack();
