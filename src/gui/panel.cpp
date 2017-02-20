@@ -8,7 +8,7 @@
 
 namespace gui {
 
-	Panel::Panel() : mouseMotionInsideComponent_(false), mouseDownInsideComponent_(false), layoutManager_(std::make_shared<FlowLayout>()) {
+	Panel::Panel() : layoutManager_(std::make_shared<FlowLayout>()) {
 		setPreferredSize(50, 50);
 		setBorderColor(1, 1, 1, 0);
 	}
