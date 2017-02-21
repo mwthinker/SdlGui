@@ -20,6 +20,6 @@ Three examples of the usage of this library. The two first is contained in test 
 
 The third is a axample from a tetris clone game.
 
-![Test example 1](https://github.com/mwthinker/SdlGui/master/data/guiExample1.png)
-![Test example 2](https://github.com/mwthinker/SdlGui/master/data/guiExample2.png)
-![A tetris clone](https://github.com/mwthinker/SdlGui/master/data/tetrisGuiExample.png)
+![Test example 1](data/guiExample1.png)
+![Test example 2](data/guiExample2.png)
+![A tetris clone](data/tetrisGuiExample.png)
