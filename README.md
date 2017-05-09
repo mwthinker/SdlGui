@@ -18,7 +18,7 @@ Open source
 ======
 Three examples of the usage of this library. The two first is contained in test code in this project.
 
-The third is a axample from a tetris clone game.
+The third is an example from a tetris clone game.
 
 ![Test example 1](data/guiExample1.png)
 ![Test example 2](data/guiExample2.png)
