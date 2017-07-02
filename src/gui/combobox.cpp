@@ -18,7 +18,7 @@ namespace gui {
 	}
 
 	void ComboBox::draw(const Graphic& graphic, double deltaTime) {
-		Component::draw(graphic, deltaTime);
+		//Component::draw(graphic, deltaTime);
 		graphic.setColor(textColor_);
 		graphic.drawText(chosenItem_, 2, 0);
 	}
@@ -51,11 +51,46 @@ namespace gui {
 			case SDL_MOUSEBUTTONDOWN:
 				switch (mouseEvent.button.button) {
 					case SDL_BUTTON_LEFT:
-						pushed_ = !pushed_;
+						pushed_ = true;
+						mouseDown_ = true;
+						setLocation(0,0);
+						setSize(150, items_.size() * 20);
+						break;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				switch (mouseEvent.button.button) {
+					case SDL_BUTTON_LEFT:
+						if (mouseDown_) {
+							doAction();
+							mouseDown_ = false;
+							pushed_ = false;
+						}
 						break;
 				}
 				break;
 		}
+	}
+
+	bool ComboBox::isMouseInside() const {
+		return mouseInside_;
+	}
+
+	bool ComboBox::isPushed() const {
+		return pushed_;
+	}
+
+	bool ComboBox::isMouseDown() const {
+		return mouseDown_;
+	}
+
+	void ComboBox::mouseMotionLeave() {
+		mouseInside_ = false;
+	}
+
+	void ComboBox::mouseOutsideUp() {
+		mouseDown_ = false;
+		pushed_ = false;
 	}
 
 } // Namespace gui.

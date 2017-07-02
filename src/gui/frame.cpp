@@ -61,14 +61,6 @@ namespace gui {
 		return getCurrentPanel()->getLayout();
 	}
 
-	std::vector<std::shared_ptr<Panel>>::iterator Frame::begin() {
-		return panels_.begin();
-	}
-
-	std::vector<std::shared_ptr<Panel>>::iterator Frame::end() {
-		return panels_.end();
-	}
-
 	void Frame::setCurrentPanel(int index) {
 		if (currentPanel_ != index) {
 			getCurrentPanel()->panelChanged(false);

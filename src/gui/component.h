@@ -35,7 +35,7 @@ namespace gui {
 		virtual ~Component() = default;
 
 		// Return the component's location in the parent's coordinate space.
-		inline Point getLocation() const {
+		Point getLocation() const {
 			return location_;
 		}
 
@@ -47,26 +47,26 @@ namespace gui {
 
 		void setPreferredSize(const Dimension& dimension);
 
-		inline Dimension getPreferredSize() const {
+		Dimension getPreferredSize() const {
 			return preferedDimension_;
 		}
 
 		// Return the component size.
-		inline Dimension getSize() const {
+		Dimension getSize() const {
 			return dimension_;
 		}
 
-		inline void setSize(float width, float height) {
+		void setSize(float width, float height) {
 			dimension_ = Dimension(width, height);
 		}
 
-		inline void setSize(const Dimension& dimension) {
+		void setSize(const Dimension& dimension) {
 			dimension_ = dimension;
 		}
 
 		void setVisible(bool visible);
 
-		inline bool isVisible() const {
+		bool isVisible() const {
 			return visible_;
 		}
 
@@ -91,43 +91,43 @@ namespace gui {
 		// Return the focus for the component.
 		bool hasFocus() const;
 
-		inline std::shared_ptr<Panel> getParent() const {
+		std::shared_ptr<Panel> getParent() const {
 			return parent_;
 		}
 
-		inline std::shared_ptr<Panel> getAncestor() const {
+		std::shared_ptr<Panel> getAncestor() const {
 			return parent_;
 		}
 
-		inline void setBackground(const mw::Sprite& background) {
+		void setBackground(const mw::Sprite& background) {
 			background_ = background;
 		}
 
-		inline const mw::Sprite& getBackground() const {
+		const mw::Sprite& getBackground() const {
 			return background_;
 		}
 
-		inline void setBackgroundColor(const mw::Color<GLfloat>& color) {
+		void setBackgroundColor(const mw::Color<GLfloat>& color) {
 			backgroundColor_ = color;
 		}
 
-		inline void setBackgroundColor(float red, float green, float blue, float alpha = 1) {
+		void setBackgroundColor(float red, float green, float blue, float alpha = 1) {
 			backgroundColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline const mw::Color<GLfloat>& getBackgroundColor() const {
+		const mw::Color<GLfloat>& getBackgroundColor() const {
 			return backgroundColor_;
 		}
 
-		inline void setBorderColor(const mw::Color<GLfloat>& color) {
+		void setBorderColor(const mw::Color<GLfloat>& color) {
 			borderColor_ = color;
 		}
 
-		inline void setBorderColor(float red, float green, float blue, float alpha = 1) {
+		void setBorderColor(float red, float green, float blue, float alpha = 1) {
 			borderColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline const mw::Color<GLfloat>& getBorderColor() const {
+		const mw::Color<GLfloat>& getBorderColor() const {
 			return borderColor_;
 		}
 		
@@ -142,7 +142,7 @@ namespace gui {
 		// Should correspond to the active LayoutManager in order to work.
 		void setLayoutIndex(int layoutIndex);
 
-		inline const mw::Matrix44<GLfloat>& getModelMatrix() {
+		const mw::Matrix44<GLfloat>& getModelMatrix() {
 			return model_;
 		}
 		
@@ -158,7 +158,7 @@ namespace gui {
 		// the children's sizes must be recalculated.
 		void validateParent();
 
-		inline virtual void setChildsParent() {
+		virtual void setChildsParent() {
 		}
 
 		// Take care of all mouse events. And send it through to
@@ -174,24 +174,24 @@ namespace gui {
 		// Fix all child components sizes. Based on the layout manager and
 		// the preferred component size.
 		// If there are no children nothing happens.
-		inline virtual void validate() {
+		virtual void validate() {
 		}
 
 		// Only called when the mouse leave the component.
-		inline virtual void mouseMotionLeave() {
+		virtual void mouseMotionLeave() {
 		}
 
 		// Only called when the mouse up was inside the component.
 		// And the up event was outside.
-		inline virtual void mouseOutsideUp() {
+		virtual void mouseOutsideUp() {
 		}
 
 		virtual void panelChanged(bool active);
 
-		inline virtual void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
+		virtual void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
-		inline virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
+		virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
 	private:
@@ -218,7 +218,6 @@ namespace gui {
 		int nbrChildGrabFocus_;
 
 		bool isAdded_;
-		
 		mw::Matrix44<GLfloat> model_;
 	};
 

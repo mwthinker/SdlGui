@@ -75,14 +75,6 @@ namespace gui {
 		return layoutManager_;
 	}
 
-	std::vector<std::shared_ptr<Component>>::iterator Panel::begin() {
-		return components_.begin();
-	}
-
-	std::vector<std::shared_ptr<Component>>::iterator Panel::end() {
-		return components_.end();
-	}
-
 	const std::vector<std::shared_ptr<Component>>& Panel::getComponents() const {
 		return components_;
 	}

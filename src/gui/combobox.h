@@ -33,7 +33,7 @@ namespace gui {
 			textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline mw::Color<GLfloat> getTextColor() const {
+		mw::Color<GLfloat> getTextColor() const {
 			return textColor_;
 		}
 				
@@ -45,15 +45,31 @@ namespace gui {
 			markColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
 		}
 
-		inline mw::Color<GLfloat> getMarkColor() const {
+		mw::Color<GLfloat> getMarkColor() const {
 			return markColor_;
 		}
 
-		inline int getItemCount() const {
+		int getItemCount() const {
 			return items_.size();
 		}
 
 		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
+
+		// Returns true when the mouse is inside the button. Else 
+		// it returns false.
+		bool isMouseInside() const;
+
+		// Returns true if the button was pushed. Else 
+		// it returns false.
+		bool isPushed() const;
+
+		// Returns true if the mouse left button is hold down when the 
+		// mouse hovers the button. Else it returns false.
+		bool isMouseDown() const;
+
+		void mouseMotionLeave() override;
+
+		void mouseOutsideUp() override;
 
 	private:
 		void handleKeyboard(const SDL_Event& keyEvent) override;
@@ -62,9 +78,14 @@ namespace gui {
 		
 		std::vector<mw::Text> items_;
 		mw::Color<GLfloat> textColor_, markColor_;
+		mw::Color<GLfloat> hoverColor_;
+		mw::Color<GLfloat> focusColor_;
+		mw::Color<GLfloat> pushColor_;
+
 		mw::Text chosenItem_;
 		bool addedDrawFunction_;
 		bool mouseInside_, pushed_;
+		bool mouseDown_;
 	};
 
 } // Namespace gui.

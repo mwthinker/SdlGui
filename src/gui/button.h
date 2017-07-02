@@ -117,7 +117,7 @@ namespace gui {
 
 	protected:
 		// Is drawn if this butten has focus while the mouse 
-		// button was is oustside this button.
+		// button was is outside this button.
 		virtual void drawOnFocus(const Graphic& graphic);
 		// Is drawn if the mouse is hovering and 
 		// the mouse is not pushed down.
