@@ -23,6 +23,26 @@ void testBorderLayout() {
 	mw::Font font("Ubuntu-B.ttf", 16);
 	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
 	b->setTextColor(1,0,0);
+	b->addMouseListener([](gui::Component& c, const SDL_Event& mouseEvent) {
+		switch (mouseEvent.type) {
+			case SDL_MOUSEMOTION:
+				std::cout << "Motion\n";
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				switch (mouseEvent.button.button) {
+					case SDL_BUTTON_LEFT:
+						std::cout << "Hello pushed\n";
+						break;
+				}
+				break;
+			case SDL_MOUSEBUTTONUP:
+				switch (mouseEvent.button.button) {
+					case SDL_BUTTON_LEFT:
+						break;
+				}
+				break;
+		}
+	});
 	auto panel = std::make_shared<gui::Panel>();
 	panel->setLayout<gui::VerticalLayout>();
 	frame.add(gui::BorderLayout::CENTER, panel);

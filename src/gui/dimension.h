@@ -1,19 +1,11 @@
 #ifndef GUI_DIMENSION_H
 #define GUI_DIMENSION_H
 
+#include <mw/vec2.h>
+
 namespace gui {
 
-	class Point {
-	public:
-		Point() : x_(0), y_(0) {
-		}
-
-		Point(float x, float y) : x_(x), y_(y) {
-		}
-
-		float x_;
-		float y_;
-	};
+	using Point = mw::Vec2<float>;
 
 	class Dimension {
 	public:
