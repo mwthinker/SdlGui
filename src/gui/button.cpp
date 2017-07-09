@@ -67,6 +67,7 @@ namespace gui {
 				}
 				break;
 		}
+		Component::handleKeyboard(keyEvent);
 	}
 
 	void Button::handleMouse(const SDL_Event& mouseEvent) {
@@ -94,6 +95,7 @@ namespace gui {
 				}
 				break;
 		}
+		Component::handleMouse(mouseEvent);
 	}
 
 	bool Button::isMouseInside() const {

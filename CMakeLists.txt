@@ -86,7 +86,7 @@ if (SdlGuiTest)
 		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
 	endif (MSVC)
 
-	target_link_libraries(SdlGuiTest SdlGui MwLibrary2 Signal ${ALL_MW_LIBRARIES})
+	target_link_libraries(SdlGuiTest SdlGui MwLibrary2 ${ALL_MW_LIBRARIES})
 
 	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
 endif (SdlGuiTest)
