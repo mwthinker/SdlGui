@@ -102,10 +102,9 @@ namespace gui {
 	
 	void Component::draw(const Graphic& graphic, double deltaTime) {
 		// Draw panel background.
-		Dimension dim = getSize();
 		graphic.setColor(backgroundColor_);
-		graphic.drawSquare(0, 0, dim.width_, dim.height_);
-		graphic.drawSprite(background_, 0, 0, dim.width_, dim.height_);
+		graphic.drawSquare(0, 0, dimension_.width_, dimension_.height_);
+		graphic.drawSprite(background_, 0, 0, dimension_.width_, dimension_.height_);
 		graphic.setColor(borderColor_);
 		graphic.drawBorder(0, 0, dimension_.width_, dimension_.height_);
 	}
@@ -144,6 +143,18 @@ namespace gui {
 	void Component::validateParent() {
 		if (parent_ != nullptr) {
 			parent_->validate();
+		}
+	}
+
+	void Component::demandPriority() {
+		if (getParent() != nullptr) {
+			getParent()->demandPriority(shared_from_this());
+		}
+	}
+
+	void Component::releasePriority() {
+		if (getParent() != nullptr) {
+			getParent()->releasePriority(shared_from_this());
 		}
 	}
 

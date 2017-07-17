@@ -26,12 +26,6 @@ namespace gui {
 						}
 						break;
 					}
-					case SDLK_DOWN:
-						changeToNext(true);
-						break;
-					case SDLK_UP:
-						changeToNext(false);
-						break;
 					case SDLK_RETURN:
 						// Fall through!
 					case SDLK_KP_ENTER:

@@ -31,8 +31,6 @@ namespace gui {
 
 		virtual ~Button() = default;
 
-		virtual void draw(const Graphic& graphic, double deltaTime) override;
-
 		// Get the label of the Button instance.
 		std::string getLabel() const;
 
@@ -53,10 +51,6 @@ namespace gui {
 		// Returns true if the mouse left button is hold down when the 
 		// mouse hovers the button. Else it returns false.
 		bool isMouseDown() const;
-		
-		void mouseMotionLeave() override;
-
-		void mouseOutsideUp() override;
 		
 		// Sets the vertical alignment for the text label.
 		void setVerticalAlignment(VerticalAlignment alignment);
@@ -126,6 +120,12 @@ namespace gui {
 		virtual void drawOnPush(const Graphic& graphic);
 		// Draws the label.
 		virtual void drawLabel(const Graphic& graphic);
+
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
+
+		virtual void mouseMotionLeave() override;
+
+		virtual void mouseOutsideUp() override;
 
 		mw::Text text_;
 

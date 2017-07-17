@@ -98,80 +98,12 @@ namespace gui {
 		std::shared_ptr<Component> currentComponent;
 		switch (mouseEvent.type) {
 			case SDL_MOUSEMOTION:
-				for (auto& component : *this) {
-					if (!component->isVisible()) {
-						continue;
-					}
-					Point p = component->getLocation();
-					Dimension d = component->getSize();
-					if (p.x_ <= mouseEvent.motion.x && p.x_ + d.width_ > mouseEvent.motion.x &&
-						p.y_ <= mouseEvent.motion.y && p.y_ + d.height_ > mouseEvent.motion.y) {
-						SDL_Event motionEvent = mouseEvent;
-						motionEvent.motion.x -= (Sint32) p.x_;
-						motionEvent.motion.y -= (Sint32) p.y_;
-						component->handleMouse(motionEvent);
-						currentComponent = component;
-						break;
-					}
-				}
-				if (mouseMotionInsideComponent_ != currentComponent) {
-					if (mouseMotionInsideComponent_ != nullptr) {
-						mouseMotionInsideComponent_->mouseMotionLeave();
-					}
-				}
-				mouseMotionInsideComponent_ = currentComponent;
-				Component::handleMouse(mouseEvent);
+				handleMouseMotionEvent(mouseEvent);
 				break;
 			case SDL_MOUSEBUTTONDOWN:
 				// Fall through!
 			case SDL_MOUSEBUTTONUP:
-				// Send the mouseEvent through to the correct component.
-				for (auto& component : *this) {
-					if (!component->isVisible()) {
-						continue;
-					}
-					Point p = component->getLocation();
-					Dimension d = component->getSize();
-
-					// Mouse is inside the component?
-					if (p.x_ <= mouseEvent.button.x && p.x_ + d.width_ > mouseEvent.button.x &&
-						p.y_ <= mouseEvent.button.y && p.y_ + d.height_ > mouseEvent.button.y) {
-						SDL_Event buttonEvent = mouseEvent;
-						buttonEvent.motion.x -= (Sint32) p.x_;
-						buttonEvent.motion.y -= (Sint32) p.y_;
-						currentComponent = component;
-						component->handleMouse(buttonEvent);
-						break; // Abort, components should not overlap!
-					}
-				}
-
-				if (mouseEvent.type == SDL_MOUSEBUTTONDOWN) {
-					// Set all components focus to false except
-					// the component used.
-					for (auto& component : *this) {
-						if (!component->isVisible()) {
-							continue;
-						}
-						if (currentComponent == component) {
-							component->setFocus(true);
-						} else {
-							component->setFocus(false);
-						}
-					}
-				}
-
-				// Call the component if it was pushed and released outside
-				// the component.
-				if (mouseEvent.type == SDL_MOUSEBUTTONUP) {
-					if (mouseDownInsideComponent_ != nullptr && mouseDownInsideComponent_ != currentComponent) {
-						mouseDownInsideComponent_->mouseOutsideUp();
-						mouseDownInsideComponent_ = nullptr;
-					}
-				} else if (mouseEvent.type == SDL_MOUSEBUTTONDOWN) {
-					mouseDownInsideComponent_ = currentComponent;
-				}
-
-				Component::handleMouse(mouseEvent);
+				handleMouseButtonEvent(mouseEvent);
 				break;
 		}
 	}
@@ -239,6 +171,109 @@ namespace gui {
 			graphic.useProgram();
 			graphic.setModel(child->model_);
 			child->drawLast(frame, graphic, deltaTime);
+		}
+	}
+
+	void Panel::handleMouseMotionEvent(SDL_Event mouseEvent) {
+		std::shared_ptr<Component> currentComponent = priorityComponent_;
+		unsigned int index = 0;
+		while (index < components_.size()) {
+			if (currentComponent == nullptr) {
+				currentComponent = components_[index];
+				++index;
+			}
+			if (!currentComponent->isVisible()) {
+				continue;
+			}
+			Point p = currentComponent->getLocation();
+			Dimension d = currentComponent->getSize();
+			if (p.x_ <= mouseEvent.motion.x && p.x_ + d.width_ > mouseEvent.motion.x &&
+				p.y_ <= mouseEvent.motion.y && p.y_ + d.height_ > mouseEvent.motion.y) {
+				SDL_Event motionEvent = mouseEvent;
+				motionEvent.motion.x -= (Sint32) p.x_;
+				motionEvent.motion.y -= (Sint32) p.y_;
+				currentComponent->handleMouse(motionEvent);
+				break;
+			}
+			currentComponent = nullptr;
+		}
+
+		if (mouseMotionInsideComponent_ != nullptr && mouseMotionInsideComponent_ != currentComponent) {
+			mouseMotionInsideComponent_->mouseMotionLeave();
+		}
+
+		mouseMotionInsideComponent_ = currentComponent;
+		Component::handleMouse(mouseEvent);
+	}
+
+	void Panel::handleMouseButtonEvent(SDL_Event mouseEvent) {
+		std::shared_ptr<Component> currentComponent = priorityComponent_;
+		unsigned int index = 0;
+		// Send the mouseEvent through to the correct component.
+		while (index < components_.size()) {
+			if (currentComponent == nullptr) {
+				currentComponent = components_[index];
+				++index;
+			}
+			if (!currentComponent->isVisible()) {
+				continue;
+			}
+			Point p = currentComponent->getLocation();
+			Dimension d = currentComponent->getSize();
+			if (p.x_ <= mouseEvent.button.x && p.x_ + d.width_ > mouseEvent.button.x &&
+				p.y_ <= mouseEvent.button.y && p.y_ + d.height_ > mouseEvent.button.y) {
+				SDL_Event motionEvent = mouseEvent;
+				motionEvent.motion.x -= (Sint32) p.x_;
+				motionEvent.motion.y -= (Sint32) p.y_;
+				currentComponent->handleMouse(motionEvent);
+				break; // Abort, components should not overlap!
+			}
+			currentComponent = nullptr;
+		}
+
+		if (mouseEvent.type == SDL_MOUSEBUTTONDOWN) {
+			// Set all components focus to false except
+			// the component used.
+			for (auto& component : *this) {
+				if (!component->isVisible()) {
+					continue;
+				}
+				if (currentComponent == component) {
+					component->setFocus(true);
+				} else {
+					component->setFocus(false);
+				}
+			}
+		}
+
+		// Call the component if it was pushed and released outside
+		// the component.
+		if (mouseEvent.type == SDL_MOUSEBUTTONUP) {
+			if (mouseDownInsideComponent_ != nullptr && mouseDownInsideComponent_ != currentComponent) {
+				mouseDownInsideComponent_->mouseOutsideUp();
+				mouseDownInsideComponent_ = nullptr;
+			}
+		} else if (mouseEvent.type == SDL_MOUSEBUTTONDOWN) {
+			mouseDownInsideComponent_ = currentComponent;
+		}
+
+		Component::handleMouse(mouseEvent);
+	}
+
+	void Panel::demandPriority(const std::shared_ptr<Component>& component) {
+		if (priorityComponent_ != nullptr && component != nullptr) {
+			priorityComponent_->priorityChanged(false);
+		}
+		if (component != nullptr) {
+			priorityComponent_ = component;
+			priorityComponent_->priorityChanged(true);
+		}
+	}
+
+	void Panel::releasePriority(const std::shared_ptr<Component>& component) {
+		if (priorityComponent_ != nullptr && component == priorityComponent_) {
+			priorityComponent_->priorityChanged(false);
+			priorityComponent_ = nullptr;
 		}
 	}
 

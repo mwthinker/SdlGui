@@ -23,6 +23,22 @@ void testBorderLayout() {
 	mw::Font font("Ubuntu-B.ttf", 16);
 	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
 	b->setTextColor(1,0,0);
+	auto panel = std::make_shared<gui::Panel>();
+	panel->setLayout<gui::VerticalLayout>();
+	frame.add(gui::BorderLayout::CENTER, panel);
+	frame.add<gui::Button>(gui::BorderLayout::WEST);
+	frame.add<gui::Button>(gui::BorderLayout::EAST);
+	frame.add<gui::Button>(gui::BorderLayout::SOUTH);
+
+	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+
+	auto comboBox = panel->addDefaultToGroup<gui::ComboBox>(font, mw::Sprite("triangle.png"));
+	comboBox->addItem("Option 1");
+	comboBox->addItem("Option 2");
+	comboBox->addItem("Option 3");
+	
+	b = panel->addDefaultToGroup<gui::Button>("Hello", font);
 	b->addMouseListener([](gui::Component& c, const SDL_Event& mouseEvent) {
 		switch (mouseEvent.type) {
 			case SDL_MOUSEMOTION:
@@ -43,22 +59,6 @@ void testBorderLayout() {
 				break;
 		}
 	});
-	auto panel = std::make_shared<gui::Panel>();
-	panel->setLayout<gui::VerticalLayout>();
-	frame.add(gui::BorderLayout::CENTER, panel);
-	frame.add<gui::Button>(gui::BorderLayout::WEST);
-	frame.add<gui::Button>(gui::BorderLayout::EAST);
-	frame.add<gui::Button>(gui::BorderLayout::SOUTH);
-
-	panel->addDefaultToGroup(std::make_shared<gui::Button>());
-	panel->addDefaultToGroup(std::make_shared<gui::Button>());
-
-	auto comboBox = panel->addDefaultToGroup<gui::ComboBox>(font);
-	comboBox->addItem("Option 1");
-	comboBox->addItem("Option 2");
-	comboBox->addItem("Option 3");
-	
-	panel->addDefaultToGroup<gui::Button>("Hello", font);
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
 	frame.startLoop();
 }

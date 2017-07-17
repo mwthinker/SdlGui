@@ -88,6 +88,23 @@ namespace gui {
 		// Get all contained components.
 		const std::vector<std::shared_ptr<Component>>& getComponents() const;
 
+		void setFocus(bool focus) override;
+
+		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
+
+		void demandPriority(const std::shared_ptr<Component>& component);
+
+		void releasePriority(const std::shared_ptr<Component>& component);
+
+		void validate() override;
+
+	protected:
+		void setChildsParent() override;
+
+		void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) override;
+
+		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
+
 		void draw(const Graphic& graphic, double deltaTime) override;
 
 		void handleMouse(const SDL_Event& mouseEvent) override;
@@ -100,21 +117,13 @@ namespace gui {
 
 		void panelChanged(bool active) override;
 
-		void validate() override;
-
-		void setFocus(bool focus) override;
-
-		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
-
-	protected:
-		void setChildsParent() override;
-
-		void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) override;
-
-		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
-
 	private:
+		void handleMouseMotionEvent(SDL_Event mouseEvent);
+
+		void handleMouseButtonEvent(SDL_Event mouseEvent);
+
 		std::vector<std::shared_ptr<Component>> components_;
+		std::shared_ptr<Component> priorityComponent_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;
 		DrawListener drawListener_;

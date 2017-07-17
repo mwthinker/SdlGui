@@ -21,7 +21,7 @@ namespace gui {
 
 		Graphic();
 		Graphic(std::string vShaderFile, std::string fShaderFile);
-
+		
 		void drawSquare(float x, float y, float w, float h) const;
 		void drawSprite(const mw::Sprite& sprite, float x, float y, float w, float h) const;
 		void drawText(const mw::Text& text, float x, float y) const;

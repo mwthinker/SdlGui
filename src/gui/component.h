@@ -188,11 +188,18 @@ namespace gui {
 
 		virtual void panelChanged(bool active);
 
+		virtual void priorityChanged(bool newPriority) {
+		}
+
 		virtual void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
 		virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
+
+		void demandPriority();
+
+		void releasePriority();
 
 	private:
 		std::shared_ptr<Panel> parent_;

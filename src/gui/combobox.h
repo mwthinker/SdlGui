@@ -13,47 +13,41 @@ namespace gui {
 
 	class ComboBox : public Component {
 	public:
-		ComboBox(const mw::Font& font);
+		enum class HorizontalAlign {
+			LEFT, MIDDLE, RIGHT
+		};
+
+		ComboBox(const mw::Font& font, const mw::Sprite& showDropDown = mw::Sprite(), HorizontalAlign horizontalAlign = HorizontalAlign::LEFT);
 
 		virtual ~ComboBox() = default;
 
-		void addItem(std::string item);
+		int addItem(std::string item);
 
-		std::string getChosenItemText() const {
-			return chosenItem_.getText();
-		}
+		int getSelectedItem() const;
 
-		void draw(const Graphic& graphic, double deltaTime) override;
+		void setSelectedItem(int item);
 
-		void setTextColor(const mw::Color<GLfloat>& color) {
-			textColor_ = color;
-		}
+		std::string getChosenItemText() const;
 
-		void setTextColor(float red, float green, float blue, float alpha = 1) {
-			textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
-		}
+		void setTextColor(const mw::Color<GLfloat>& color);
 
-		mw::Color<GLfloat> getTextColor() const {
-			return textColor_;
-		}
-				
-		void setMarkColor(const mw::Color<GLfloat>& color) {
-			markColor_ = color;
-		}
-		
-		void setMarkColor(float red, float green, float blue, float alpha = 1) {
-			markColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
-		}
+		void setTextColor(float red, float green, float blue, float alpha = 1);
 
-		mw::Color<GLfloat> getMarkColor() const {
-			return markColor_;
-		}
+		mw::Color<GLfloat> getTextColor() const;
 
-		int getItemCount() const {
-			return items_.size();
-		}
+		inline const mw::Color<GLfloat>& getFocusColor() const;
 
-		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
+		void setFocusColor(float red, float green, float blue, float alpha = 1);
+
+		void setFocusColor(const mw::Color<GLfloat>& color);
+
+		int getItemCount() const;
+
+		// Set the check color.
+		void setShowDropDownColor(const mw::Color<GLfloat>& color);
+
+		// Set the check color.
+		void setShowDropDownColor(float red, float green, float blue, float alpha = 1);
 
 		// Returns true when the mouse is inside the button. Else 
 		// it returns false.
@@ -63,30 +57,93 @@ namespace gui {
 		// it returns false.
 		bool isPushed() const;
 
-		// Returns true if the mouse left button is hold down when the 
-		// mouse hovers the button. Else it returns false.
-		bool isMouseDown() const;
+	protected:
+		virtual void handleKeyboard(const SDL_Event& keyEvent) override;
 
-		void mouseMotionLeave() override;
+		virtual void handleMouse(const SDL_Event& mouseEvent) override;
 
-		void mouseOutsideUp() override;
+		virtual void mouseMotionLeave() override;
+
+		virtual void mouseOutsideUp() override;
+
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
+
+		virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
 
 	private:
-		void handleKeyboard(const SDL_Event& keyEvent) override;
-
-		void handleMouse(const SDL_Event& mouseEvent) override;
-		
 		std::vector<mw::Text> items_;
 		mw::Color<GLfloat> textColor_, markColor_;
 		mw::Color<GLfloat> hoverColor_;
 		mw::Color<GLfloat> focusColor_;
 		mw::Color<GLfloat> pushColor_;
 
-		mw::Text chosenItem_;
-		bool addedDrawFunction_;
+		mw::Color<GLfloat> selectedBackgroundColor_;
+		mw::Color<GLfloat> selectedTextColor_;
+		mw::Color<GLfloat> showDropDownColor_;
+
+
+		mw::Font font_;
+		mw::Sprite showDropDown_;
+		HorizontalAlign textHorizontalAlign_;
+
+		int selectedItem_;
+		int currentItem_;
 		bool mouseInside_, pushed_;
-		bool mouseDown_;
+		bool dropDownOpen_;
+
+		Dimension originalSize_;
+		Point originalLocation_;
 	};
+
+
+	inline int ComboBox::getSelectedItem() const {
+		return selectedItem_;
+	}
+
+	inline void ComboBox::setSelectedItem(int item) {
+		if (item >= 0 && item < (int) items_.size()) {
+			if (selectedItem_ != item) {
+				selectedItem_ = item;
+				doAction();
+			}
+		}
+	}
+
+	inline std::string ComboBox::getChosenItemText() const {
+		if (selectedItem_ >= 0 && selectedItem_ < (int) items_.size()) {
+			return items_[selectedItem_].getText();
+		}
+		return "";
+	}
+
+
+	inline void ComboBox::setTextColor(const mw::Color<GLfloat>& color) {
+		textColor_ = color;
+	}
+
+	inline void ComboBox::setTextColor(float red, float green, float blue, float alpha) {
+		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	}
+
+	inline mw::Color<GLfloat> ComboBox::getTextColor() const {
+		return textColor_;
+	}
+
+	inline const mw::Color<GLfloat>& ComboBox::getFocusColor() const {
+		return focusColor_;
+	}
+
+	inline void ComboBox::setFocusColor(float red, float green, float blue, float alpha) {
+		focusColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	}
+
+	inline void ComboBox::setFocusColor(const mw::Color<GLfloat>& color) {
+		focusColor_ = color;
+	}
+
+	inline int ComboBox::getItemCount() const {
+		return items_.size();
+	}
 
 } // Namespace gui.
 

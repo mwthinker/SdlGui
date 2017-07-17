@@ -124,6 +124,7 @@ namespace gui {
 				}
 				break;
 		}
+		Component::handleMouse(mouseEvent);
 	}
 
 } // Namespace gui.
