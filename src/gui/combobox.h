@@ -41,6 +41,14 @@ namespace gui {
 
 		void setFocusColor(const mw::Color<GLfloat>& color);
 
+		void setSelectedBackgroundColor(float red, float green, float blue, float alpha = 1);
+
+		void setSelectedBackgroundColor(const mw::Color<GLfloat>& color);
+
+		void setSelectedTextColor(float red, float green, float blue, float alpha = 1);
+
+		void setSelectedTextColor(const mw::Color<GLfloat>& color);
+
 		int getItemCount() const;
 
 		// Set the check color.
@@ -139,6 +147,22 @@ namespace gui {
 
 	inline void ComboBox::setFocusColor(const mw::Color<GLfloat>& color) {
 		focusColor_ = color;
+	}
+
+	inline void ComboBox::setSelectedBackgroundColor(float red, float green, float blue, float alpha) {
+		selectedBackgroundColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	}
+
+	inline void ComboBox::setSelectedBackgroundColor(const mw::Color<GLfloat>& color) {
+		selectedBackgroundColor_ = color;
+	}
+
+	inline void ComboBox::setSelectedTextColor(float red, float green, float blue, float alpha) {
+		selectedTextColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	}
+
+	inline void ComboBox::setSelectedTextColor(const mw::Color<GLfloat>& color) {
+		selectedTextColor_ = color;
 	}
 
 	inline int ComboBox::getItemCount() const {
