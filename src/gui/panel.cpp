@@ -148,6 +148,15 @@ namespace gui {
 		Component::panelChanged(active);
 	}
 
+	void Panel::drawListener(Frame& frame, double deltaTime) {
+		Component::drawListener(frame, deltaTime);
+		for (auto& child : *this) {
+			if (child->isVisible()) {
+				child->drawListener(frame, deltaTime);
+			}
+		}
+	}
+
 	void Panel::validate() {
 		// Validate!
 		layoutManager_->layoutContainer(*this);
@@ -156,10 +165,6 @@ namespace gui {
 		}
 
 		group_.sort();
-	}
-
-	mw::signals::Connection Panel::addDrawListener(const DrawListener::Callback& callback) {
-		return drawListener_.connect(callback);
 	}
 
 	void Panel::handleMouseMotionEvent(SDL_Event mouseEvent) {

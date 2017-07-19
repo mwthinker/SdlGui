@@ -11,8 +11,6 @@ namespace gui {
 
 	class LayoutManager;
 
-	using DrawListener = mw::Signal<Frame&, double>;
-
 	// Creates a panel able to contain other components. It manage the
 	// the layout of the components based on the layout manager.
 	class Panel : public Component {
@@ -90,8 +88,6 @@ namespace gui {
 
 		void setFocus(bool focus) override;
 
-		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
-
 		void demandPriority(const std::shared_ptr<Component>& component);
 
 		void releasePriority(const std::shared_ptr<Component>& component);
@@ -113,6 +109,8 @@ namespace gui {
 
 		void panelChanged(bool active) override;
 
+		void drawListener(Frame& frame, double deltaTime) override final;
+
 	private:
 		void handleMouseMotionEvent(SDL_Event mouseEvent);
 
@@ -122,7 +120,6 @@ namespace gui {
 		std::shared_ptr<Component> priorityComponent_;
 		std::shared_ptr<LayoutManager> layoutManager_;
 		TraversalGroup group_;
-		DrawListener drawListener_;
 
 		std::shared_ptr<Component> mouseMotionInsideComponent_;
 		std::shared_ptr<Component> mouseDownInsideComponent_;

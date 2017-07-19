@@ -58,6 +58,10 @@ namespace gui {
 		return panelChangeListener_.connect(callback);
 	}
 
+	mw::signals::Connection Component::addDrawListener(const DrawListener::Callback& callback) {
+		return drawListener_.connect(callback);
+	}
+
 	void Component::setGrabFocus(bool grabFocus) {
 		if (grabFocus_ != grabFocus) {
 			// State is changed.
@@ -156,6 +160,10 @@ namespace gui {
 		if (getParent() != nullptr) {
 			getParent()->releasePriority(shared_from_this());
 		}
+	}
+
+	void Component::drawListener(Frame& frame, double deltaTime) {
+		drawListener_(frame, deltaTime);
 	}
 
 } // Namespace gui.

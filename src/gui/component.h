@@ -26,6 +26,7 @@ namespace gui {
 	using MouseListener = KeyListener;
 	using ActionListener = mw::Signal<Component&>;
 	using PanelChangeListener = mw::Signal<Component&, bool>;
+	using DrawListener = mw::Signal<Frame&, double>;
 
 	class Component : public std::enable_shared_from_this<Component> {
 	public:
@@ -75,6 +76,7 @@ namespace gui {
 		mw::signals::Connection addFocusListener(const FocusListener::Callback& callback);
 		mw::signals::Connection addActionListener(const ActionListener::Callback& callback);
 		mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback);		
+		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
 
 		// If set to true makes the component to always have focus. All parents will
 		// also be set to have focus. If the current state is the same as the change,
@@ -198,6 +200,8 @@ namespace gui {
 
 		void releasePriority();
 
+		virtual void drawListener(Frame& frame, double deltaTime);
+
 	private:
 		std::shared_ptr<Panel> parent_;
 		std::shared_ptr<Panel> ancestor_;
@@ -215,6 +219,7 @@ namespace gui {
 		MouseListener mouseListener_;
 		ActionListener actionListener_;
 		PanelChangeListener panelChangeListener_;
+		DrawListener drawListener_;
 
 		bool visible_;
 		bool focus_;
