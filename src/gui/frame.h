@@ -133,6 +133,7 @@ namespace gui {
 
 		// Add a update listener to the current panel.
 		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
+
 	protected:
 		virtual void initPreLoop() override;
 

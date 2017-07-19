@@ -33,6 +33,7 @@ namespace gui {
     std::shared_ptr<Component> Panel::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		// Was already added?
 		assert(!component->isAdded_);
+		component->init();
 		component->isAdded_ = true;
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
@@ -86,11 +87,17 @@ namespace gui {
 
 		// Draw the components.
 		for (auto& component : *this) {
-			if (component->isVisible()) {
+			if (component != priorityComponent_ && component->isVisible()) {
 				graphic.useProgram();
 				graphic.setModel(component->model_);
 				component->draw(graphic, deltaTime);
 			}
+		}
+
+		if (priorityComponent_) {
+			graphic.useProgram();
+			graphic.setModel(priorityComponent_->model_);
+			priorityComponent_->draw(graphic, deltaTime);
 		}
 	}
 
@@ -153,25 +160,6 @@ namespace gui {
 
 	mw::signals::Connection Panel::addDrawListener(const DrawListener::Callback& callback) {
 		return drawListener_.connect(callback);
-	}
-
-	void Panel::drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
-		graphic.useProgram();
-		graphic.setModel(Component::model_);
-		drawListener_(frame, deltaTime);
-		for (auto& child : *this) {
-			graphic.useProgram();
-			graphic.setModel(child->model_);
-			child->drawFirst(frame, graphic, deltaTime);
-		}
-	}
-
-	void Panel::drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
-		for (auto& child : *this) {
-			graphic.useProgram();
-			graphic.setModel(child->model_);
-			child->drawLast(frame, graphic, deltaTime);
-		}
 	}
 
 	void Panel::handleMouseMotionEvent(SDL_Event mouseEvent) {

@@ -83,9 +83,7 @@ namespace gui {
 			x + dim.width_ - spriteSize, y,
 			spriteSize, spriteSize
 		);
-	}
 
-	void ComboBox::drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		if (pushed_) {
 			auto dim = getSize();
 			int size = items_.size();
@@ -95,17 +93,17 @@ namespace gui {
 					graphic.setColor(selectedBackgroundColor_);
 				} else {
 					graphic.setColor(getBackgroundColor());
-				}				
+				}
 				graphic.drawSquare(0, y, dim.width_, originalSize_.height_);
-				
+
 				graphic.setColor(getBorderColor());
 				graphic.drawBorder(0, y, dim.width_, originalSize_.height_);
-								
+
 				if (currentItem_ == i) {
 					graphic.setColor(selectedTextColor_);
 				} else {
 					graphic.setColor(textColor_);
-				}				
+				}
 				graphic.drawText(items_[i], calculateTextAlignDeltaX(textHorizontalAlign_, items_[i], originalSize_), y);
 			}
 		}

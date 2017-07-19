@@ -76,8 +76,6 @@ namespace gui {
 
 		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
-		virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
-
 	private:
 		std::vector<mw::Text> items_;
 		mw::Color<GLfloat> textColor_, markColor_;

@@ -149,6 +149,9 @@ namespace gui {
 	protected:
 		Component();
 
+		virtual void init() {
+		}
+
 		// Draw the background color.
 		// Should be derived and should then draw the
 		// component in the size defined by getSize().
@@ -189,12 +192,6 @@ namespace gui {
 		virtual void panelChanged(bool active);
 
 		virtual void priorityChanged(bool newPriority) {
-		}
-
-		virtual void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) {
-		}
-
-		virtual void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) {
 		}
 
 		void demandPriority();

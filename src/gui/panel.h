@@ -101,11 +101,7 @@ namespace gui {
 	protected:
 		void setChildsParent() override;
 
-		void drawFirst(Frame& frame, const Graphic& graphic, double deltaTime) override;
-
-		void drawLast(Frame& frame, const Graphic& graphic, double deltaTime) override;
-
-		void draw(const Graphic& graphic, double deltaTime) override;
+		virtual void draw(const Graphic& graphic, double deltaTime) override;
 
 		void handleMouse(const SDL_Event& mouseEvent) override;
 
