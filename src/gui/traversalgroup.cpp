@@ -12,6 +12,24 @@ namespace gui {
 		components_.push_back(component);
 	}
 
+	void TraversalGroup::remove(const std::shared_ptr<Component>& component) {
+		auto it = std::find(components_.begin(), components_.end(), component);
+		if (it != components_.end()) {
+			if (it - components_.begin() < lastFocusIndex_) {
+				// Move focus in order for the focus to remain on the same component.
+				// If the focus points to the removed component, then the focus is moved
+				// to the component to the left.
+				lastFocusIndex_--;
+			}
+			// Remove component.
+			components_.erase(it);
+		}
+	}
+
+	void TraversalGroup::removeAll() {
+		components_.clear();
+	}
+
 	void TraversalGroup::handleKeyboard(const SDL_Event& keyEvent) {
 		switch (keyEvent.type) {
 			case SDL_KEYDOWN:

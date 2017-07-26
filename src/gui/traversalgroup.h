@@ -13,6 +13,9 @@ namespace gui {
 
 		void add(const std::shared_ptr<Component>& component);
 
+		void remove(const std::shared_ptr<Component>& component);
+		void removeAll();
+
 		void handleKeyboard(const SDL_Event& keyEvent);
 
 		void sort();

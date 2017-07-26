@@ -62,6 +62,9 @@ namespace gui {
 		// a traversal group too.
 		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
+		void remove(const std::shared_ptr<Component>& component);
+		void removeAll();
+
 		// Set the current layout manager.
 		std::shared_ptr<LayoutManager> setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
