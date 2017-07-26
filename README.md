@@ -3,18 +3,27 @@ SdlGui
 Is a simple graphic user interface api. Strongly inspired from java.
 
 External libraries SDL2 (http://www.libsdl.org/), SDL2_image, 
-SDL2_ttf, SDL2_mixer and OpenGL.
-
-Build and usage
-======
-Create a "build" directory in the project directory and execute CMake from 
-there and point to the project directory (i.e. there the "CMakeLists.txt" is).
+SDL2_ttf, SDL2_mixer and glew.
 
 Open source
 ======
 Is licensed under the MIT License (see LICENSE.txt).
 
-Open source
+Building
+======
+CMake must be installed, at least version 3.0. Either use cmake graphical interface, or use the commandline.
+
+Inside the project folder, e.g.
+```bash
+mkdir build
+cd build
+# Creates the build for the library and the test code.
+cmake -D SdlGuiTest=1 ..
+# Run the tests.
+./SdlGuiTest
+```
+
+Example
 ======
 Three examples of the usage of this library. The two first is contained in test code in this project.
 
