@@ -22,6 +22,10 @@ namespace gui {
 		virtual ~ComboBox() = default;
 
 		int addItem(std::string item);
+		
+		void removeItem(std::string item);
+
+		void removeItem(unsigned int item);
 
 		int getSelectedItem() const;
 
@@ -31,21 +35,21 @@ namespace gui {
 
 		void setTextColor(const mw::Color& color);
 
-		void setTextColor(float red, float green, float blue, float alpha = 1);
+		void setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		mw::Color getTextColor() const;
 
 		const mw::Color& getFocusColor() const;
 
-		void setFocusColor(float red, float green, float blue, float alpha = 1);
+		void setFocusColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		void setFocusColor(const mw::Color& color);
 
-		void setSelectedBackgroundColor(float red, float green, float blue, float alpha = 1);
+		void setSelectedBackgroundColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		void setSelectedBackgroundColor(const mw::Color& color);
 
-		void setSelectedTextColor(float red, float green, float blue, float alpha = 1);
+		void setSelectedTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		void setSelectedTextColor(const mw::Color& color);
 
@@ -55,7 +59,7 @@ namespace gui {
 		void setShowDropDownColor(const mw::Color& color);
 
 		// Set the check color.
-		void setShowDropDownColor(float red, float green, float blue, float alpha = 1);
+		void setShowDropDownColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		// Returns true when the mouse is inside the button. Else 
 		// it returns false.
@@ -127,7 +131,7 @@ namespace gui {
 		textColor_ = color;
 	}
 
-	inline void ComboBox::setTextColor(float red, float green, float blue, float alpha) {
+	inline void ComboBox::setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
 		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
@@ -139,7 +143,7 @@ namespace gui {
 		return focusColor_;
 	}
 
-	inline void ComboBox::setFocusColor(float red, float green, float blue, float alpha) {
+	inline void ComboBox::setFocusColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
 		focusColor_ = mw::Color(red, green, blue, alpha);
 	}
 
@@ -147,7 +151,7 @@ namespace gui {
 		focusColor_ = color;
 	}
 
-	inline void ComboBox::setSelectedBackgroundColor(float red, float green, float blue, float alpha) {
+	inline void ComboBox::setSelectedBackgroundColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
 		selectedBackgroundColor_ = mw::Color(red, green, blue, alpha);
 	}
 
@@ -155,7 +159,7 @@ namespace gui {
 		selectedBackgroundColor_ = color;
 	}
 
-	inline void ComboBox::setSelectedTextColor(float red, float green, float blue, float alpha) {
+	inline void ComboBox::setSelectedTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
 		selectedTextColor_ = mw::Color(red, green, blue, alpha);
 	}
 

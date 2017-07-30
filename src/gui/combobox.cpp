@@ -49,6 +49,21 @@ namespace gui {
 		return items_.size() - 1;
 	}
 
+	void ComboBox::removeItem(std::string item) {
+		auto it = std::find_if(items_.begin(), items_.end(), [item](const mw::Text& text) {
+			return item == text.getText();
+		});
+		if (it != items_.end()) {
+			items_.erase(it);
+		}
+	}
+
+	void ComboBox::removeItem(unsigned int item) {
+		if (item >= 0 && item < items_.size()) {
+			items_.erase(items_.begin() + item);
+		}
+	}
+
 	void ComboBox::draw(const Graphic& graphic, double deltaTime) {
 		// Draw panel background.
 		Dimension dim = originalSize_;
