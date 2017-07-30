@@ -32,7 +32,7 @@ namespace gui {
 		void setUPos(const mw::Matrix44<float>& matrix) const;
 		void setUTex(const mw::Matrix44<float>& matrix) const;
 		
-		void setUColor(const mw::Color<float>& color) const;
+		void setUColor(const mw::Color& color) const;
 		void setUIsTex(float value) const;
 	
 	private:

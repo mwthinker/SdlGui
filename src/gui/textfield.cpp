@@ -38,12 +38,12 @@ namespace gui {
 		return editable_;
 	}
 
-	void TextField::setTextColor(const mw::Color<GLfloat>& color) {
+	void TextField::setTextColor(const mw::Color& color) {
 		textColor_ = color;
 	}
 
-	void TextField::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void TextField::setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 	void TextField::draw(const Graphic& graphic, double deltaTime) {

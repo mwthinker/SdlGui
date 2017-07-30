@@ -82,12 +82,12 @@ namespace gui {
 		vTextAlignment_ = alignment;
 	}
 		
-	void Label::setTextColor(const mw::Color<GLfloat>& color) {
+	void Label::setTextColor(const mw::Color& color) {
 		textColor_ = color;
 	}
 
-	void Label::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void Label::setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 } // Namespace gui.

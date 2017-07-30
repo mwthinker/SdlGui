@@ -30,28 +30,28 @@ namespace gui {
 		}
 
 		// Set the color for the text label.
-		void setTextColor(const mw::Color<GLfloat>& color);
+		void setTextColor(const mw::Color& color);
 
 		// Set the color for the text label.
-		void setTextColor(float red, float green, float blue, float alpha = 1);
+		void setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		// Set the box color.
-		void setBoxColor(const mw::Color<GLfloat>& color);
+		void setBoxColor(const mw::Color& color);
 
 		// Set the box color.
-		void setBoxColor(float red, float green, float blue, float alpha = 1);
+		void setBoxColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 		// Set the check color.
-		void setCheckColor(const mw::Color<GLfloat>& color);
+		void setCheckColor(const mw::Color& color);
 
 		// Set the check color.
-		void setCheckColor(float red, float green, float blue, float alpha = 1);
+		void setCheckColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha = 1);
 
 	private:
 		void handleMouse(const SDL_Event&) override;
 
 		mw::Text text_;
-		mw::Color<GLfloat> textColor_, boxColor_, checkColor_;
+		mw::Color textColor_, boxColor_, checkColor_;
 		mw::Sprite box_, check_;
 
 		float boxSize_;

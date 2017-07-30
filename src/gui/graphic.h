@@ -31,7 +31,7 @@ namespace gui {
 			return proj_;
 		}
 
-		void setColor(const mw::Color<GLfloat>& color) const;
+		void setColor(const mw::Color& color) const;
 
 		void setColor(float red, float green, float blue, float alpha = 1) const;
 	

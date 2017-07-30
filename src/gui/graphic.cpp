@@ -23,12 +23,12 @@ namespace gui {
 	}
 
 	// Uniforms. -------------------------------------------
-	void Graphic::setColor(const mw::Color<GLfloat>& color) const {
+	void Graphic::setColor(const mw::Color& color) const {
 		guiShader_.setUColor(color);
 	}
 
 	void Graphic::setColor(float red, float green, float blue, float alpha) const {
-		guiShader_.setUColor(mw::Color<GLfloat>(red, green, blue, alpha));
+		guiShader_.setUColor(mw::Color(red, green, blue, alpha));
 	}
 
 	void Graphic::drawBorder(float x, float y, float w, float h) const {

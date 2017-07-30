@@ -29,30 +29,30 @@ namespace gui {
 
 		std::string getChosenItemText() const;
 
-		void setTextColor(const mw::Color<GLfloat>& color);
+		void setTextColor(const mw::Color& color);
 
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
-		mw::Color<GLfloat> getTextColor() const;
+		mw::Color getTextColor() const;
 
-		inline const mw::Color<GLfloat>& getFocusColor() const;
+		const mw::Color& getFocusColor() const;
 
 		void setFocusColor(float red, float green, float blue, float alpha = 1);
 
-		void setFocusColor(const mw::Color<GLfloat>& color);
+		void setFocusColor(const mw::Color& color);
 
 		void setSelectedBackgroundColor(float red, float green, float blue, float alpha = 1);
 
-		void setSelectedBackgroundColor(const mw::Color<GLfloat>& color);
+		void setSelectedBackgroundColor(const mw::Color& color);
 
 		void setSelectedTextColor(float red, float green, float blue, float alpha = 1);
 
-		void setSelectedTextColor(const mw::Color<GLfloat>& color);
+		void setSelectedTextColor(const mw::Color& color);
 
 		int getItemCount() const;
 
 		// Set the check color.
-		void setShowDropDownColor(const mw::Color<GLfloat>& color);
+		void setShowDropDownColor(const mw::Color& color);
 
 		// Set the check color.
 		void setShowDropDownColor(float red, float green, float blue, float alpha = 1);
@@ -78,14 +78,14 @@ namespace gui {
 
 	private:
 		std::vector<mw::Text> items_;
-		mw::Color<GLfloat> textColor_, markColor_;
-		mw::Color<GLfloat> hoverColor_;
-		mw::Color<GLfloat> focusColor_;
-		mw::Color<GLfloat> pushColor_;
+		mw::Color textColor_, markColor_;
+		mw::Color hoverColor_;
+		mw::Color focusColor_;
+		mw::Color pushColor_;
 
-		mw::Color<GLfloat> selectedBackgroundColor_;
-		mw::Color<GLfloat> selectedTextColor_;
-		mw::Color<GLfloat> showDropDownColor_;
+		mw::Color selectedBackgroundColor_;
+		mw::Color selectedTextColor_;
+		mw::Color showDropDownColor_;
 
 
 		mw::Font font_;
@@ -123,43 +123,43 @@ namespace gui {
 	}
 
 
-	inline void ComboBox::setTextColor(const mw::Color<GLfloat>& color) {
+	inline void ComboBox::setTextColor(const mw::Color& color) {
 		textColor_ = color;
 	}
 
 	inline void ComboBox::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	inline mw::Color<GLfloat> ComboBox::getTextColor() const {
+	inline mw::Color ComboBox::getTextColor() const {
 		return textColor_;
 	}
 
-	inline const mw::Color<GLfloat>& ComboBox::getFocusColor() const {
+	inline const mw::Color& ComboBox::getFocusColor() const {
 		return focusColor_;
 	}
 
 	inline void ComboBox::setFocusColor(float red, float green, float blue, float alpha) {
-		focusColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+		focusColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	inline void ComboBox::setFocusColor(const mw::Color<GLfloat>& color) {
+	inline void ComboBox::setFocusColor(const mw::Color& color) {
 		focusColor_ = color;
 	}
 
 	inline void ComboBox::setSelectedBackgroundColor(float red, float green, float blue, float alpha) {
-		selectedBackgroundColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+		selectedBackgroundColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	inline void ComboBox::setSelectedBackgroundColor(const mw::Color<GLfloat>& color) {
+	inline void ComboBox::setSelectedBackgroundColor(const mw::Color& color) {
 		selectedBackgroundColor_ = color;
 	}
 
 	inline void ComboBox::setSelectedTextColor(float red, float green, float blue, float alpha) {
-		selectedTextColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+		selectedTextColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	inline void ComboBox::setSelectedTextColor(const mw::Color<GLfloat>& color) {
+	inline void ComboBox::setSelectedTextColor(const mw::Color& color) {
 		selectedTextColor_ = color;
 	}
 

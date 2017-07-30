@@ -52,7 +52,7 @@ namespace gui {
 		glUniformMatrix4fv(uTex_, 1, false, matrix.data());
 	}
 	
-	void GuiShader::setUColor(const mw::Color<float>& color) const {
+	void GuiShader::setUColor(const mw::Color& color) const {
 		shader_.useProgram();
 		glUniform4f(uColor_, color.red_, color.green_, color.blue_, color.alpha_);
 	}

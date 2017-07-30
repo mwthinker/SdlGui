@@ -109,27 +109,27 @@ namespace gui {
 			return background_;
 		}
 
-		void setBackgroundColor(const mw::Color<GLfloat>& color) {
+		void setBackgroundColor(const mw::Color& color) {
 			backgroundColor_ = color;
 		}
 
 		void setBackgroundColor(float red, float green, float blue, float alpha = 1) {
-			backgroundColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+			backgroundColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		const mw::Color<GLfloat>& getBackgroundColor() const {
+		const mw::Color& getBackgroundColor() const {
 			return backgroundColor_;
 		}
 
-		void setBorderColor(const mw::Color<GLfloat>& color) {
+		void setBorderColor(const mw::Color& color) {
 			borderColor_ = color;
 		}
 
 		void setBorderColor(float red, float green, float blue, float alpha = 1) {
-			borderColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+			borderColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		const mw::Color<GLfloat>& getBorderColor() const {
+		const mw::Color& getBorderColor() const {
 			return borderColor_;
 		}
 		
@@ -207,8 +207,8 @@ namespace gui {
 		std::shared_ptr<Panel> ancestor_;
 
 		mw::Sprite background_;
-		mw::Color<GLfloat> backgroundColor_;
-		mw::Color<GLfloat> borderColor_;
+		mw::Color backgroundColor_;
+		mw::Color borderColor_;
 		Point location_;
 		Dimension dimension_;
 		Dimension preferedDimension_;

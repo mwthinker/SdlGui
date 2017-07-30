@@ -187,12 +187,12 @@ namespace gui {
 		setSize(originalSize_);
 	}
 
-	void ComboBox::setShowDropDownColor(const mw::Color<GLfloat>& color) {
+	void ComboBox::setShowDropDownColor(const mw::Color& color) {
 		showDropDownColor_ = color;
 	}
 
-	void ComboBox::setShowDropDownColor(float red, float green, float blue, float alpha) {
-		showDropDownColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void ComboBox::setShowDropDownColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		showDropDownColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 } // Namespace gui.

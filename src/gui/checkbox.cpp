@@ -78,28 +78,28 @@ namespace gui {
 		graphic.drawText(text_, boxSize_, 0);
 	}
 
-	void CheckBox::setTextColor(const mw::Color<GLfloat>& color) {
+	void CheckBox::setTextColor(const mw::Color& color) {
 		textColor_ = color;
 	}
 
-	void CheckBox::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void CheckBox::setTextColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	void CheckBox::setBoxColor(const mw::Color<GLfloat>& color) {
+	void CheckBox::setBoxColor(const mw::Color& color) {
 		boxColor_ = color;
 	}
 
-	void CheckBox::setBoxColor(float red, float green, float blue, float alpha) {
-		boxColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void CheckBox::setBoxColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		boxColor_ = mw::Color(red, green, blue, alpha);
 	}
 
-	void CheckBox::setCheckColor(const mw::Color<GLfloat>& color) {
+	void CheckBox::setCheckColor(const mw::Color& color) {
 		checkColor_ = color;
 	}
 
-	void CheckBox::setCheckColor(float red, float green, float blue, float alpha) {
-		checkColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+	void CheckBox::setCheckColor(GLfloat red, GLfloat green, GLfloat blue, GLfloat alpha) {
+		checkColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 	void CheckBox::handleMouse(const SDL_Event& mouseEvent) {

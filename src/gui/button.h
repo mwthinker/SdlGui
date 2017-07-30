@@ -58,12 +58,12 @@ namespace gui {
 		// Sets the horizontal alignment for the text label.
 		void setHorizontalAlignment(HorizontalAlignment alignment);
 
-		inline const mw::Color<GLfloat>& getTextColor() const {
+		inline const mw::Color& getTextColor() const {
 			return textColor_;
 		}
 
 		// Sets the color for the text label.
-		void setTextColor(const mw::Color<GLfloat>& textColor);
+		void setTextColor(const mw::Color& textColor);
 
 		void setTextColor(float red, float green, float blue, float alpha = 1);
 
@@ -73,39 +73,39 @@ namespace gui {
 
 		bool isAutoSizeToFitText() const;
 
-		inline const mw::Color<GLfloat>& getHoverColor() const {
+		inline const mw::Color& getHoverColor() const {
 			return hoverColor_;
 		}
 
-		void setHoverColor(const mw::Color<GLfloat>& color) {
+		void setHoverColor(const mw::Color& color) {
 			hoverColor_ = color;
 		}
 
 		void setHoverColor(float red, float green, float blue, float alpha = 1) {
-			hoverColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+			hoverColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		inline const mw::Color<GLfloat>& getFocusColor() const {
+		inline const mw::Color& getFocusColor() const {
 			return focusColor_;
 		}
 
 		void setFocusColor(float red, float green, float blue, float alpha = 1) {
-			focusColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+			focusColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		void setFocusColor(const mw::Color<GLfloat>& color) {
+		void setFocusColor(const mw::Color& color) {
 			focusColor_ = color;
 		}
 
-		inline const mw::Color<GLfloat>& getPushColor() const {
+		inline const mw::Color& getPushColor() const {
 			return pushColor_;
 		}
 
 		void setPushColor(float red, float green, float blue, float alpha = 1) {
-			pushColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+			pushColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		void setPushColor(const mw::Color<GLfloat>& color) {
+		void setPushColor(const mw::Color& color) {
 			pushColor_ = color;
 		}
 
@@ -129,10 +129,10 @@ namespace gui {
 
 		mw::Text text_;
 
-		mw::Color<GLfloat> textColor_;
-		mw::Color<GLfloat> hoverColor_;
-		mw::Color<GLfloat> focusColor_;
-		mw::Color<GLfloat> pushColor_;
+		mw::Color textColor_;
+		mw::Color hoverColor_;
+		mw::Color focusColor_;
+		mw::Color pushColor_;
 
 		VerticalAlignment vTextAlignment_;
 		HorizontalAlignment hTextAlignment_;

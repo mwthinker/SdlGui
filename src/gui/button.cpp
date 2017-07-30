@@ -127,12 +127,12 @@ namespace gui {
 		hTextAlignment_ = alignment;
 	}
 
-	void Button::setTextColor(const mw::Color<GLfloat>& textColor) {
+	void Button::setTextColor(const mw::Color& textColor) {
 		textColor_ = textColor;
 	}
 
 	void Button::setTextColor(float red, float green, float blue, float alpha) {
-		textColor_ = mw::Color<GLfloat>(red, green, blue, alpha);
+		textColor_ = mw::Color(red, green, blue, alpha);
 	}
 
 	void Button::sizeToFitText() {

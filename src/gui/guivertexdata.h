@@ -29,12 +29,12 @@ namespace gui {
 			guiShader_.useProgram();
 		}
 
-		inline void setColor(const mw::Color<float>& color) const {
+		inline void setColor(const mw::Color& color) const {
 			guiShader_.setUColor(color);
 		}
 
 		inline void setColor(float red, float green, float blue, float alpha = 1) const {
-			guiShader_.setUColor(mw::Color<float>(red, green, blue, alpha));
+			guiShader_.setUColor(mw::Color(red, green, blue, alpha));
 		}
 
 		inline void setTexture(bool texture) const {
