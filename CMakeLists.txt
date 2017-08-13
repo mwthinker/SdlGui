@@ -3,6 +3,13 @@ project(SdlGui)
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/MwLibrary2/cmake/Modules/")
 if (NOT MSVC)
 	set(CMAKE_CXX_FLAGS "-std=c++1y")
+	option(Debug "Set projects to debug mode.")
+	if (Debug)
+		set(CMAKE_BUILD_TYPE "Debug" CACHE INTERNAL "Build type.")
+		add_definitions(-D_DEBUG)
+	else ()
+		set(CMAKE_BUILD_TYPE "Release" CACHE INTERNAL "Build type.")
+	endif ()
 endif ()
 
 # Source files.
