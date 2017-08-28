@@ -58,7 +58,7 @@ namespace gui {
 		// Sets the horizontal alignment for the text label.
 		void setHorizontalAlignment(HorizontalAlignment alignment);
 
-		inline const mw::Color& getTextColor() const {
+		const mw::Color& getTextColor() const {
 			return textColor_;
 		}
 
@@ -73,7 +73,7 @@ namespace gui {
 
 		bool isAutoSizeToFitText() const;
 
-		inline const mw::Color& getHoverColor() const {
+		const mw::Color& getHoverColor() const {
 			return hoverColor_;
 		}
 
@@ -85,7 +85,7 @@ namespace gui {
 			hoverColor_ = mw::Color(red, green, blue, alpha);
 		}
 
-		inline const mw::Color& getFocusColor() const {
+		const mw::Color& getFocusColor() const {
 			return focusColor_;
 		}
 
@@ -97,7 +97,7 @@ namespace gui {
 			focusColor_ = color;
 		}
 
-		inline const mw::Color& getPushColor() const {
+		const mw::Color& getPushColor() const {
 			return pushColor_;
 		}
 

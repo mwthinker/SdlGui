@@ -17,7 +17,7 @@
 
 void testBorderLayout() {
 	gui::Frame frame;
-	frame.setOpenGlVersion(3, 1);
+	frame.setOpenGlVersion(2, 1);
 	frame.setWindowSize(512, 512);
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
@@ -65,6 +65,7 @@ void testBorderLayout() {
 
 void testFlowLayout() {
 	gui::Frame frame;
+	frame.setOpenGlVersion(3, 1);
 	frame.setWindowSize(512, 512);
 
 	frame.setDefaultClosing(true);
