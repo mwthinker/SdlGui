@@ -190,6 +190,7 @@ namespace gui {
 				++index;
 			}
 			if (!currentComponent->isVisible()) {
+				++index;
 				continue;
 			}
 			Point p = currentComponent->getLocation();
@@ -223,6 +224,7 @@ namespace gui {
 				++index;
 			}
 			if (!currentComponent->isVisible()) {
+				++index;
 				continue;
 			}
 			Point p = currentComponent->getLocation();
