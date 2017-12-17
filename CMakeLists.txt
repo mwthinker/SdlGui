@@ -40,6 +40,8 @@ set(SOURCES
 	src/gui/layoutmanager.h
 	src/gui/panel.cpp
 	src/gui/panel.h
+	src/gui/progressbar.cpp
+	src/gui/progressbar.h
 	src/gui/textfield.cpp
 	src/gui/textfield.h
 	src/gui/traversalgroup.cpp

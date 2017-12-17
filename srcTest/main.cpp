@@ -11,6 +11,7 @@
 #include <gui/horizontallayout.h>
 #include <gui/gridlayout.h>
 #include <gui/combobox.h>
+#include <gui/progressbar.h>
 
 #include <cassert>
 #include <iostream>
@@ -60,6 +61,9 @@ void testBorderLayout() {
 		}
 	});
 	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
+
+	panel->add<gui::ProgressBar>(gui::DEFAULT_INDEX);
+
 	frame.startLoop();
 }
 
