@@ -231,10 +231,10 @@ namespace gui {
 			Dimension d = currentComponent->getSize();
 			if (p.x_ <= mouseEvent.button.x && p.x_ + d.width_ > mouseEvent.button.x &&
 				p.y_ <= mouseEvent.button.y && p.y_ + d.height_ > mouseEvent.button.y) {
-				SDL_Event motionEvent = mouseEvent;
-				motionEvent.motion.x -= (Sint32) p.x_;
-				motionEvent.motion.y -= (Sint32) p.y_;
-				currentComponent->handleMouse(motionEvent);
+				SDL_Event buttonEvent = mouseEvent;
+				buttonEvent.button.x -= (Sint32) p.x_;
+				buttonEvent.button.y -= (Sint32) p.y_;
+				currentComponent->handleMouse(buttonEvent);
 				break; // Abort, components should not overlap!
 			}
 			currentComponent = nullptr;
