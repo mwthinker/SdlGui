@@ -23,13 +23,22 @@ void testBorderLayout() {
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
 	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
-	b->setTextColor(1,0,0);
+	b->setTextColor(1, 0, 0);
 	auto panel = std::make_shared<gui::Panel>();
 	panel->setLayout<gui::VerticalLayout>();
 	frame.add(gui::BorderLayout::CENTER, panel);
 	frame.add<gui::Button>(gui::BorderLayout::WEST);
 	frame.add<gui::Button>(gui::BorderLayout::EAST);
 	frame.add<gui::Button>(gui::BorderLayout::SOUTH);
+
+	frame.addKeyListener([&](gui::Component& c, const SDL_Event& keyEvent) {
+		switch (keyEvent.type) {
+			case SDL_KEYUP:
+				std::cout << "KeyUp";
+				frame.getCurrentPanel()->setFocus(true);
+				break;
+		}
+	});
 
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
 	panel->addDefaultToGroup(std::make_shared<gui::Button>());
@@ -38,7 +47,7 @@ void testBorderLayout() {
 	comboBox->addItem("Option 1");
 	comboBox->addItem("Option 2");
 	comboBox->addItem("Option 3");
-	
+
 	b = panel->addDefaultToGroup<gui::Button>("Hello", font);
 	b->addMouseListener([](gui::Component& c, const SDL_Event& mouseEvent) {
 		switch (mouseEvent.type) {
@@ -82,7 +91,7 @@ void testFlowLayout() {
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::Button>("Button 4", font));
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::CheckBox>("CheckBox 5", font, mw::Sprite("box.png"), mw::Sprite("check.png")));
 	auto field = frame.addDefault<gui::TextField>("Text:", font);
-	field->setGrabFocus(true);
+	field->setFocus(true);
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::TextField>("", font));
 	frame.add(gui::DEFAULT_INDEX, std::make_shared<gui::Label>("JAjajaj", font));
 

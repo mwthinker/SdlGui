@@ -62,41 +62,11 @@ namespace gui {
 		return drawListener_.connect(callback);
 	}
 
-	void Component::setGrabFocus(bool grabFocus) {
-		if (grabFocus_ != grabFocus) {
-			// State is changed.
-			grabFocus_ = grabFocus;
-
-			if (grabFocus) {
-				setFocus(true);
-				if (parent_ != nullptr) {
-					// This component is one more.
-					++parent_->nbrChildGrabFocus_;
-				}
-			} else {
-				// Have children that wants focus?
-				if (nbrChildGrabFocus_ > 1) {
-					// Has a parent?
-					if (parent_ != nullptr) {
-						// One component less.
-						--parent_->nbrChildGrabFocus_;
-					}
-				}
-			}
-		}
-	}
-
-	bool Component::isGrabFocus() const {
-		return grabFocus_;
-	}
-
 	void Component::setFocus(bool focus) {
 		// Change?
 		if (focus_ != focus) {
-			if (focus || grabFocus_ || (!focus && nbrChildGrabFocus_ < 1)) {
-				focus_ = focus;
-				focusListener_(*this);
-			}
+			focus_ = focus;
+			focusListener_(*this);
 		}
 	}
 
@@ -131,7 +101,7 @@ namespace gui {
 	
 	Component::Component() : parent_(nullptr), ancestor_(nullptr),
 		borderColor_(0, 0, 0), backgroundColor_(1, 1, 1), layoutIndex_(0), visible_(true),
-		focus_(false), grabFocus_(false), nbrChildGrabFocus_(0), isAdded_(false),
+		focus_(false), isAdded_(false),
 		model_(mw::Matrix44<GLfloat>::I) {
 
 	}

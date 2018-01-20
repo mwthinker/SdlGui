@@ -38,10 +38,6 @@ namespace gui {
 		component->setLayoutIndex(layoutIndex);
 		components_.push_back(component);
 		setChildsParent();
-		if (component->isGrabFocus()) {
-			setFocus(true);
-			++nbrChildGrabFocus_;
-		}
 		validate();
 		return component;
 	}

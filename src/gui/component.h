@@ -78,14 +78,6 @@ namespace gui {
 		mw::signals::Connection addPanelChangeListener(const PanelChangeListener::Callback& callback);		
 		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
 
-		// If set to true makes the component to always have focus. All parents will
-		// also be set to have focus. If the current state is the same as the change,
-		// nothing happens. If set to false, it will stop grabbing focus unless there are
-		// children that want to grab focus.
-		void setGrabFocus(bool grabFocus);
-
-		bool isGrabFocus() const;
-
 		// Set the focus for the component.
 		// The focus listener is called if the focus changes.
 		virtual void setFocus(bool focus);
@@ -223,8 +215,6 @@ namespace gui {
 
 		bool visible_;
 		bool focus_;
-		bool grabFocus_;
-		int nbrChildGrabFocus_;
 
 		bool isAdded_;
 		mw::Matrix44<GLfloat> model_;
