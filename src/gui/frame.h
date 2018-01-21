@@ -55,24 +55,6 @@ namespace gui {
 		// Will assert if the component already added.
 		std::shared_ptr<Component> add(int layoutIndex, const std::shared_ptr<Component>& component);
 
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		template <class Comp, class... Args>
-		std::shared_ptr<Comp> addDefaultToGroup(Args... args);
-
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		std::shared_ptr<Component> addDefaultToGroup(const std::shared_ptr<Component>& component);
-
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		template <class Comp, class... Args>
-		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args);
-
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
-
 		// Set the layout manager.
 		std::shared_ptr<LayoutManager> setLayout(const std::shared_ptr<LayoutManager>& layoutManager);
 
@@ -171,24 +153,6 @@ namespace gui {
 	std::shared_ptr<Comp> Frame::add(int layoutIndex, Args... args) {
 		auto c = std::make_shared<Comp>(args...);
 		add(layoutIndex, c);
-		return c;
-	}
-
-	// Same as add(int layoutIndex, Component* component) but added to
-	// a traversal group too.
-	template <class Comp, class... Args>
-	std::shared_ptr<Comp> Frame::addDefaultToGroup(Args... args) {
-		auto c = std::make_shared<Comp>(args...);
-		addToGroup(DEFAULT_INDEX, c);
-		return c;
-	}
-		
-	// Same as add(int layoutIndex, Component* component) but added to
-	// a traversal group too.
-	template <class Comp, class... Args>
-	std::shared_ptr<Comp> Frame::addToGroup(int layoutIndex, Args... args) {
-		auto c = std::make_shared<Comp>(args...);
-		addToGroup(layoutIndex, c);
 		return c;
 	}
 

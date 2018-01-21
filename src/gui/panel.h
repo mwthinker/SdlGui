@@ -2,7 +2,6 @@
 #define GUI_PANEL_H
 
 #include "component.h"
-#include "traversalgroup.h"
 #include "layoutmanager.h"
 
 #include <vector>
@@ -43,24 +42,6 @@ namespace gui {
 		// I.e. Deallocates the component when the panel is deallocated.
 		template <class Comp, class... Args>
 		std::shared_ptr<Comp> add(int layoutIndex, Args... args);
-
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		template <class Comp, class... Args>
-		std::shared_ptr<Comp> addDefaultToGroup(Args... args);
-
-		// Same as add(int layoutIndex, Component* component) but added to
-		// a traversal group too.
-		std::shared_ptr<Component> addDefaultToGroup(const std::shared_ptr<Component>& component);
-
-		// Same as add(Component* component, int layoutIndex) but added to
-		// a traversal group too.
-		template <class Comp, class... Args>
-		std::shared_ptr<Comp> addToGroup(int layoutIndex, Args... args);
-
-		// Same as add(Component* component, int layoutIndex) but added to
-		// a traversal group too.
-		std::shared_ptr<Component> addToGroup(int layoutIndex, const std::shared_ptr<Component>& component);
 
 		void remove(const std::shared_ptr<Component>& component);
 		void removeAll();
@@ -122,7 +103,6 @@ namespace gui {
 		std::vector<std::shared_ptr<Component>> components_;
 		std::shared_ptr<Component> priorityComponent_;
 		std::shared_ptr<LayoutManager> layoutManager_;
-		TraversalGroup group_;
 
 		std::shared_ptr<Component> mouseMotionInsideComponent_;
 		std::shared_ptr<Component> mouseDownInsideComponent_;
@@ -149,22 +129,8 @@ namespace gui {
 		return c;
 	}
 
-	template <class Comp, class... Args>
-	std::shared_ptr<Comp> Panel::addDefaultToGroup(Args... args) {
-		auto c = std::make_shared<Comp>(args...);
-		addToGroup(DEFAULT_INDEX, c);
-		return c;
-	}
-
 	inline int Panel::getComponentsCount() const {
 		return components_.size();
-	}
-
-	template <class Comp, class... Args>
-	std::shared_ptr<Comp> Panel::addToGroup(int layoutIndex, Args... args) {
-		auto c = std::make_shared<Comp>(args...);
-		addToGroup(layoutIndex, c);
-		return c;
 	}
 
 	inline Panel::iterator Panel::begin() {

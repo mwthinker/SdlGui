@@ -11,6 +11,7 @@
 #include <gui/horizontallayout.h>
 #include <gui/gridlayout.h>
 #include <gui/combobox.h>
+#include <gui/traversalgroup.h>
 #include <gui/progressbar.h>
 
 #include <cassert>
@@ -40,15 +41,20 @@ void testBorderLayout() {
 		}
 	});
 
-	panel->addDefaultToGroup(std::make_shared<gui::Button>());
-	panel->addDefaultToGroup(std::make_shared<gui::Button>());
+	gui::TraversalGroup group;
+	group.setVerticalArrows(true);
 
-	auto comboBox = panel->addDefaultToGroup<gui::ComboBox>(font, mw::Sprite("triangle.png"));
+	group.add(panel->addDefault(std::make_shared<gui::Button>()));
+	group.add(panel->addDefault(std::make_shared<gui::Button>()));
+
+	auto comboBox = panel->addDefault<gui::ComboBox>(font, mw::Sprite("triangle.png"));
+	group.add(comboBox);
 	comboBox->addItem("Option 1");
 	comboBox->addItem("Option 2");
 	comboBox->addItem("Option 3");
 
-	b = panel->addDefaultToGroup<gui::Button>("Hello", font);
+	b = panel->addDefault<gui::Button>("Hello", font);
+	group.add(b);
 	b->addMouseListener([](gui::Component& c, const SDL_Event& mouseEvent) {
 		switch (mouseEvent.type) {
 			case SDL_MOUSEMOTION:
@@ -69,7 +75,11 @@ void testBorderLayout() {
 				break;
 		}
 	});
-	panel->addToGroup<gui::Button>(gui::DEFAULT_INDEX);
+	group.add(panel->add<gui::Button>(gui::DEFAULT_INDEX));
+
+	frame.addKeyListener([&](gui::Component&, const SDL_Event& sdlEvent) {
+		group.handleKeyboard(sdlEvent);
+	});
 
 	panel->add<gui::ProgressBar>(gui::DEFAULT_INDEX);
 

@@ -9,7 +9,7 @@
 #include <iostream>
 
 namespace gui {
-	
+
 	Frame::Frame() : defaultClosing_(false), currentPanel_(0) {
 		// Default layout for Frame.
 		addPanelBack();
@@ -39,16 +39,6 @@ namespace gui {
 
 	std::shared_ptr<Component> Frame::add(int layoutIndex, const std::shared_ptr<Component>& component) {
 		getCurrentPanel()->add(layoutIndex, component);
-		return component;
-	}
-
-	std::shared_ptr<Component> Frame::addDefaultToGroup(const std::shared_ptr<Component>& component) {
-		getCurrentPanel()->addToGroup(DEFAULT_INDEX, component);
-		return component;
-	}
-
-	std::shared_ptr<Component> Frame::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
-		getCurrentPanel()->addToGroup(layoutIndex, component);
 		return component;
 	}
 

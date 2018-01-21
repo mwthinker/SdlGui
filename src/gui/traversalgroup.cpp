@@ -4,8 +4,8 @@
 
 namespace gui {
 
-	TraversalGroup::TraversalGroup() {
-		lastFocusIndex_ = 0;
+	TraversalGroup::TraversalGroup() : lastFocusIndex_(0),
+		verticalArrows_(false), horizontalArrows_(false), tab_(true) {
 	}
 
 	void TraversalGroup::add(const std::shared_ptr<Component>& component) {
@@ -34,16 +34,36 @@ namespace gui {
 		switch (keyEvent.type) {
 			case SDL_KEYDOWN:
 				switch (keyEvent.key.keysym.sym) {
-					case SDLK_TAB:
-					{
-						const Uint8* state = SDL_GetKeyboardState(0);
-						if (state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT]) {
-							changeToNext(false);
-						} else {
+					case SDLK_LEFT:
+						if (horizontalArrows_) {
 							changeToNext(true);
 						}
 						break;
-					}
+					case SDLK_RIGHT:
+						if (horizontalArrows_) {
+							changeToNext(false);
+						}
+						break;
+					case SDLK_DOWN:
+						if (verticalArrows_) {
+							changeToNext(true);
+						}
+						break;
+					case SDLK_UP:
+						if (verticalArrows_) {
+							changeToNext(false);
+						}
+						break;
+					case SDLK_TAB:
+						if (tab_) {
+							const Uint8* state = SDL_GetKeyboardState(0);
+							if (state[SDL_SCANCODE_LSHIFT] || state[SDL_SCANCODE_RSHIFT]) {
+								changeToNext(false);
+							} else {
+								changeToNext(true);
+							}
+						}
+						break;
 					case SDLK_RETURN:
 						// Fall through!
 					case SDLK_KP_ENTER:
@@ -55,10 +75,11 @@ namespace gui {
 						}
 						break;
 				}
+				break;
 		}
 	}
 
-	void TraversalGroup::sort() {
+	void TraversalGroup::verticalSort() {
 		std::sort(components_.rbegin(), components_.rend(), [](const std::shared_ptr<Component>& c1, const std::shared_ptr<Component>& c2) {
 			Point p1 = c1->getLocation();
 			Point p2 = c2->getLocation();
@@ -68,6 +89,19 @@ namespace gui {
 			}
 
 			return p1.y_ < p2.y_;
+		});
+	}
+
+	void TraversalGroup::horizontalSort() {
+		std::sort(components_.rbegin(), components_.rend(), [](const std::shared_ptr<Component>& c1, const std::shared_ptr<Component>& c2) {
+			Point p1 = c1->getLocation();
+			Point p2 = c2->getLocation();
+
+			if (p1.x_ == p2.x_) {
+				return p1.y_ < p2.y_;
+			}
+
+			return p1.x_ < p2.x_;
 		});
 	}
 

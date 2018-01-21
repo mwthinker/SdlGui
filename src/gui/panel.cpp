@@ -42,30 +42,16 @@ namespace gui {
 		return component;
 	}
 
-	std::shared_ptr<Component> Panel::addDefaultToGroup(const std::shared_ptr<Component>& component) {
-		add(DEFAULT_INDEX, component);
-		group_.add(component);
-		return component;
-	}
-
-	std::shared_ptr<Component> Panel::addToGroup(int layoutIndex, const std::shared_ptr<Component>& component) {
-		add(layoutIndex, component);
-		group_.add(component);
-		return component;
-	}
-
 	void Panel::remove(const std::shared_ptr<Component>& component) {
 		auto it = std::find(components_.begin(), components_.end(), component);
 		if (it != components_.end()) {
 			// Remove component.
 			components_.erase(it);
 		}
-		group_.remove(component);
 	}
 
 	void Panel::removeAll() {
 		components_.clear();
-		group_.removeAll();
 	}
 
 	std::shared_ptr<LayoutManager> Panel::setLayout(const std::shared_ptr<LayoutManager>& layoutManager) {
@@ -132,7 +118,6 @@ namespace gui {
 			}
 		}
 		Component::handleKeyboard(keyEvent);
-		group_.handleKeyboard(keyEvent);
 	}
 
 	void Panel::mouseMotionLeave() {
@@ -173,8 +158,6 @@ namespace gui {
 		for (auto& child : *this) {
 			child->validate();
 		}
-
-		group_.sort();
 	}
 
 	void Panel::handleMouseMotionEvent(SDL_Event mouseEvent) {
