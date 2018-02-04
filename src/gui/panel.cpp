@@ -68,6 +68,15 @@ namespace gui {
 		}
 	}
 
+	void Panel::setFocus(bool focus, const std::shared_ptr<Component>& child) {
+		Component::setFocus(focus);
+		for (auto& component : *this) {
+			if (child != component) {
+				component->setFocus(focus);
+			}
+		}
+	}
+
 	std::shared_ptr<LayoutManager> Panel::getLayout() const {
 		return layoutManager_;
 	}

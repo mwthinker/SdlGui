@@ -67,6 +67,9 @@ namespace gui {
 		if (focus_ != focus) {
 			focus_ = focus;
 			focusListener_(*this);
+			if (parent_) {
+				parent_->setFocus(focus, shared_from_this());
+			}
 		}
 	}
 
