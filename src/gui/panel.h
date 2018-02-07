@@ -78,10 +78,10 @@ namespace gui {
 
 		void validate() override;
 
-		// Make the focus propagete upwards, from child to parent.
-		virtual void setFocus(bool focus, const std::shared_ptr<Component>& child);
-
 	protected:
+		// @Component Make the focus propagete upwards, from child to parent.
+		void setFocus(bool focus, const std::shared_ptr<Component>& child) override;
+
 		void setChildsParent() override;
 
 		virtual void draw(const Graphic& graphic, double deltaTime) override;

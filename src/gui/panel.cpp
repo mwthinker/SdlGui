@@ -60,8 +60,8 @@ namespace gui {
 	}
 
 	void Panel::setFocus(bool focus) {
-		Component::setFocus(focus);
-		if (!focus) {
+		Component::setFocus(focus, shared_from_this());
+		if (!focus) { // Only takes focus away from children, not giving them focus.			
 			for (auto& component : *this) {
 				component->setFocus(false);
 			}
@@ -69,10 +69,13 @@ namespace gui {
 	}
 
 	void Panel::setFocus(bool focus, const std::shared_ptr<Component>& child) {
-		Component::setFocus(focus);
+		Component::setFocus(focus, shared_from_this());
+		if (parent_ && focus) {
+			parent_->setFocus(focus, shared_from_this());
+		}
 		for (auto& component : *this) {
-			if (child != component) {
-				component->setFocus(focus);
+			if (child != component && focus) {
+				component->setFocus(false);
 			}
 		}
 	}

@@ -67,9 +67,16 @@ namespace gui {
 		if (focus_ != focus) {
 			focus_ = focus;
 			focusListener_(*this);
-			if (parent_) {
-				parent_->setFocus(focus, shared_from_this());
+			if (parent_ && focus) {
+				std::static_pointer_cast<Component>(parent_)->setFocus(focus, shared_from_this());
 			}
+		}
+	}
+
+	void Component::setFocus(bool focus, const std::shared_ptr<Component>& parent) {
+		if (focus_ != focus) {
+			focus_ = focus;
+			focusListener_(*this);
 		}
 	}
 

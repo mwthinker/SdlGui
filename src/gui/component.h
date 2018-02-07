@@ -141,6 +141,8 @@ namespace gui {
 		}
 		
 	protected:
+		virtual void setFocus(bool focus, const std::shared_ptr<Component>& parent);
+
 		Component();
 
 		virtual void init() {
