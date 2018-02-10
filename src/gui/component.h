@@ -23,7 +23,7 @@ namespace gui {
 
 	using FocusListener = mw::Signal<Component&>;
 	using KeyListener = mw::Signal<Component&, const SDL_Event&>;
-	using MouseListener = KeyListener;
+	using MouseListener = mw::Signal<Component&, const SDL_Event&>;
 	using ActionListener = mw::Signal<Component&>;
 	using PanelChangeListener = mw::Signal<Component&, bool>;
 	using DrawListener = mw::Signal<Frame&, double>;

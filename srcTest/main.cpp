@@ -23,8 +23,15 @@ void testBorderLayout() {
 	frame.setWindowSize(512, 512);
 	frame.setDefaultClosing(true);
 	mw::Font font("Ubuntu-B.ttf", 16);
-	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Hello", font);
+	auto b = frame.add<gui::Button>(gui::BorderLayout::NORTH, "Loop delay", font);
 	b->setTextColor(1, 0, 0);
+	b->addActionListener([&](gui::Component&) {
+		if (frame.getLoopSleepingTime() < 0) {
+			frame.setLoopSleepingTime(10);
+		} else {
+			frame.setLoopSleepingTime(-1);
+		}
+	});
 	auto panel = std::make_shared<gui::Panel>();
 	panel->setLayout<gui::VerticalLayout>();
 	frame.add(gui::BorderLayout::CENTER, panel);
