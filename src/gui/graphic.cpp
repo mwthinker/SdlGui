@@ -43,7 +43,7 @@ namespace gui {
 	}
 
 	void Graphic::drawSquare(float x, float y, float w, float h) const {
-		mw::Matrix44<GLfloat> uPos = mw::Matrix44<GLfloat>::I;
+		mw::Matrix44f uPos = mw::Matrix44f::I;
 		mw::translate2D(uPos, x, y);
 		mw::scale2D(uPos, w, h);
 		guiShader_.setUPos(uPos);
@@ -59,7 +59,7 @@ namespace gui {
 			guiShader_.useProgram();
 			texture.bindTexture();
 
-			mw::Matrix44<GLfloat> uPos(
+			mw::Matrix44f uPos(
 				w, 0, 0, x,
 				0, h, 0, y,
 				0, 0, 1, 0,
@@ -67,7 +67,7 @@ namespace gui {
 			);
 			guiShader_.setUPos(uPos);
 
-			mw::Matrix44<GLfloat> uTex(
+			mw::Matrix44f uTex(
 				sprite.getWidth() / texture.getWidth(), 0, 0, sprite.getX() / texture.getWidth(),
 				0, sprite.getHeight() / texture.getHeight(), 0, sprite.getY() / texture.getHeight(),
 				0, 0, 1, 0,
@@ -86,7 +86,7 @@ namespace gui {
 			guiShader_.useProgram();
 			text.bindTexture();
 
-			mw::Matrix44<GLfloat> uPos(
+			mw::Matrix44f uPos(
 				text.getWidth(), 0, 0, x,
 				0, text.getHeight(), 0, y,
 				0, 0, 1, 0,
@@ -95,7 +95,7 @@ namespace gui {
 			guiShader_.setUPos(uPos);
 
 			// Send the whole texture => I_44.
-			guiShader_.setUTex(mw::Matrix44<GLfloat>::I);
+			guiShader_.setUTex(mw::Matrix44f::I);
 
 			// Use as texture!
 			guiShader_.setUIsTex(true);
@@ -103,11 +103,11 @@ namespace gui {
 		}
 	}
 
-	void Graphic::setModel(const mw::Matrix44<GLfloat>& model) const {
+	void Graphic::setModel(const mw::Matrix44f& model) const {
 		guiShader_.setUModel(model);
 	}
 
-	void Graphic::setProj(const mw::Matrix44<GLfloat>& proj) {
+	void Graphic::setProj(const mw::Matrix44f& proj) {
 		proj_ = proj;
 		guiShader_.setUProj(proj);
 	}

@@ -16,7 +16,7 @@ namespace gui {
 		if (parent_ != nullptr) {
 			model_ = parent_->model_;
 		} else {
-			model_ = mw::Matrix44<GLfloat>::I;
+			model_ = mw::Matrix44f::I;
 		}
 		mw::translate2D(model_, point.x_, point.y_);
 	}
@@ -112,7 +112,7 @@ namespace gui {
 	Component::Component() : parent_(nullptr), ancestor_(nullptr),
 		borderColor_(0, 0, 0), backgroundColor_(1, 1, 1), layoutIndex_(0), visible_(true),
 		focus_(false), isAdded_(false),
-		model_(mw::Matrix44<GLfloat>::I) {
+		model_(mw::Matrix44f::I) {
 
 	}
 
