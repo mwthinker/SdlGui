@@ -117,18 +117,18 @@ namespace gui {
 		mw::signals::Connection addDrawListener(const DrawListener::Callback& callback);
 
 	protected:
+		// Override mw::Window.
 		virtual void initPreLoop() override;
 
+		// Override mw::Window.
+		virtual void update(double deltaTime) override;
+
+		// Override mw::Window.
+		virtual void eventUpdate(const SDL_Event& windowEvent) override;
+
 	private:
-		// Override mw::Window.
-		virtual void update(double deltaTime) override final;
-
-		// Override mw::Window.
-		virtual void eventUpdate(const SDL_Event& windowEvent) override final;
-
 		void resize(int width, int height);
 
-		std::queue<SDL_Event> eventQueue_;
 		WindowListener windowListener_;
 		SdlEventListener sdlEventListener_;
 		Graphic graphic_;

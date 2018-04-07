@@ -87,64 +87,58 @@ namespace gui {
 
 	void Frame::update(double deltaTime) {
 		getCurrentPanel()->drawListener(*this, deltaTime);
-
-		// Perform non critical event updates.
-		while (!eventQueue_.empty()) {
-			SDL_Event sdlEvent = eventQueue_.front();
-			eventQueue_.pop();
-
-			sdlEventListener_(*this, sdlEvent);
-			switch (sdlEvent.type) {
-				case SDL_WINDOWEVENT:
-					windowListener_(*this, sdlEvent);
-					switch (sdlEvent.window.event) {
-						case SDL_WINDOWEVENT_RESIZED:
-							resize(sdlEvent.window.data1, sdlEvent.window.data2);
-							break;
-						case SDL_WINDOWEVENT_LEAVE:
-							getCurrentPanel()->mouseMotionLeave();
-							break;
-						case SDL_WINDOWEVENT_CLOSE:
-							if (defaultClosing_) {
-								quit();
-							}
-					}
-					break;
-				case SDL_MOUSEMOTION:
-					// Reverse y-axis.
-					sdlEvent.motion.yrel *= -1;
-					sdlEvent.motion.y = getHeight() - sdlEvent.motion.y;
-					getCurrentPanel()->handleMouse(sdlEvent);
-					break;
-				case SDL_MOUSEBUTTONDOWN:
-					// Fall through!
-				case SDL_MOUSEBUTTONUP:
-					sdlEvent.button.y = getHeight() - sdlEvent.motion.y;
-					getCurrentPanel()->handleMouse(sdlEvent);
-					break;
-				case SDL_TEXTINPUT:
-					// Fall through.
-				case SDL_TEXTEDITING:
-					// Fall through.
-				case SDL_KEYDOWN:
-					// Fall through.
-				case SDL_KEYUP:
-					getCurrentPanel()->handleKeyboard(sdlEvent);
-					switch (sdlEvent.key.keysym.sym) {
-						case SDLK_ESCAPE:
-							if (defaultClosing_) {
-								quit();
-							}
-							break;
-					}
-					break;
-			}
-		}
 		getCurrentPanel()->draw(graphic_, deltaTime);
 	}
 
 	void Frame::eventUpdate(const SDL_Event& windowEvent) {
-		eventQueue_.push(windowEvent);
+		// Perform non critical event updates.
+		SDL_Event sdlEvent = windowEvent;
+		sdlEventListener_(*this, sdlEvent);
+		switch (sdlEvent.type) {
+			case SDL_WINDOWEVENT:
+				windowListener_(*this, sdlEvent);
+				switch (sdlEvent.window.event) {
+					case SDL_WINDOWEVENT_RESIZED:
+						resize(sdlEvent.window.data1, sdlEvent.window.data2);
+						break;
+					case SDL_WINDOWEVENT_LEAVE:
+						getCurrentPanel()->mouseMotionLeave();
+						break;
+					case SDL_WINDOWEVENT_CLOSE:
+						if (defaultClosing_) {
+							quit();
+						}
+				}
+				break;
+			case SDL_MOUSEMOTION:
+				// Reverse y-axis.
+				sdlEvent.motion.yrel *= -1;
+				sdlEvent.motion.y = getHeight() - sdlEvent.motion.y;
+				getCurrentPanel()->handleMouse(sdlEvent);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				// Fall through!
+			case SDL_MOUSEBUTTONUP:
+				sdlEvent.button.y = getHeight() - sdlEvent.motion.y;
+				getCurrentPanel()->handleMouse(sdlEvent);
+				break;
+			case SDL_TEXTINPUT:
+				// Fall through.
+			case SDL_TEXTEDITING:
+				// Fall through.
+			case SDL_KEYDOWN:
+				// Fall through.
+			case SDL_KEYUP:
+				getCurrentPanel()->handleKeyboard(sdlEvent);
+				switch (sdlEvent.key.keysym.sym) {
+					case SDLK_ESCAPE:
+						if (defaultClosing_) {
+							quit();
+						}
+						break;
+				}
+				break;
+		}
 	}
 
 	void Frame::initPreLoop() {
