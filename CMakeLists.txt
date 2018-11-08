@@ -1,18 +1,14 @@
-cmake_minimum_required(VERSION 3.0)
-project(SdlGui)
-set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/MwLibrary2/cmake/Modules/")
-if (NOT MSVC)
-	set(CMAKE_CXX_FLAGS "-std=c++1y")
-	option(Debug "Set projects to debug mode.")
-	if (Debug)
-		set(CMAKE_BUILD_TYPE "Debug" CACHE INTERNAL "Build type.")
-		add_definitions(-D_DEBUG)
-	else ()
-		set(CMAKE_BUILD_TYPE "Release" CACHE INTERNAL "Build type.")
-	endif ()
-endif ()
+cmake_minimum_required(VERSION 3.1...3.12)
+project(SdlGui
+	DESCRIPTION
+		"A java inspired GUI based on SDL2 and OpenGl"
+	LANGUAGES
+		CXX
+)
 
-# Source files.
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(SOURCES
 	src/gui/borderlayout.h
 	src/gui/button.cpp
@@ -49,53 +45,38 @@ set(SOURCES
 	src/gui/verticallayout.h
 )
 
-set(SOURCES_TEST
-	srcTest/main.cpp
-)
-# End of source files.
-
-find_package(SDL2 REQUIRED)
-find_package(SDL2_image REQUIRED)
-find_package(SDL2_mixer REQUIRED)
-find_package(SDL2_ttf REQUIRED)
-find_package(GLEW REQUIRED)
-find_package(OpenGL REQUIRED)
-
 add_subdirectory(MwLibrary2)
 add_subdirectory(Signal)
 
-option(SdlGuiTest "SdlGuiTest project is added" OFF)
-
-include_directories(
-	${SDL2_INCLUDE_DIR}
-	${SDL2_IMAGE_INCLUDE_DIR}
-	${SDL2_TTF_INCLUDE_DIR}
-	${SDL2_MIXER_INCLUDE_DIR}
-	${GLEW_INCLUDE_DIRS}
-	MwLibrary2/src/
-	Signal/src/
-)
-
 add_library(SdlGui ${SOURCES})
 
-set(ALL_MW_LIBRARIES
-	${GLEW_LIBRARIES}
-	${OPENGL_LIBRARIES}
-	${SDL2_LIBRARIES}
-	${SDL2_TTF_LIBRARIES}
-	${SDL2_MIXER_LIBRARIES}
-	${SDL2_IMAGE_LIBRARIES}
+target_include_directories(SdlGui
+	PUBLIC
+		"$<BUILD_INTERFACE:${CMAKE_CURRENT_SOURCE_DIR}/src>"
 )
 
+target_link_libraries(SdlGui
+	PUBLIC
+		MwLibrary2
+		Signal
+)
+
+option(SdlGuiTest "SdlGuiTest project is added" OFF)
+
 if (SdlGuiTest)
-	include_directories(src)
+	set(SOURCES_TEST
+		srcTest/main.cpp
+	)
+	
 	add_executable(SdlGuiTest ${SOURCES_TEST})
+	
+	target_include_directories(SdlGuiTest
+		PRIVATE
+			${CMAKE_CURRENT_SOURCE_DIR}/srcTest
+	)
 
-	if (MSVC)
-		set_target_properties(SdlGuiTest PROPERTIES LINK_FLAGS_DEBUG "/NODEFAULTLIB:msvcrt")
-	endif (MSVC)
+	target_link_libraries(SdlGuiTest SdlGui)
 
-	target_link_libraries(SdlGuiTest SdlGui MwLibrary2 ${ALL_MW_LIBRARIES})
-
-	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR}) # Copy data to build folder.
+	# Copy data to build folder.
+	file(COPY data/. DESTINATION ${CMAKE_CURRENT_BINARY_DIR})
 endif (SdlGuiTest)
